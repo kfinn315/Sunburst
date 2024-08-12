@@ -1,6 +1,9 @@
 {
   "name": "kfinn315_sunburst",
-  "version": "1.0.1",
+  "version": "1.0.6",
+  "author": "kfinn315",
+  "license": "ISC",
+  "description": "A sunburst diagram react component using Typescript and D3.js",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -15,11 +18,9 @@
   "scripts": {
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "test": "jest",
-    "build": "tsc"
+    "build": "rm -rf dist && tsc && npm run copyCSS",
+    "copyCSS": "copyfiles -u 1 src/**/*.css dist/"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "d3": "^7.9.0",
     "ts-node": "^10.9.2"
@@ -39,6 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "babel-jest": "^29.7.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -52,5 +54,19 @@
     "react-dom": "^18.3.1",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.9.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kfinn315/sunburst.git"
+  },
+  "keywords": [
+    "sunburst",
+    "d3.js",
+    "react"
+  ],
+  "types": "./dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/kfinn315/sunburst/issues"
+  },
+  "homepage": "https://github.com/kfinn315/sunburst#readme"
 }

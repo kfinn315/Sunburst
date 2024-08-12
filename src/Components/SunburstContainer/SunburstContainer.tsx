@@ -3,71 +3,50 @@ import './SunburstContainer.css'
 import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
 import { useState } from 'react'
 
-import { SunburstItem, SunburstItemTreeNode,TreeNode } from '../../Types'
+import { type SunburstItem, type SunburstItemTreeNode, type TreeNode } from '../../Types'
 import { getPartitionTreeLayout } from '../../Services/PartitionLayout'
-import { BoxDimensions } from '../../Types/BoxDimensions'
-import { Sunburst, SunburstEvent } from '../Sunburst'
-import { IHighlighterWrapper } from '../../Services/Highlighter'
+import { type BoxDimensions } from '../../Types/BoxDimensions'
+import { Sunburst, type SunburstEvent } from '../Sunburst'
+import { type IHighlighterWrapper } from '../../Services/Highlighter'
 
-export interface SunburstContainerProps {
-  dimensions: BoxDimensions
-  minWidth?: number
+export interface SunburstContainerProps<T> {
   duration?: number
-  rootNode: HierarchyNode<TreeNode<SunburstItem>>
-  onClick?: SunburstEvent<SunburstItemTreeNode>
-  onMouseEnter?: SunburstEvent<SunburstItemTreeNode>
-  onMouseLeave?: SunburstEvent<SunburstItemTreeNode>
-  highlighter?: IHighlighterWrapper<SunburstItem>
-  colorScale: ScaleLinear<string, string>
-  centerColor: string
+  getArcColor: (d: HierarchyRectangularNode<T>) => string
+  getItemDetail: (item: HierarchyNode<T>) => string
+  highlighter?: IHighlighterWrapper<T>
+  minWidth?: number
+  nodes: HierarchyRectangularNode<T>[]
+  onClick?: SunburstEvent<T>
+  onMouseEnter?: SunburstEvent<T>
+  onMouseLeave?: SunburstEvent<T>
+  radius: number
+  svgDimensions: BoxDimensions
 }
 
-export function SunburstContainer({
-  dimensions,
-  rootNode,
+export function SunburstContainer<T extends { id: number }>({
+  duration,
+  getArcColor,
+  getItemDetail,
   highlighter,
+  minWidth = 20,
+  nodes,
+  onClick,
   onMouseEnter,
   onMouseLeave,
-  colorScale,
-  centerColor,
-  duration,
-  minWidth = 20,
-}: SunburstContainerProps) {
+  radius,
+  svgDimensions
+}: SunburstContainerProps<T>) {
   const [detail, setDetail] = useState<string | undefined>()
 
-  const svgDimension = getSVGDimensions(dimensions, minWidth)
-  const radius = svgDimension / 2
-  const sunburstDimensions: BoxDimensions = {
-    width: 2 * Math.PI,
-    height: radius * radius,
-  }
-
-  const nodes = getPartitionTreeLayout<SunburstItem>(
-    rootNode,
-    sunburstDimensions,
-  ).descendants()
-
-  const getArcColor = (d: HierarchyRectangularNode<SunburstItemTreeNode>) =>
-    d.data.data?.color ? colorScale(d.data.data.color) : centerColor
-
-  function getItemDetail(item: HierarchyNode<SunburstItemTreeNode>): string {
-    return item
-      .ancestors()
-      .map((x) => x.data.name ?? '?')
-      .reverse()
-      .slice(1) //remove "root"
-      .join('.')
-  }
-
-  const mouseEnterHandler: SunburstEvent<SunburstItemTreeNode> = (
+  const mouseEnterHandler: SunburstEvent<T> = (
     event: MouseEvent,
-    d: HierarchyNode<SunburstItemTreeNode>,
+    d: HierarchyNode<T>,
   ) => {
     setDetail(getItemDetail(d))
     onMouseEnter?.(event, d)
   }
 
-  const mouseLeaveHandler: SunburstEvent<SunburstItemTreeNode> = (event, d) => {
+  const mouseLeaveHandler: SunburstEvent<T> = (event, d) => {
     setDetail(undefined)
     onMouseLeave?.(event, d)
   }
@@ -76,11 +55,11 @@ export function SunburstContainer({
     <div className="visualization-wrapper">
       <div className="sunburst-wrapper">
         <svg
-          width={svgDimension}
-          height={svgDimension}
-          viewBox={`0 0 ${String(svgDimension)} ${String(svgDimension)}`}
+          width={svgDimensions.width}
+          height={svgDimensions.height}
+          viewBox={`0 0 ${String(svgDimensions.width)} ${String(svgDimensions.height)}`}
         >
-          <Sunburst<SunburstItem>
+          <Sunburst<T>
             highlighter={highlighter}
             getArcColor={getArcColor}
             radius={radius}
@@ -97,8 +76,4 @@ export function SunburstContainer({
       </div>
     </div>
   )
-}
-
-export function getSVGDimensions(dimensions: BoxDimensions, minWidth: number) {
-  return min([dimensions.height, dimensions.width]) ?? minWidth
 }

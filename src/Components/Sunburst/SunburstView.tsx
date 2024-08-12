@@ -7,22 +7,22 @@ import { ArcGroup, Arcs } from '../../Services/Arcs'
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
 import { IHighlighterWrapper } from '../../Services/Highlighter'
-import { TreeNode } from '../../Types'
+import { type TreeNode } from '../../Types'
 
 export interface SunburstViewProps<TDatum> {
   radius: number
-  items: HierarchyRectangularNode<TreeNode<TDatum>>[]
-  getArcColor: (d: HierarchyRectangularNode<TreeNode<TDatum>>) => string
-  isArcClickable: (d: HierarchyRectangularNode<TreeNode<TDatum>>) => boolean
+  items: HierarchyRectangularNode<TDatum>[]
+  getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
+  isArcClickable: (d: HierarchyRectangularNode<TDatum>) => boolean
   duration?: number
-  onClick?: SunburstEvent<TreeNode<TDatum>>
-  onMouseEnter?: SunburstEvent<TreeNode<TDatum>>
-  onMouseLeave?: SunburstEvent<TreeNode<TDatum>>
+  onClick?: SunburstEvent<TDatum>
+  onMouseEnter?: SunburstEvent<TDatum>
+  onMouseLeave?: SunburstEvent<TDatum>
   centerElement?: JSX.Element
   highlighter?: IHighlighterWrapper<TDatum>
 }
 
-export default function SunburstView<TDatum>(
+export default function SunburstView<TDatum extends { id: number }>(
   props: SunburstViewProps<TDatum>,
 ): JSX.Element {
   const {
@@ -48,7 +48,7 @@ export default function SunburstView<TDatum>(
   const controller = useMemo(() => {
     function mouseEnterHandler(
       event: MouseEvent,
-      d: HierarchyNode<TreeNode<TDatum>>,
+      d: HierarchyNode<TDatum>,
     ): void {
       highlighter?.highlight(d)
       onMouseEnter?.(event, d)
@@ -56,7 +56,7 @@ export default function SunburstView<TDatum>(
 
     function mouseLeaveHandler(
       event: MouseEvent,
-      d: HierarchyNode<TreeNode<TDatum>>,
+      d: HierarchyNode<TDatum>,
     ): void {
       highlighter?.clear()
       onMouseLeave?.(event, d)
@@ -64,18 +64,18 @@ export default function SunburstView<TDatum>(
 
     function clickHandler(
       event: MouseEvent,
-      d: HierarchyNode<TreeNode<TDatum>>,
+      d: HierarchyNode<TDatum>,
     ): void {
       onClick?.(event, d)
     }
 
     function getMouseArcPathClass(
-      d: HierarchyRectangularNode<TreeNode<TDatum>>,
+      d: HierarchyRectangularNode<TDatum>,
     ): string | null {
       return isArcClickable(d) ? 'clickable' : null
     }
 
-    return new SunburstViewController<TreeNode<TDatum>>(gElementRef, {
+    return new SunburstViewController<TDatum>(gElementRef, {
       duration,
       arcs,
       onClick: clickHandler,
@@ -83,7 +83,7 @@ export default function SunburstView<TDatum>(
       onMouseLeave: mouseLeaveHandler,
       getArcColor,
       getMouseArcPathClass,
-      getNodeID: (d: HierarchyRectangularNode<TreeNode<TDatum>>) => {
+      getNodeID: (d: HierarchyRectangularNode<TDatum>) => {
         return d.data.id
       },
     })
