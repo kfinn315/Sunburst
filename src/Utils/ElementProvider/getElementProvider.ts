@@ -29,6 +29,9 @@ export function getElementProvider<
     if (item == undefined) {
       return null
     }
+    if (selectorProvider == undefined) {
+      throw new Error("selectorProvider is undefined")
+    }
     const selector = selectorProvider.get(item)
 
     return ref.current?.querySelector<TOut>(selector) ?? null
@@ -39,6 +42,9 @@ export function getElementProvider<
    * @returns An array of elements
    */
   function getAll(): TOut[] | null {
+    if (selectorProvider == undefined) {
+      throw new Error("selectorProvider is undefined")
+    }
     if (ref.current) {
       return Array.from(ref.current.querySelectorAll<TOut>(selectorProvider.getAll()))
     }

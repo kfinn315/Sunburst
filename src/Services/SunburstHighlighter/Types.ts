@@ -5,4 +5,4 @@ import { TreeNode } from '../../Types'
 
 export type GetHighlighter<TData> = (
   gElementRef: React.MutableRefObject<SVGGElement | null>,
-) => Highlighter<HierarchyNode<TreeNode<TData>>>
+) => Highlighter<HierarchyNode<TData>>

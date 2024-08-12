@@ -2,11 +2,9 @@ import { HierarchyNode } from 'd3'
 import { MutableRefObject } from 'react'
 import { GetHighlighter } from '../SunburstHighlighter'
 import { Highlighter, IHighlighterWrapper } from './Types'
-import { TreeNode } from '../../Types'
 
 export class HighlighterWrapper<TData> implements IHighlighterWrapper<TData> {
-  private highlighter: Highlighter<HierarchyNode<TreeNode<TData>>> | undefined =
-    undefined
+  private highlighter: Highlighter<HierarchyNode<TData>> | undefined = undefined
 
   constructor(private readonly getHighlighter: GetHighlighter<TData>) { }
 
@@ -21,7 +19,7 @@ export class HighlighterWrapper<TData> implements IHighlighterWrapper<TData> {
       console.info('Please call setRef() before clear()')
     }
   }
-  highlight(item: HierarchyNode<TreeNode<TData>>) {
+  highlight(item: HierarchyNode<TData>) {
     if (this.highlighter) {
       this.highlighter.highlight(item)
     } else {

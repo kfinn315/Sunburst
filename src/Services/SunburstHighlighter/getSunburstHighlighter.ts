@@ -2,17 +2,10 @@ import { HierarchyNode } from 'd3'
 
 import { SunburstItem, SunburstItemTreeNode, TreeNode } from '../../Types'
 import { getHighlighter, Highlighter } from '../Highlighter'
-import { getAncestorElementListProvider } from './getAncestorElementListProvider'
-import { getArcElementProvider } from './getArcElementProvider'
 import { GetHighlighter } from './Types'
+import { AncestorHighlighterFactory } from './AncestorHighlighterFactory'
+import { arcSelectorProvider } from './arcSelectorProvider'
 
-export const getSunburstHighlighter: GetHighlighter<SunburstItem> = (
-  gElementRef: React.MutableRefObject<SVGGElement | null>,
-): Highlighter<HierarchyNode<TreeNode<SunburstItem>>> => {
-  const arcElementProvider = getArcElementProvider(gElementRef)
+const factory = new AncestorHighlighterFactory<SunburstItemTreeNode, Element>(arcSelectorProvider)
 
-  const elementProvider = getAncestorElementListProvider<TreeNode<SunburstItem>, SVGGElement>(arcElementProvider)
-
-  return getHighlighter<SunburstItemTreeNode>(elementProvider)
-}
-
+export const getSunburstHighlighter: GetHighlighter<SunburstItemTreeNode> = (ref: React.MutableRefObject<SVGGElement | null>) => factory.getHighlighter(ref)

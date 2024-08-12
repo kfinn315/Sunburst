@@ -64,8 +64,8 @@ describe('HighlighterWrapper', () => {
             const ref: MutableRefObject<SVGGElement | null> = {
                 current: null,
             }
-            const item = mock<HierarchyNode<TreeNode<unknown>>>()
-            const highlighter: Highlighter<HierarchyNode<TreeNode<unknown>>> = {
+            const item = mock<HierarchyNode<unknown>>()
+            const highlighter: Highlighter<HierarchyNode<unknown>> = {
                 clear: jest.fn(),
                 highlight: jest.fn(),
             }
@@ -83,7 +83,7 @@ describe('HighlighterWrapper', () => {
         it('should log a message if setRef has not been called', () => {
             // Arrange
             console.info = jest.fn()
-            const item = mock<HierarchyNode<TreeNode<unknown>>>()
+            const item = mock<HierarchyNode<unknown>>()
             const getHighlighter: GetHighlighter<unknown> = jest.fn()
             const highlighterWrapper = new HighlighterWrapper<unknown>(getHighlighter)
 
