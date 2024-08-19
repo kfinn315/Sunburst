@@ -1,12 +1,12 @@
-import './App.css'
+import "./HierarchicalDataSunburst.css"
 
 import { JSONTree } from 'react-json-tree'
 import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
 import { AncestorHighlighterFactory, arcSelectorProvider, BoxDimensions, SunburstContainer, SunburstItemNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
-import { hierarchicalData } from '../data';
+import { hierarchicalData } from '../../data';
 
-function DemoHierarchicalData() {
+function HierarchicalDataSunburst() {
     const svgSideLength = 1400
 
     const svgDimensions: BoxDimensions = {
@@ -44,23 +44,21 @@ function DemoHierarchicalData() {
 
     const highlighterFactory = new SunburstHighlighterFactory<SunburstItemNode, Element>()
 
-    return (
-        <div className="content">
-            <h2>Hierarchical Data Demo</h2>
-            <SunburstContainer<SunburstItemNode>
-                getArcColor={getArcColor}
-                getItemDetail={getItemDetail}
-                nodes={nodes}
-                radius={radius}
-                svgDimensions={svgDimensions}
-                highlighterFactory={highlighterFactory}
-            />
-            <div className="data">
-                <h2>Data</h2>
-                <JSONTree data={hierarchicalData} />
-            </div>
+    return (<>
+        <SunburstContainer<SunburstItemNode>
+            getArcColor={getArcColor}
+            getItemDetail={getItemDetail}
+            nodes={nodes}
+            radius={radius}
+            svgDimensions={svgDimensions}
+            highlighterFactory={highlighterFactory}
+        />
+        <div className="data">
+            <h2>Data</h2>
+            <JSONTree data={hierarchicalData} />
         </div>
+    </>
     )
 }
 
-export default DemoHierarchicalData
+export default HierarchicalDataSunburst
