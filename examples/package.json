@@ -9,7 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "kfinn315_sunburst": "^1.0.7",
+    "kfinn315_sunburst": "^1.0.8",
     "react-json-tree": "^0.19.0"
   }
 }

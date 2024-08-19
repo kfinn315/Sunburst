@@ -2,7 +2,7 @@ import './App.css'
 
 import { JSONTree } from 'react-json-tree'
 import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
-import { AncestorHighlighterFactory, arcSelectorProvider, BoxDimensions, SunburstContainer, SunburstItemNode } from 'kfinn315_sunburst';
+import { AncestorHighlighterFactory, arcSelectorProvider, BoxDimensions, SunburstContainer, SunburstItemNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
 import { hierarchicalData } from '../data';
 
@@ -42,7 +42,7 @@ function DemoHierarchicalData() {
             .join('.')
     }
 
-    const highlighterFactory = new AncestorHighlighterFactory<SunburstItemNode, Element>(arcSelectorProvider)
+    const highlighterFactory = new SunburstHighlighterFactory<SunburstItemNode, Element>()
 
     return (
         <div className="content">
