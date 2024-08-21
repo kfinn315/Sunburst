@@ -6,8 +6,9 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { ArcGroup, Arcs } from '../../Services/Arcs'
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
-import { IHighlighterWrapper } from '../../Services/Highlighter'
-import { type TreeNode } from '../../Types'
+import { Highlighter, HighlighterFactory } from '../../Services/Highlighter'
+import { HasID } from '../../Types'
+import { RefQueryer } from '../../Utils/ElementProvider'
 
 export interface SunburstViewProps<TDatum> {
   radius: number
@@ -19,10 +20,10 @@ export interface SunburstViewProps<TDatum> {
   onMouseEnter?: SunburstEvent<TDatum>
   onMouseLeave?: SunburstEvent<TDatum>
   centerElement?: JSX.Element
-  highlighter?: IHighlighterWrapper<TDatum>
+  highlighterFactory?: HighlighterFactory<HierarchyNode<TDatum>>
 }
 
-export default function SunburstView<TDatum extends { id: number }>(
+export default function SunburstView<TDatum extends HasID>(
   props: SunburstViewProps<TDatum>,
 ): JSX.Element {
   const {
@@ -35,14 +36,16 @@ export default function SunburstView<TDatum extends { id: number }>(
     onClick,
     onMouseEnter,
     onMouseLeave,
-    highlighter,
+    highlighterFactory,
   } = props
 
   const gElementRef = useRef<SVGGElement | null>(null)
   const arcs: Arcs = new ArcGroup(radius)
 
-  if (highlighter) {
-    highlighter.setRef(gElementRef)
+  let highlighter: Highlighter<HierarchyNode<TDatum>>;
+
+  if (highlighterFactory) {
+    highlighter = highlighterFactory.get(new RefQueryer<SVGGElement>(gElementRef))
   }
 
   const controller = useMemo(() => {
@@ -87,7 +90,7 @@ export default function SunburstView<TDatum extends { id: number }>(
         return d.data.id
       },
     })
-  }, [arcs, duration, highlighter, onMouseEnter, onMouseLeave, onClick])
+  }, [arcs, duration, highlighterFactory, onMouseEnter, onMouseLeave, onClick])
 
   useLayoutEffect(() => {
     controller.initialize(items)

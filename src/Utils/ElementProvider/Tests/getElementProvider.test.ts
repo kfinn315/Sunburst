@@ -1,20 +1,22 @@
 //@ts-nocheck
 
-import { MutableRefObject } from "react"
 import { IElementProvider, SelectorProvider } from "../Types";
 import { getElementProvider } from "../getElementProvider";
 import { jest } from "@jest/globals"
+import { Queryer } from "../Queryer";
 
 describe('getElementProvider', () => {
     const MockElement: Element = document.createElement("a");
 
     // Create a mock ref object
-    const mockRef: MutableRefObject<Element | null> = {
-        current: MockElement
-    };
     let querySelectorSpy: unknown
+    let mockQueryer: Queryer;
     beforeEach(() => {
         querySelectorSpy = jest.spyOn<Element>(MockElement, "querySelector")
+        mockQueryer = {
+            querySelector: querySelectorSpy,
+            querySelectorAll: jest.fn()
+        };
     })
 
     // Create a mock selector provider
@@ -26,7 +28,7 @@ describe('getElementProvider', () => {
     it('should return an element provider object with the correct structure', () => {
         // Act
         const elementProvider: IElementProvider<unknown, Element> = getElementProvider(
-            mockRef,
+            mockQueryer,
             mockSelectorProvider
         );
 
@@ -50,7 +52,7 @@ describe('getElementProvider', () => {
 
         // Act
         const elementProvider: IElementProvider<unknown, Element> = getElementProvider(
-            mockRef,
+            mockQueryer,
             mockSelectorProvider
         );
         const element = elementProvider.get(mockItem);
@@ -68,7 +70,7 @@ describe('getElementProvider', () => {
 
         // Act
         const elementProvider: IElementProvider<Element, Element> = getElementProvider(
-            mockRef,
+            mockQueryer,
             mockSelectorProvider
         );
         const element = elementProvider.get(mockItem);

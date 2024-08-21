@@ -1,22 +1,19 @@
 import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
-import { useState } from 'react'
 
-import { type SunburstItem, type SunburstItemTreeNode, type TreeNode } from '../../Types'
+import { SunburstItem, SunburstItemTreeNode, BoxDimensions } from '../../Types'
 import { getPartitionTreeLayout } from '../../Services/PartitionLayout'
-import { BoxDimensions } from '../../Types/BoxDimensions'
-import { Sunburst, SunburstEvent } from '../Sunburst'
-import { IHighlighterWrapper } from '../../Services/Highlighter'
+import { SunburstEvent } from '../Sunburst'
+import { HighlighterFactory } from '../../Services/Highlighter'
 import { SunburstContainer } from './SunburstContainer'
 
 export interface SunburstItemSunburstContainerProps {
   dimensions: BoxDimensions
   minWidth?: number
-  duration?: number
   rootNode: HierarchyNode<SunburstItemTreeNode>
   onClick?: SunburstEvent<SunburstItemTreeNode>
   onMouseEnter?: SunburstEvent<SunburstItemTreeNode>
   onMouseLeave?: SunburstEvent<SunburstItemTreeNode>
-  highlighter?: IHighlighterWrapper<SunburstItemTreeNode>
+  highlighterFactory?: HighlighterFactory<HierarchyNode<SunburstItemTreeNode>>
   colorScale: ScaleLinear<string, string>
   centerColor: string
 }
@@ -24,12 +21,11 @@ export interface SunburstItemSunburstContainerProps {
 export function SunburstItemSunburstContainer({
   dimensions,
   rootNode,
-  highlighter,
+  highlighterFactory,
   onMouseEnter,
   onMouseLeave,
   colorScale,
   centerColor,
-  duration,
   minWidth = 20,
 }: SunburstItemSunburstContainerProps) {
   const svgSide = getSVGDimensions(dimensions, minWidth)
@@ -60,8 +56,7 @@ export function SunburstItemSunburstContainer({
       getArcColor={getArcColor}
       nodes={nodes}
       getItemDetail={getItemDetail}
-      highlighter={highlighter}
-      minWidth={minWidth}
+      highlighterFactory={highlighterFactory}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       radius={radius}

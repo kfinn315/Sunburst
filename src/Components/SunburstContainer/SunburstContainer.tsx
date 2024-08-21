@@ -1,20 +1,16 @@
 import './SunburstContainer.css'
 
-import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
+import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useState } from 'react'
 
-import { type SunburstItem, type SunburstItemTreeNode, type TreeNode } from '../../Types'
-import { getPartitionTreeLayout } from '../../Services/PartitionLayout'
-import { type BoxDimensions } from '../../Types/BoxDimensions'
-import { Sunburst, type SunburstEvent } from '../Sunburst'
-import { type IHighlighterWrapper } from '../../Services/Highlighter'
+import { Sunburst, SunburstEvent } from '../Sunburst'
+import { HasID, BoxDimensions } from '../../Types'
+import { HighlighterFactory } from '../../Services/Highlighter/HighlighterFactory';
 
 export interface SunburstContainerProps<T> {
-  duration?: number
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
-  highlighter?: IHighlighterWrapper<T>
-  minWidth?: number
+  highlighterFactory?: HighlighterFactory<HierarchyNode<T>>
   nodes: HierarchyRectangularNode<T>[]
   onClick?: SunburstEvent<T>
   onMouseEnter?: SunburstEvent<T>
@@ -23,12 +19,10 @@ export interface SunburstContainerProps<T> {
   svgDimensions: BoxDimensions
 }
 
-export function SunburstContainer<T extends { id: number }>({
-  duration,
+export function SunburstContainer<T extends HasID>({
   getArcColor,
   getItemDetail,
-  highlighter,
-  minWidth = 20,
+  highlighterFactory,
   nodes,
   onClick,
   onMouseEnter,
@@ -60,14 +54,14 @@ export function SunburstContainer<T extends { id: number }>({
           viewBox={`0 0 ${String(svgDimensions.width)} ${String(svgDimensions.height)}`}
         >
           <Sunburst<T>
-            highlighter={highlighter}
             getArcColor={getArcColor}
-            radius={radius}
+            highlighterFactory={highlighterFactory}
+            isArcClickable={() => false}
             items={nodes}
+            onClick={onClick}
             onMouseEnter={mouseEnterHandler}
             onMouseLeave={mouseLeaveHandler}
-            isArcClickable={() => false}
-            duration={duration}
+            radius={radius}
           />
         </svg>
       </div>

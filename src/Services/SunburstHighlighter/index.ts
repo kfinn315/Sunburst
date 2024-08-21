@@ -1,6 +1,4 @@
-import { GetHighlighter } from './Types'
-import { SunburstHighlighter } from './SunburstHighlighter';
-import { AncestorHighlighterFactory } from './AncestorHighlighterFactory';
 import { arcSelectorProvider } from './arcSelectorProvider';
+import { SunburstHighlighterFactory } from './SunburstHighlighterFactory';
 
-export { SunburstHighlighter, type GetHighlighter, AncestorHighlighterFactory, arcSelectorProvider }
+export { arcSelectorProvider, SunburstHighlighterFactory }
