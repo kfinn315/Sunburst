@@ -5,6 +5,7 @@
   "license": "ISC",
   "description": "A sunburst diagram react component using Typescript and D3.js",
   "main": "dist/index.js",
+  "type": "module",
   "files": [
     "dist",
     "!dist/**/*.test.*"
@@ -19,7 +20,9 @@
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "test": "jest",
     "build": "rm -rf dist && tsc && npm run copyCSS",
-    "copyCSS": "copyfiles -u 1 src/**/*.css dist/"
+    "copyCSS": "copyfiles -u 1 src/**/*.css dist/",
+    "startVerdaccio": "verdaccio && npm config set registry http://localhost:4873/",
+    "stopVerdaccio": "npm config set registry https://registry.npmjs.org/"
   },
   "dependencies": {
     "d3": "^7.9.0",
