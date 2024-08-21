@@ -1,12 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import FlatDataSunburst from './Components/FlatDataSunburst/FlatDataSunburst'
 import HierarchicalDataSunburst from './Components/HierarchicalDataSunburst/HierarchicalDataSunburst'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div>
