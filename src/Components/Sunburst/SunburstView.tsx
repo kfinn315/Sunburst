@@ -7,7 +7,6 @@ import { ArcGroup, Arcs } from '../../Services/Arcs'
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
 import { IHighlighterWrapper } from '../../Services/Highlighter'
-import { type TreeNode } from '../../Types'
 
 export interface SunburstViewProps<TDatum> {
   radius: number

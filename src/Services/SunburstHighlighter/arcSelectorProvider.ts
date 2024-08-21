@@ -1,4 +1,3 @@
-import { SunburstItemTreeNode } from '../../Types'
 import { SelectorProvider } from '../../Utils/ElementProvider'
 
 export const arcSelectorProvider: SelectorProvider<{ id: number }> = {

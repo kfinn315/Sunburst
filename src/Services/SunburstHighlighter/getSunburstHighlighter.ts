@@ -1,7 +1,4 @@
-import { HierarchyNode } from 'd3'
-
-import { SunburstItem, SunburstItemTreeNode, TreeNode } from '../../Types'
-import { getHighlighter, Highlighter } from '../Highlighter'
+import { SunburstItemTreeNode } from '../../Types'
 import { GetHighlighter } from './Types'
 import { AncestorHighlighterFactory } from './AncestorHighlighterFactory'
 import { arcSelectorProvider } from './arcSelectorProvider'

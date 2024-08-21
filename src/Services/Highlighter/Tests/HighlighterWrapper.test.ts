@@ -4,7 +4,6 @@ import { HighlighterWrapper } from "../HighlighterWrapper"
 import { MutableRefObject } from "react"
 import { Highlighter } from "../Types"
 import { mock } from "jest-mock-extended"
-import { TreeNode } from "../../../Types"
 
 // Unit tests
 describe('HighlighterWrapper', () => {

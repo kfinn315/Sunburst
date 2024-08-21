@@ -1,10 +1,8 @@
 import './SunburstContainer.css'
 
-import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
+import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useState } from 'react'
 
-import { type SunburstItem, type SunburstItemTreeNode, type TreeNode } from '../../Types'
-import { getPartitionTreeLayout } from '../../Services/PartitionLayout'
 import { type BoxDimensions } from '../../Types/BoxDimensions'
 import { Sunburst, type SunburstEvent } from '../Sunburst'
 import { type IHighlighterWrapper } from '../../Services/Highlighter'
@@ -14,9 +12,7 @@ export interface SunburstContainerProps<T> {
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
   highlighter?: IHighlighterWrapper<T>
-  minWidth?: number
   nodes: HierarchyRectangularNode<T>[]
-  onClick?: SunburstEvent<T>
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>
   radius: number
@@ -28,9 +24,7 @@ export function SunburstContainer<T extends { id: number }>({
   getArcColor,
   getItemDetail,
   highlighter,
-  minWidth = 20,
   nodes,
-  onClick,
   onMouseEnter,
   onMouseLeave,
   radius,
