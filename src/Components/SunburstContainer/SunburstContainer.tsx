@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { type BoxDimensions } from '../../Types/BoxDimensions'
 import { Sunburst, type SunburstEvent } from '../Sunburst'
 import { type IHighlighterWrapper } from '../../Services/Highlighter'
+import { HasID } from '../../Types'
 
 export interface SunburstContainerProps<T> {
   duration?: number
@@ -19,7 +20,7 @@ export interface SunburstContainerProps<T> {
   svgDimensions: BoxDimensions
 }
 
-export function SunburstContainer<T extends { id: number }>({
+export function SunburstContainer<T extends HasID>({
   duration,
   getArcColor,
   getItemDetail,
@@ -60,7 +61,7 @@ export function SunburstContainer<T extends { id: number }>({
             items={nodes}
             onMouseEnter={mouseEnterHandler}
             onMouseLeave={mouseLeaveHandler}
-            isArcClickable={() => false}
+            isNodeClickable={() => false}
             duration={duration}
           />
         </svg>

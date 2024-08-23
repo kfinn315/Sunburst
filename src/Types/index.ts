@@ -4,6 +4,7 @@ import { SunburstItemNode } from './SunburstItemNode'
 import { SunburstItemTreeNode } from './SunburstItemTreeNode'
 import { BoxDimensions } from './BoxDimensions';
 import { TreeNode } from './TreeNode';
+import { HasID } from './HasID';
 
 export {
   type HasChildren,
@@ -12,4 +13,5 @@ export {
   type SunburstItemTreeNode,
   type BoxDimensions,
   type TreeNode,
+  type HasID
 }

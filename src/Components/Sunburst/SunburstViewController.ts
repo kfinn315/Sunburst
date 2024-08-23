@@ -5,14 +5,14 @@ import { Arcs } from '../../Services/Arcs'
 import { SunburstEvent } from './Types'
 
 export interface SunburstViewControllerProps<TNode> {
-  duration: number
   arcs: Arcs
-  onMouseEnter: SunburstEvent<TNode>
-  onMouseLeave: SunburstEvent<TNode>
-  onClick: SunburstEvent<TNode>
+  duration: number
   getArcColor: (d: HierarchyRectangularNode<TNode>) => string
   getMouseArcPathClass: (d: HierarchyRectangularNode<TNode>) => string | null
   getNodeID: (d: HierarchyRectangularNode<TNode>) => number
+  onClick: SunburstEvent<TNode>
+  onMouseEnter: SunburstEvent<TNode>
+  onMouseLeave: SunburstEvent<TNode>
 }
 
 export class SunburstViewController<TNode> {
@@ -27,27 +27,32 @@ export class SunburstViewController<TNode> {
   initialize(items: HierarchyRectangularNode<TNode>[] = []): void {
     const {
       arcs: arcCollection,
-      getMouseArcPathClass,
-      onClick,
       duration,
       getArcColor,
+      getMouseArcPathClass,
+      getNodeID,
+      onClick,
       onMouseEnter,
       onMouseLeave,
-      getNodeID,
     } = this.props
 
     if (!this.ref.current) {
       return
     }
 
-    const view = select<SVGGElement, HierarchyRectangularNode<TNode>>(
+    const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(
       this.ref.current,
     )
 
     const createArcs = () => {
-      const arcGroup = view.select('.arc')
 
-      const arcs = arcGroup
+      let arcGroupSelection = baseSelection.select<SVGGElement>('.arc')
+
+      if (arcGroupSelection == null) {
+        arcGroupSelection = baseSelection.append('g').attr('class', 'arc')
+      }
+
+      const arcs = arcGroupSelection
         .selectAll<SVGPathElement, HierarchyRectangularNode<TNode>>('path')
         .data(items, getNodeID)
 
@@ -66,9 +71,14 @@ export class SunburstViewController<TNode> {
 
     const createMouseArcs = () => {
       // Mouse pointer events group //
-      const mouseGroup = view
-        .select('.mousearc')
-        .attr('fill', 'none')
+      let mouseGroup = baseSelection
+        .select<SVGGElement>('.mousearc');
+
+      if (mouseGroup == null) {
+        mouseGroup = baseSelection.append('g').attr('class', 'mousearc')
+      }
+
+      mouseGroup.attr('fill', 'none')
         .attr('pointer-events', 'all')
 
       const mousearcs = mouseGroup
