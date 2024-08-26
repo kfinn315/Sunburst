@@ -45,10 +45,9 @@ export class SunburstViewController<TNode> {
     )
 
     const createArcs = () => {
-
       let arcGroupSelection = baseSelection.select<SVGGElement>('.arc')
 
-      if (arcGroupSelection == null) {
+      if (arcGroupSelection == null || arcGroupSelection.size() === 0) {
         arcGroupSelection = baseSelection.append('g').attr('class', 'arc')
       }
 
@@ -74,7 +73,7 @@ export class SunburstViewController<TNode> {
       let mouseGroup = baseSelection
         .select<SVGGElement>('.mousearc');
 
-      if (mouseGroup == null) {
+      if (mouseGroup == null || mouseGroup.size() === 0) {
         mouseGroup = baseSelection.append('g').attr('class', 'mousearc')
       }
 

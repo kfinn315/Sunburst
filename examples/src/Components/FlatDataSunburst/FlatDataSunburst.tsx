@@ -2,7 +2,7 @@ import "./FlatDataSunburst.css";
 
 import { JSONTree } from 'react-json-tree'
 import { HierarchyNode } from 'd3'
-import { SunburstItem, TreeNode, SunburstItemSunburstContainer, arcSelectorProvider, SunburstItemTreeNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
+import { SunburstItem, TreeNode, SunburstItemSunburstContainer, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
 import { flatData } from '../../data'
 import { getColorScale } from '../../Utils/getColorScale'

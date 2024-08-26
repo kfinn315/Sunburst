@@ -6,20 +6,22 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { ArcGroup, Arcs } from '../../Services/Arcs'
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
-import { IHighlighterWrapper } from '../../Services/Highlighter'
+import { Highlighter, HighlighterFactory } from '../../Services/Highlighter'
 import { HasID } from '../../Types'
+import { RefQueryer } from '../../Utils/ElementProvider'
 
 export interface SunburstViewProps<TDatum> {
   centerElement?: JSX.Element
   duration?: number
   getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
-  highlighter?: IHighlighterWrapper<TDatum>
+  // highlighter?: IHighlighterWrapper<TDatum>
   isNodeClickable: (d: HierarchyRectangularNode<TDatum>) => boolean
   items: HierarchyRectangularNode<TDatum>[]
   onClick?: SunburstEvent<TDatum>
   onMouseEnter?: SunburstEvent<TDatum>
   onMouseLeave?: SunburstEvent<TDatum>
   radius: number
+  highlighterFactory?: HighlighterFactory<HierarchyNode<TDatum>>
 }
 
 export default function SunburstView<TDatum extends HasID>(
@@ -29,19 +31,21 @@ export default function SunburstView<TDatum extends HasID>(
     centerElement,
     duration = 100,
     getArcColor,
-    highlighter,
     isNodeClickable,
     items,
     onClick,
     onMouseEnter,
     onMouseLeave,
-    radius,
+    highlighterFactory,
+    radius
   } = props
 
   const gElementRef = useRef<SVGGElement | null>(null)
 
-  if (highlighter) {
-    highlighter.setRef(gElementRef)
+  let highlighter: Highlighter<HierarchyNode<TDatum>>;
+
+  if (highlighterFactory) {
+    highlighter = highlighterFactory.get(new RefQueryer<SVGGElement>(gElementRef))
   }
 
   function getSunburstViewController() {
@@ -92,7 +96,8 @@ export default function SunburstView<TDatum extends HasID>(
     })
   }
 
-  const controller = useMemo(getSunburstViewController, [radius, duration, highlighter, onMouseEnter, onMouseLeave, onClick])
+  const controller = useMemo(getSunburstViewController,
+    [radius, duration, onMouseEnter, onMouseLeave, onClick, getArcColor, highlighterFactory, isNodeClickable])
 
   useLayoutEffect(() => {
     controller.initialize(items)

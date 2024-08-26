@@ -1,6 +1,6 @@
 {
   "name": "kfinn315_sunburst",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "author": "kfinn315",
   "license": "ISC",
   "description": "A sunburst diagram react component using Typescript and D3.js",

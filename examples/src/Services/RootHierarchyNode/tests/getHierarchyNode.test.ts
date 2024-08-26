@@ -14,11 +14,8 @@ describe('getHierarchyNode', () => {
         const mockSort = jest.fn()
         const mockSum = jest.fn()
 
-        //@ts-expect-error
         const mockHierarchyNode = mock<HierarchyNode<SunburstItemTreeNode>>({
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             sort: (compare) => { mockSort(compare); return mockHierarchyNode },
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             sum: (value) => { mockSum(value); return mockHierarchyNode }
         })
 

@@ -3,16 +3,14 @@ import './SunburstContainer.css'
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useState } from 'react'
 
-import { type BoxDimensions } from '../../Types/BoxDimensions'
-import { Sunburst, type SunburstEvent } from '../Sunburst'
-import { type IHighlighterWrapper } from '../../Services/Highlighter'
-import { HasID } from '../../Types'
+import { Sunburst, SunburstEvent } from '../Sunburst'
+import { HasID, BoxDimensions } from '../../Types'
+import { HighlighterFactory } from '../../Services/Highlighter/HighlighterFactory';
 
 export interface SunburstContainerProps<T> {
-  duration?: number
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
-  highlighter?: IHighlighterWrapper<T>
+  highlighterFactory?: HighlighterFactory<HierarchyNode<T>>
   nodes: HierarchyRectangularNode<T>[]
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>
@@ -21,10 +19,9 @@ export interface SunburstContainerProps<T> {
 }
 
 export function SunburstContainer<T extends HasID>({
-  duration,
   getArcColor,
   getItemDetail,
-  highlighter,
+  highlighterFactory,
   nodes,
   onMouseEnter,
   onMouseLeave,
@@ -55,14 +52,14 @@ export function SunburstContainer<T extends HasID>({
           viewBox={`0 0 ${String(svgDimensions.width)} ${String(svgDimensions.height)}`}
         >
           <Sunburst<T>
-            highlighter={highlighter}
             getArcColor={getArcColor}
-            radius={radius}
+            highlighterFactory={highlighterFactory}
+            isNodeClickable={() => false}
             items={nodes}
+            // onClick={onClick}
             onMouseEnter={mouseEnterHandler}
             onMouseLeave={mouseLeaveHandler}
-            isNodeClickable={() => false}
-            duration={duration}
+            radius={radius}
           />
         </svg>
       </div>

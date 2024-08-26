@@ -2,7 +2,7 @@ import "./HierarchicalDataSunburst.css"
 
 import { JSONTree } from 'react-json-tree'
 import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
-import { AncestorHighlighterFactory, arcSelectorProvider, BoxDimensions, SunburstContainer, SunburstItemNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
+import { BoxDimensions, SunburstContainer, SunburstItemNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
 import { hierarchicalData } from '../../data';
 

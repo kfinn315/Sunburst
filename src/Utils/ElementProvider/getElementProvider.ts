@@ -1,6 +1,5 @@
-import { MutableRefObject } from 'react'
-
 import { IElementProvider, SelectorProvider } from './Types'
+import { Queryer } from './Queryer'
 
 /**
  * Creates an element provider that retrieves and returns elements based on a selector.
@@ -13,10 +12,9 @@ import { IElementProvider, SelectorProvider } from './Types'
  */
 export function getElementProvider<
   Datum,
-  TRef extends ParentNode = ParentNode,
   TOut extends Element = Element,
 >(
-  ref: MutableRefObject<TRef | null>,
+  queryer: Queryer,
   selectorProvider: SelectorProvider<Datum>,
 ): IElementProvider<Datum, TOut> {
 
@@ -25,7 +23,7 @@ export function getElementProvider<
      * @param item - The item for which to retrieve the element.
      * @returns The element corresponding to the item, or null if not found.
      */
-  function get(item: Datum): TOut | null {
+  function get(item: Datum): TOut | null | undefined {
     if (item == undefined) {
       return null
     }
@@ -34,21 +32,19 @@ export function getElementProvider<
     }
     const selector = selectorProvider.get(item)
 
-    return ref.current?.querySelector<TOut>(selector) ?? null
+    return queryer.querySelector<TOut>(selector)
   }
 
   /**
    * Retrieves all elements base ond the selector.
    * @returns An array of elements
    */
-  function getAll(): TOut[] | null {
+  function getAll(): TOut[] | undefined {
     if (selectorProvider == undefined) {
       throw new Error("selectorProvider is undefined")
     }
-    if (ref.current) {
-      return Array.from(ref.current.querySelectorAll<TOut>(selectorProvider.getAll()))
-    }
-    return null
+
+    return queryer.querySelectorAll<TOut>(selectorProvider.getAll())
   }
 
   return { get, getAll }

@@ -1,5 +1,5 @@
-import { type SunburstViewControllerProps } from './SunburstViewController'
-import SunburstView, { type SunburstViewProps } from './SunburstView'
+import { SunburstViewControllerProps } from './SunburstViewController'
+import SunburstView, { SunburstViewProps } from './SunburstView'
 import { SunburstEvent } from './Types'
 
 export {
