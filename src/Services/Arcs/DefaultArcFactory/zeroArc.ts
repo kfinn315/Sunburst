@@ -1,6 +1,6 @@
 import { Arc, arc } from 'd3'
 
-import { ArcCoordinates } from './Types'
+import { ArcCoordinates } from '../Types'
 
 /**
  * Arc with no radius or angle

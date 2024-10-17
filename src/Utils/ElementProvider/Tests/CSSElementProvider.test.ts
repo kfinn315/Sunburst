@@ -1,32 +1,31 @@
 //@ts-nocheck
-import { IElementProvider, SelectorProvider } from "../Types";
-import { getElementProvider } from "../getElementProvider";
+import { SelectorGenerator, ElementProvider, QueryService } from "../Types";
+import CSSElementProvider from "../CSSElementProvider";
 import { jest } from "@jest/globals"
-import { Queryer } from "../Queryer";
 
-describe('getElementProvider', () => {
+describe('CSSElementProvider', () => {
     const MockElement: Element = document.createElement("a");
 
     // Create a mock ref object
     let querySelectorSpy: unknown
-    let mockQueryer: Queryer;
+    let mockQueryer: QueryService<string>;
     beforeEach(() => {
         querySelectorSpy = jest.spyOn<Element>(MockElement, "querySelector")
         mockQueryer = {
-            querySelector: querySelectorSpy,
-            querySelectorAll: jest.fn()
+            query: querySelectorSpy,
+            queryAll: jest.fn()
         };
     })
 
     // Create a mock selector provider
-    const mockSelectorProvider: SelectorProvider<unknown> = {
+    const mockSelectorProvider: SelectorGenerator<unknown> = {
         get: jest.fn(),
         getAll: jest.fn(),
     };
 
     it('should return an element provider object with the correct structure', () => {
         // Act
-        const elementProvider: IElementProvider<unknown, Element> = getElementProvider(
+        const elementProvider: ElementProvider<unknown, Element> = new CSSElementProvider(
             mockQueryer,
             mockSelectorProvider
         );
@@ -50,7 +49,7 @@ describe('getElementProvider', () => {
         querySelectorSpy.mockReturnValue(mockReturnValue)
 
         // Act
-        const elementProvider: IElementProvider<unknown, Element> = getElementProvider(
+        const elementProvider: ElementProvider<unknown, Element> = new CSSElementProvider(
             mockQueryer,
             mockSelectorProvider
         );
@@ -68,7 +67,7 @@ describe('getElementProvider', () => {
         const mockItem = undefined as unknown as Element;
 
         // Act
-        const elementProvider: IElementProvider<Element, Element> = getElementProvider(
+        const elementProvider: ElementProvider<Element, Element> = new CSSElementProvider(
             mockQueryer,
             mockSelectorProvider
         );

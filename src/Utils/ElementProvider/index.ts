@@ -1,11 +1,12 @@
-import { getElementProvider } from './getElementProvider'
-import { IElementProvider, SelectorProvider } from './Types'
-import { Queryer, RefQueryer } from './Queryer';
+
+import { ElementProvider, SelectorGenerator, QueryService } from './Types'
+import CSSQueryService from "./CSSQueryService";
+import CSSElementProvider from './CSSElementProvider';
 
 export {
-  getElementProvider as ElementProvider,
-  type IElementProvider,
-  type SelectorProvider,
-  type Queryer,
-  RefQueryer
+  type ElementProvider,
+  type SelectorGenerator,
+  type QueryService,
+  CSSElementProvider,
+  CSSQueryService,
 }

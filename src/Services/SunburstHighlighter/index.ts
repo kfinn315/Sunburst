@@ -1,4 +1,4 @@
-import { arcSelectorProvider } from './arcSelectorProvider';
+import { arcSelectorGenerator } from './arcSelectorGenerator';
 import { SunburstHighlighterFactory } from './SunburstHighlighterFactory';
 
-export { arcSelectorProvider, SunburstHighlighterFactory }
+export { arcSelectorGenerator, SunburstHighlighterFactory }

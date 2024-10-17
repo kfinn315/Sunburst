@@ -1,7 +1,7 @@
-import { SelectorProvider } from '../../Utils/ElementProvider'
+import { SelectorGenerator } from '../../Utils/ElementProvider'
 import { HasID } from '../../Types';
 
-export const arcSelectorProvider: SelectorProvider<HasID> = {
+export const arcSelectorGenerator: SelectorGenerator<HasID> = {
   get(item: HasID) {
     return `.arc>path[data-id="${String(item.id)}"]`
   },
@@ -9,4 +9,3 @@ export const arcSelectorProvider: SelectorProvider<HasID> = {
     return '.arc>path'
   }, //select all paths
 }
-

@@ -1,11 +1,11 @@
 import { HierarchyRectangularNode, select } from 'd3'
 import { MutableRefObject } from 'react'
 
-import { Arcs } from '../../Services/Arcs'
 import { SunburstEvent } from './Types'
+import { ArcProvider } from '../../Services/Arcs';
 
 export interface SunburstViewControllerProps<TNode> {
-  arcs: Arcs
+  arcFactory: ArcProvider
   duration: number
   getArcColor: (d: HierarchyRectangularNode<TNode>) => string
   getMouseArcPathClass: (d: HierarchyRectangularNode<TNode>) => string | null
@@ -26,7 +26,7 @@ export class SunburstViewController<TNode> {
    */
   initialize(items: HierarchyRectangularNode<TNode>[] = []): void {
     const {
-      arcs: arcCollection,
+      arcFactory,
       duration,
       getArcColor,
       getMouseArcPathClass,
@@ -62,7 +62,7 @@ export class SunburstViewController<TNode> {
         .transition()
         .duration(duration)
         .attr('fill', getArcColor)
-        .attr('d', arcCollection.padded)
+        .attr('d', arcFactory.getPaddedArc())
         .attr('data-id', getNodeID)
 
       arcs.exit().remove()
@@ -103,14 +103,14 @@ export class SunburstViewController<TNode> {
         .merge(mousearcs)
         .transition()
         .duration(duration)
-        .attr('d', arcCollection.basic)
+        .attr('d', arcFactory.getArc())
 
       //animate arc removal - arc radii become zero (arcCollection.zero)
       mousearcs
         .exit<HierarchyRectangularNode<TNode>>()
         .transition()
         .duration(duration)
-        .attr('d', arcCollection.zero)
+        .attr('d', arcFactory.getZeroArc())
         .remove()
     }
 

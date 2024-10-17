@@ -1,4 +1,4 @@
 import { AncestorHighlighterFactory } from './AncestorHighlighterFactory';
-import { getAncestorElementListProvider } from './getAncestorElementListProvider';
+import { AncestoryElementListProvider } from './AncestoryElementListProvider';
 
-export { AncestorHighlighterFactory, getAncestorElementListProvider }
+export { AncestorHighlighterFactory, AncestoryElementListProvider }

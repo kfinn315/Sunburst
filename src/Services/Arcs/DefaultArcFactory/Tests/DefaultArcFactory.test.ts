@@ -1,4 +1,4 @@
-import ArcGroup from "../ArcGroup"
+import DefaultArcProvider from "../DefaultArcProvider";
 import { getArc } from "../getArc"
 import { getPaddedArc } from "../getPaddedArc"
 
@@ -10,7 +10,7 @@ jest.mock('../zeroArc', () => ({
   zeroArc: undefined
 }));
 
-describe('ArcGroup', () => {
+describe('DefaultArcFactory', () => {
   let mockGetArc: jest.Mock;
   let mockGetPaddedArc: jest.Mock;
 
@@ -20,7 +20,7 @@ describe('ArcGroup', () => {
     jest.clearAllMocks()
   })
 
-  it('should create an instance of ArcGroup with the correct properties', () => {
+  it('should create an instance of DefaultArcFactory with the correct properties', () => {
     // Arrange
     const mockRadius = 50
 
@@ -34,14 +34,12 @@ describe('ArcGroup', () => {
     ZeroArcMock.zeroArc = mockZeroArc
 
     // Act
-    const arcGroup = new ArcGroup(mockRadius)
+    const defaultArcFactory = new DefaultArcProvider(mockRadius)
 
-    // (zeroArc)
     // Assert
-    expect(arcGroup).toBeInstanceOf(ArcGroup)
-    expect(arcGroup.basic).toBe(mockGetArcValue)
-    expect(arcGroup.padded).toBe(mockGetPaddedArcValue)
-    expect(arcGroup.zero).toEqual(mockZeroArc)
+    expect(defaultArcFactory.getArc()).toBe(mockGetArcValue)
+    expect(defaultArcFactory.getPaddedArc()).toBe(mockGetPaddedArcValue)
+    expect(defaultArcFactory.getZeroArc()).toEqual(mockZeroArc)
   })
 
   it('should call the getPaddedArc and getArc functions when creating the instance', () => {
@@ -49,7 +47,7 @@ describe('ArcGroup', () => {
     const mockRadius = 50
 
     // Act
-    new ArcGroup(mockRadius)
+    new DefaultArcProvider(mockRadius)
 
     // Assert
     expect(mockGetArc).toBeCalledWith(mockRadius)

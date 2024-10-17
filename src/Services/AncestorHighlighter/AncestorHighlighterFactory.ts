@@ -1,16 +1,29 @@
 import { HierarchyNode } from 'd3'
 
-import { getHighlighter, Highlighter } from '../Highlighter'
-import { getAncestorElementListProvider } from './getAncestorElementListProvider'
-import { SelectorProvider, ElementProvider, Queryer } from '../../Utils/ElementProvider'
+import { DefaultHighlighter, ElementListProvider, Highlighter } from '../Highlighter'
+import { SelectorGenerator } from '../../Utils/ElementProvider'
 import { HighlighterFactory } from '../Highlighter/HighlighterFactory'
+import CSSClassGroup from '../../Utils/CSSClassModifier/CSSClassGroup'
+import { AncestryCSSElementListProvider } from './AncestryCSSElementListProvider'
+import { MutableRefElement } from '../../Types/MutableRefElement';
+import { ElementGroup } from '../../Utils/CSSClassModifier/Types'
 
-export class AncestorHighlighterFactory<T, U extends Element> implements HighlighterFactory<HierarchyNode<T>> {
-    constructor(private readonly selectorProvider: SelectorProvider<T>) { }
-    get(queryer: Queryer): Highlighter<HierarchyNode<T>> {
-        if (this.selectorProvider == undefined)
-            throw Error("selector provider is undefined")
-        const ancestorElementListProvider = getAncestorElementListProvider<T, U>(ElementProvider(queryer, this.selectorProvider))
-        return getHighlighter<HierarchyNode<T>, U>(ancestorElementListProvider)
+/**
+ * Create a Highlighter that adds the highlightClassName to ancestors' css elements using the provided cssSelectorGenerator
+ *
+ */
+export class AncestorHighlighterFactory<TNodeData, TElement extends Element> implements HighlighterFactory<HierarchyNode<TNodeData>> {
+    constructor(
+        private readonly selectorGenerator: SelectorGenerator<TNodeData>,
+        private readonly highlightClassName: string) {
+    }
+
+    get(ref: MutableRefElement): Highlighter<HierarchyNode<TNodeData>> {
+        if (this.selectorGenerator == undefined)
+            throw Error("cssSelectorGenerator undefined")
+        const elementListProvider: ElementListProvider<HierarchyNode<TNodeData>, TElement> = new AncestryCSSElementListProvider<TNodeData, TElement>(this.selectorGenerator)
+        const highlightGroup: ElementGroup<TElement> = new CSSClassGroup<TElement>(this.highlightClassName)
+        const highlighter: Highlighter<HierarchyNode<TNodeData>> = new DefaultHighlighter<HierarchyNode<TNodeData>, TElement>(ref, elementListProvider, highlightGroup)
+        return highlighter
     }
 }

@@ -1,5 +1,5 @@
 import { HierarchyNode } from 'd3'
 
-export function getHierarchyNodeAncestors<TDatum>(hierarchyNode: HierarchyNode<TDatum>,): HierarchyNode<TDatum>[] {
+export function getHierarchyNodeAncestors<TNodeData>(hierarchyNode: HierarchyNode<TNodeData>,): HierarchyNode<TNodeData>[] {
   return hierarchyNode.ancestors()
 }

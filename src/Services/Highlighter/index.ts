@@ -1,11 +1,10 @@
-import getHighlighter from './getHighlighter'
-import { Highlighter, ElementListProvider, GetHighlighter } from './Types';
+import { Highlighter, ElementListProvider } from './Types';
 import { HighlighterFactory } from './HighlighterFactory';
+import DefaultHighlighter from './DefaultHighlighter';
 
 export {
-  getHighlighter,
   type Highlighter,
   type ElementListProvider,
-  type GetHighlighter,
-  type HighlighterFactory
+  type HighlighterFactory,
+  DefaultHighlighter
 }

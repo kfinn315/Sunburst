@@ -1,6 +1,6 @@
+import { MutableRefElement } from "../../Types/MutableRefElement";
 import { Highlighter } from "./Types";
-import { Queryer } from "../../Utils/ElementProvider";
 
-export interface HighlighterFactory<T> {
-    get(queryer: Queryer): Highlighter<T>;
+export interface HighlighterFactory<TIn> {
+    get(ref: MutableRefElement): Highlighter<TIn>;
 }

@@ -8,7 +8,9 @@
   "type": "module",
   "files": [
     "dist",
-    "!dist/**/*.test.*"
+    "!dist/**/*.test.*",
+    "!examples",
+    "!local_examples"
   ],
   "exports": {
     ".": {

@@ -1,15 +1,15 @@
 import { mock } from 'jest-mock-extended'
-import { arcSelectorProvider } from '../arcSelectorProvider'
+import { arcSelectorGenerator } from '../arcSelectorGenerator'
 import { SunburstItemTreeNode } from '../../../Types'
 
-describe('arcSelectorProvider', () => {
+describe('arcSelectorGenerator', () => {
   describe('getAll', () => {
     it('should return the correct selector to select all paths', () => {
       // Arrange
       const expectedSelector = '.arc>path'
 
       // Act
-      const selector = arcSelectorProvider.getAll()
+      const selector = arcSelectorGenerator.getAll()
 
       // Assert
       expect(selector).toEqual(expectedSelector)
@@ -23,7 +23,7 @@ describe('arcSelectorProvider', () => {
       const expectedSelector = `.arc>path[data-id="${item.id}"]`
 
       // Act
-      const selector = arcSelectorProvider.get(item)
+      const selector = arcSelectorGenerator.get(item)
 
       // Assert
       expect(selector).toEqual(expectedSelector)

@@ -1,26 +1,22 @@
 import { HierarchyNode } from "d3";
-import { Queryer } from '../../Utils/ElementProvider';
+import { QueryService } from "../../Utils/ElementProvider";
+import { MutableRefElement } from "../../Types/MutableRefElement";
 
 /**
  * Highlighter methods
  */
-export interface Highlighter<T> {
+export interface Highlighter<TIn> {
   clear: () => void
-  highlight: (item: T) => void
+  highlight: (item: TIn) => void
 }
 
 /**
  * Provides Element lists for a specific item and all Elements
  */
-export interface ElementListProvider<
-  TInput,
-  TElement extends Element = Element,
+export interface ElementListProvider<TIn, TOut extends Element = Element,
 > {
-  get: (item: TInput) => TElement[]
-  getAll: () => TElement[]
+  get: (ref: MutableRefElement, item: TIn) => TOut[]
+  getAll: (ref: MutableRefElement) => TOut[]
 }
 
-
-export type GetHighlighter<TData> = (
-  queryer: Queryer
-) => Highlighter<HierarchyNode<TData>>
+export type GetHighlighter<TIn, TOut> = (queryer: QueryService<TIn>) => Highlighter<HierarchyNode<TOut>>
