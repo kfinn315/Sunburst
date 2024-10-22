@@ -1,16 +1,16 @@
 import { MutableRefObject } from 'react'
-import { SelectorGenerator, ElementProvider, QueryService } from './Types'
+import { SelectorGenerator, ElementMap, QueryService } from '../../Types'
 
 /**
  *
- * Get element representation of items by connecting the selectorGenerator and queryService 
+ * Provides a map of items to DOM elements using CSS selectors
  * @export
  * @class ElementProvider
- * @implements {ElementProvider}
+ * @implements {ElementMap}
  * @template TIn
  * @template TElement
  */
-export default class CSSElementProvider<TIn, TElement extends Element = Element,> implements ElementProvider<TIn> {
+export default class SelectorElementMap<TIn, TElement extends Element = Element,> implements ElementMap<TIn> {
 
   constructor(
     private readonly queryService: QueryService<string>,
@@ -26,7 +26,7 @@ export default class CSSElementProvider<TIn, TElement extends Element = Element,
       return null
     }
     if (this.selectorGenerator == undefined) {
-      throw new Error("selectors is undefined")
+      throw new Error("selectorGenerator is undefined")
     }
     const selector = this.selectorGenerator.get(item)
 
@@ -37,12 +37,12 @@ export default class CSSElementProvider<TIn, TElement extends Element = Element,
    * Retrieves all elements.
    * @returns An array of elements
    */
-  getAll(ref: MutableRefObject<Element>): TElement[] | undefined {
+  values(ref: MutableRefObject<Element>): TElement[] | undefined {
     if (this.selectorGenerator == undefined) {
-      throw new Error("selectors is undefined")
+      throw new Error("selectorGenerator is undefined")
     }
-
-    return this.queryService.queryAll<TElement>(ref, this.selectorGenerator.getAll())
+    const selector = this.selectorGenerator.getAll()
+    return this.queryService.queryAll<TElement>(ref, selector)
   }
 
 }

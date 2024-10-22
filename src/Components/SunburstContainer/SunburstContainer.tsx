@@ -4,8 +4,8 @@ import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useState } from 'react'
 
 import { Sunburst, SunburstEvent } from '../Sunburst'
-import { HasID, BoxDimensions } from '../../Types'
-import { HighlighterFactory } from '../../Services/Highlighter/HighlighterFactory';
+import { HasID, RectangleDimensions } from '../../Types'
+import { HighlighterFactory } from '../../Services/Highlighter'
 
 export interface SunburstContainerProps<T> {
   getArcColor: (d: HierarchyRectangularNode<T>) => string
@@ -15,10 +15,10 @@ export interface SunburstContainerProps<T> {
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>
   radius: number
-  svgDimensions: BoxDimensions
+  svgDimensions: RectangleDimensions
 }
 
-export function SunburstContainer<T extends HasID>({
+export default function SunburstContainer<T extends HasID>({
   getArcColor,
   getItemDetail,
   highlighterFactory,

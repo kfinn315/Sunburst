@@ -1,16 +1,15 @@
 /* eslint-disable */
 import { HierarchyNode, HierarchyRectangularNode } from 'd3';
-import { ElementListProvider } from '../Types'
-import DefaultHighlighter from '../DefaultHighlighter'
-import { ElementGroup } from '../../../Utils/CSSClassModifier/Types'
+import { ElementGroup, ElementListMap } from '../Types'
+import BaseHighlighter from '../Implementations/BaseHighlighter'
 
-describe('DefaultHighlighter', () => {
-    let elementProvider: ElementListProvider<HierarchyNode<any>, Element>
+describe('BaseHighlighter', () => {
+    let elementProvider: ElementListMap<HierarchyNode<any>, Element>
     let highlight: ElementGroup<Element>
 
     beforeEach(() => {
         elementProvider = {
-            getAll: jest.fn(),
+            values: jest.fn(),
             get: jest.fn(),
         }
         highlight = {
@@ -26,14 +25,14 @@ describe('DefaultHighlighter', () => {
     describe('clear', () => {
         it('should call highlighter.remove on elements', () => {
             const elements = [document.createElement('div'), document.createElement('span')];
-            (elementProvider.getAll as jest.Mock).mockReturnValue(elements)
+            (elementProvider.values as jest.Mock).mockReturnValue(elements)
             const ref = { current: document.createElement('div') }
-            const highlighter = new DefaultHighlighter(ref, elementProvider, highlight)
+            const highlighter = new BaseHighlighter(ref, elementProvider, highlight)
 
             highlighter.clear()
 
-            expect(elementProvider.getAll).toHaveBeenNthCalledWith(1, ref)
-            expect(elementProvider.getAll).toHaveReturnedWith(elements)
+            expect(elementProvider.values).toHaveBeenNthCalledWith(1, ref)
+            expect(elementProvider.values).toHaveReturnedWith(elements)
             expect(highlight.remove).toHaveBeenNthCalledWith(1, elements)
         })
     })
@@ -45,9 +44,9 @@ describe('DefaultHighlighter', () => {
             const elements = [document.createElement('div'), document.createElement('span')];
             (elementProvider.get as jest.Mock).mockReturnValue(elements)
             const ref = { current: document.createElement('div') }
-            const highlighter = new DefaultHighlighter(ref, elementProvider, highlight)
+            const highlighter = new BaseHighlighter(ref, elementProvider, highlight)
 
-            highlighter.highlight(hierarchyNode)
+            highlighter.add(hierarchyNode)
 
             expect(elementProvider.get).toHaveBeenNthCalledWith(1, ref, hierarchyNode)
             expect(elementProvider.get).toHaveReturnedWith(elements)

@@ -5,7 +5,7 @@ import { SunburstEvent } from './Types'
 import { ArcProvider } from '../../Services/Arcs';
 
 export interface SunburstViewControllerProps<TNode> {
-  arcFactory: ArcProvider
+  arcs: ArcProvider
   duration: number
   getArcColor: (d: HierarchyRectangularNode<TNode>) => string
   getMouseArcPathClass: (d: HierarchyRectangularNode<TNode>) => string | null
@@ -26,7 +26,7 @@ export class SunburstViewController<TNode> {
    */
   initialize(items: HierarchyRectangularNode<TNode>[] = []): void {
     const {
-      arcFactory,
+      arcs,
       duration,
       getArcColor,
       getMouseArcPathClass,
@@ -51,25 +51,28 @@ export class SunburstViewController<TNode> {
         arcGroupSelection = baseSelection.append('g').attr('class', 'arc')
       }
 
-      const arcs = arcGroupSelection
+      const arcSelection = arcGroupSelection
         .selectAll<SVGPathElement, HierarchyRectangularNode<TNode>>('path')
         .data(items, getNodeID)
 
-      const arcsEnter = arcs.enter().append('path')
+      const arcsEnter = arcSelection.enter().append('path')
 
       arcsEnter
-        .merge(arcs)
+        .merge(arcSelection)
         .transition()
         .duration(duration)
         .attr('fill', getArcColor)
-        .attr('d', arcFactory.getPaddedArc())
+        .attr('d', arcs.getPaddedArc())
         .attr('data-id', getNodeID)
 
-      arcs.exit().remove()
+      arcSelection.exit().remove()
     }
 
+    /**
+     * Duplicate the arc svg element to handle mouse pointer interactions
+     */
     const createMouseArcs = () => {
-      // Mouse pointer events group //
+
       let mouseGroup = baseSelection
         .select<SVGGElement>('.mousearc');
 
@@ -80,17 +83,17 @@ export class SunburstViewController<TNode> {
       mouseGroup.attr('fill', 'none')
         .attr('pointer-events', 'all')
 
-      const mousearcs = mouseGroup
+      const mouseArcSelection = mouseGroup
         .selectAll<SVGPathElement, HierarchyRectangularNode<TNode>>('path')
         .data(items, getNodeID)
 
-      const mousearcsEnter = mousearcs
+      const mouseArcsEnter = mouseArcSelection
         .enter()
         .append('path')
         .attr('class', getMouseArcPathClass)
         .attr('data-id', getNodeID)
 
-      mousearcsEnter
+      mouseArcsEnter
         .on('mouseenter', (ev: MouseEvent, d) => {
           onMouseEnter(ev, d)
         })
@@ -100,17 +103,17 @@ export class SunburstViewController<TNode> {
         .on('click', (ev: MouseEvent, d) => {
           onClick(ev, d)
         })
-        .merge(mousearcs)
+        .merge(mouseArcSelection)
         .transition()
         .duration(duration)
-        .attr('d', arcFactory.getArc())
+        .attr('d', arcs.getArc())
 
-      //animate arc removal - arc radii become zero (arcCollection.zero)
-      mousearcs
+      //animate removal - arc radius becomes zero
+      mouseArcSelection
         .exit<HierarchyRectangularNode<TNode>>()
         .transition()
         .duration(duration)
-        .attr('d', arcFactory.getZeroArc())
+        .attr('d', arcs.getZeroArc())
         .remove()
     }
 

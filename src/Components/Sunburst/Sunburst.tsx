@@ -5,10 +5,9 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
-import { HighlighterFactory } from '../../Services/Highlighter'
-import { HasID } from '../../Types'
+import { HasID, MutableRefElement } from '../../Types'
 import { DefaultArcProvider } from '../../Services/Arcs'
-import { MutableRefElement } from '../../Types/MutableRefElement'
+import { HighlighterFactory } from '../../Services/Highlighter'
 
 export interface SunburstViewProps<TDatum> {
   centerElement?: JSX.Element
@@ -23,7 +22,7 @@ export interface SunburstViewProps<TDatum> {
   highlighterFactory?: HighlighterFactory<HierarchyNode<TDatum>>
 }
 
-export default function SunburstView<TDatum extends HasID>(
+export default function Sunburst<TDatum extends HasID>(
   props: SunburstViewProps<TDatum>,
 ): JSX.Element {
   const {
@@ -47,7 +46,7 @@ export default function SunburstView<TDatum extends HasID>(
     event: MouseEvent,
     d: HierarchyNode<TDatum>
   ): void {
-    highlighter?.highlight(d)
+    highlighter?.add(d)
     onMouseEnter?.(event, d)
   }
 
@@ -72,7 +71,7 @@ export default function SunburstView<TDatum extends HasID>(
     return isNodeClickable(d) ? 'clickable' : null
   }
 
-  const arcFactory = new DefaultArcProvider(radius)
+  const arcs = new DefaultArcProvider(radius)
 
   function getNodeID(d: HierarchyRectangularNode<TDatum>): number {
     return d.data.id
@@ -80,7 +79,7 @@ export default function SunburstView<TDatum extends HasID>(
 
   const controller = useMemo(() => new SunburstViewController<TDatum>(gElementRef, {
     duration,
-    arcFactory,
+    arcs,
     onClick: clickHandler,
     onMouseEnter: mouseEnterHandler,
     onMouseLeave: mouseLeaveHandler,

@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { SelectorGenerator, ElementProvider, QueryService } from "../Types";
-import CSSElementProvider from "../CSSElementProvider";
 import { jest } from "@jest/globals"
+import { ElementMap, QueryService, SelectorGenerator } from "../../../Types";
+import SelectorElementMap from "../SelectorElementMap";
 
-describe('CSSElementProvider', () => {
+describe('SelectorElementMap', () => {
     const MockElement: Element = document.createElement("a");
 
     // Create a mock ref object
@@ -25,20 +25,21 @@ describe('CSSElementProvider', () => {
 
     it('should return an element provider object with the correct structure', () => {
         // Act
-        const elementProvider: ElementProvider<unknown, Element> = new CSSElementProvider(
+        const elementProvider: ElementMap<unknown, Element> = new SelectorElementMap(
             mockQueryer,
             mockSelectorProvider
         );
 
         // Assert
         expect(elementProvider).toHaveProperty('get');
-        expect(elementProvider).toHaveProperty('getAll');
+        expect(elementProvider).toHaveProperty('values');
         expect(typeof elementProvider.get).toBe('function');
-        expect(typeof elementProvider.getAll).toBe('function');
+        expect(typeof elementProvider.values).toBe('function');
     });
 
     it('should retrieve the element for the specified item', () => {
         // Arrange
+        const ref = { current: document.createElement('div') }
         const mockItem = {};
 
         const mockSelector = "mockSelectorTest"
@@ -49,29 +50,30 @@ describe('CSSElementProvider', () => {
         querySelectorSpy.mockReturnValue(mockReturnValue)
 
         // Act
-        const elementProvider: ElementProvider<unknown, Element> = new CSSElementProvider(
+        const elementProvider: ElementMap<unknown, Element> = new SelectorElementMap(
             mockQueryer,
             mockSelectorProvider
         );
-        const element = elementProvider.get(mockItem);
+        const element = elementProvider.get(ref, mockItem);
 
         // Assert
         expect(mockSelectorProvider.get).toHaveBeenCalledWith(mockItem);
-        expect(querySelectorSpy).toHaveBeenCalledWith(mockSelector)
+        expect(querySelectorSpy).toHaveBeenCalledWith(ref, mockSelector)
         expect(element).toBeDefined();
         expect(element).toBe(mockReturnValue);
     });
 
     it('should return null if the item is undefined', () => {
         // Arrange
+        const ref = { current: document.createElement('div') }
         const mockItem = undefined as unknown as Element;
 
         // Act
-        const elementProvider: ElementProvider<Element, Element> = new CSSElementProvider(
+        const elementProvider: ElementMap<Element, Element> = new SelectorElementMap(
             mockQueryer,
             mockSelectorProvider
         );
-        const element = elementProvider.get(mockItem);
+        const element = elementProvider.get(ref, mockItem);
 
         // Assert
         expect(mockSelectorProvider.get).not.toHaveBeenCalled();

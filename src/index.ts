@@ -1,21 +1,20 @@
-import { BoxDimensions, HasChildren, SunburstItem, SunburstItemNode, SunburstItemTreeNode } from './Types';
-import { arcSelectorGenerator, SunburstHighlighterFactory } from './Services/SunburstHighlighter';
+import { RectangleDimensions, HasChildren, SunburstItem, SunburstItemNode, SunburstItemTreeNode } from './Types';
 import { TreeNode } from './Types';
 import { Sunburst, SunburstEvent, SunburstProps } from './Components/Sunburst';
-import { Highlighter, HighlighterFactory } from './Services/Highlighter';
+import { Highlighter, HighlighterFactory, SelectorGenerator } from './Services/Highlighter';
 import { SunburstContainer, SunburstContainerProps, SunburstItemSunburstContainer, SunburstItemSunburstContainerProps } from './Components/SunburstContainer';
-import { SelectorGenerator } from './Utils/ElementProvider';
-import { AncestorHighlighterFactory } from './Services/AncestorHighlighter';
+import { AncestorHighlighterFactory } from './Services/Highlighter/Implementations/AncestorHighlighter/AncestorHighlighterFactory';
+import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
 
 export {
     AncestorHighlighterFactory,
     Sunburst,
-    SunburstHighlighterFactory,
     SunburstContainer,
+    SunburstHighlighter,
     SunburstItemSunburstContainer,
     arcSelectorGenerator,
     type HighlighterFactory,
-    type BoxDimensions,
+    type RectangleDimensions as BoxDimensions,
     type HasChildren,
     type Highlighter,
     type SelectorGenerator,

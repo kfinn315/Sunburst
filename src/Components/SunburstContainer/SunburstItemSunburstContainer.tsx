@@ -1,13 +1,13 @@
 import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
 
-import { SunburstItem, SunburstItemTreeNode, BoxDimensions } from '../../Types'
-import { getPartitionTreeLayout } from '../../Services/PartitionLayout'
+import { RectangleDimensions, SunburstItem, SunburstItemTreeNode } from '../../Types'
 import { SunburstEvent } from '../Sunburst'
 import { HighlighterFactory } from '../../Services/Highlighter'
-import { SunburstContainer } from './SunburstContainer'
+import SunburstContainer from './SunburstContainer'
+import partitionTreeLayout from '../../Utils/partitionTreeLayout'
 
 export interface SunburstItemSunburstContainerProps {
-  dimensions: BoxDimensions
+  dimensions: RectangleDimensions
   minWidth?: number
   rootNode: HierarchyNode<SunburstItemTreeNode>
   onClick?: SunburstEvent<SunburstItemTreeNode>
@@ -31,12 +31,10 @@ export function SunburstItemSunburstContainer({
   const svgSide = getSVGDimensions(dimensions, minWidth)
   const radius = svgSide / 2
 
-  const nodes = getPartitionTreeLayout<SunburstItem>(
+  const sunburstSize: [number, number] = [2 * Math.PI, radius * radius]
+  const nodes = partitionTreeLayout<SunburstItem>(
     rootNode,
-    {
-      width: 2 * Math.PI,
-      height: radius * radius,
-    },
+    sunburstSize
   ).descendants()
 
   const getArcColor = (d: HierarchyRectangularNode<SunburstItemTreeNode>) =>
@@ -65,6 +63,6 @@ export function SunburstItemSunburstContainer({
   )
 }
 
-export function getSVGDimensions(dimensions: BoxDimensions, minWidth: number) {
+export function getSVGDimensions(dimensions: RectangleDimensions, minWidth: number) {
   return min([dimensions.height, dimensions.width]) ?? minWidth
 }

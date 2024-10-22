@@ -1,22 +1,55 @@
-import { HierarchyNode } from "d3";
-import { QueryService } from "../../Utils/ElementProvider";
-import { MutableRefElement } from "../../Types/MutableRefElement";
+import { MutableRefElement } from "../../Types";
 
 /**
- * Highlighter methods
+ * Highlight item or clear all highlights
  */
 export interface Highlighter<TIn> {
   clear: () => void
-  highlight: (item: TIn) => void
+  add: (item: TIn) => void
 }
 
 /**
- * Provides Element lists for a specific item and all Elements
+ * Generate a selector string for an individual or all items
  */
-export interface ElementListProvider<TIn, TOut extends Element = Element,
-> {
-  get: (ref: MutableRefElement, item: TIn) => TOut[]
-  getAll: (ref: MutableRefElement) => TOut[]
+export interface SelectorGenerator<T> {
+  get: (item: T) => string
+  getAll: () => string
 }
 
-export type GetHighlighter<TIn, TOut> = (queryer: QueryService<TIn>) => Highlighter<HierarchyNode<TOut>>
+/**
+ * Query using a selector into a single item or a list of items
+ */
+export interface QueryService<TIn> {
+  query<T extends Element = Element>(ref: MutableRefElement, selectors: TIn): T | null | undefined;
+  queryAll<T extends Element = Element>(ref: MutableRefElement, selectors: TIn): Array<T> | undefined;
+}
+
+/**
+ * Maps items to DOM elements
+ */
+export interface ElementMap<TIn, TElement extends Element = Element> {
+  get(ref: MutableRefElement, item: TIn): TElement | null | undefined
+  values(ref: MutableRefElement,): TElement[] | undefined
+}
+
+/**
+ * Maps items to a list of DOM elements. Values method returns a flattened list of DOM elements.
+ */
+export interface ElementListMap<TIn, TElement extends Element = Element,
+> {
+  get: (ref: MutableRefElement, item: TIn) => TElement[]
+  values: (ref: MutableRefElement) => TElement[]
+}
+
+/**
+ * Add and remove elements from a group
+ */
+export interface ElementGroup<TElement> {
+  add: (elements: TElement[]) => void;
+  remove: (elements: TElement[]) => void;
+}
+
+
+export interface HighlighterFactory<TNodeData> {
+  get(ref: MutableRefElement): Highlighter<TNodeData>;
+}

@@ -1,10 +1,18 @@
-import { Highlighter, ElementListProvider } from './Types';
-import { HighlighterFactory } from './HighlighterFactory';
-import DefaultHighlighter from './DefaultHighlighter';
+import { Highlighter, ElementListMap, SelectorGenerator, ElementGroup, ElementMap, HighlighterFactory } from './Types';
+import BaseHighlighter from './Implementations/BaseHighlighter';
+import AncestorHighlighter from './Implementations/AncestorHighlighter/AncestorHighlighter';
+import { SunburstHighlighter } from './Implementations/SunburstHighlighter/SunburstHighlighter';
+import { AncestorHighlighterFactory } from './Implementations/AncestorHighlighter/AncestorHighlighterFactory';
 
 export {
   type Highlighter,
-  type ElementListProvider,
+  type ElementListMap,
+  type ElementMap,
+  type SelectorGenerator,
+  type ElementGroup,
   type HighlighterFactory,
-  DefaultHighlighter
+  BaseHighlighter,
+  AncestorHighlighter,
+  AncestorHighlighterFactory,
+  SunburstHighlighter
 }

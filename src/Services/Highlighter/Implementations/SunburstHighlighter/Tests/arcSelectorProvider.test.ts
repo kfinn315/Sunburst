@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
+import { SunburstItemTreeNode } from '../../../../../Types'
 import { arcSelectorGenerator } from '../arcSelectorGenerator'
-import { SunburstItemTreeNode } from '../../../Types'
 
 describe('arcSelectorGenerator', () => {
   describe('getAll', () => {

@@ -1,9 +1,9 @@
 import { SunburstItemSunburstContainer, SunburstItemSunburstContainerProps } from './SunburstItemSunburstContainer'
-import { SunburstContainer, SunburstContainerProps } from './SunburstContainer';
+import SunburstContainer, { SunburstContainerProps } from './SunburstContainer';
 
 export {
-    SunburstItemSunburstContainer,
     type SunburstItemSunburstContainerProps,
+    type SunburstContainerProps,
+    SunburstItemSunburstContainer,
     SunburstContainer,
-    type SunburstContainerProps
 }
