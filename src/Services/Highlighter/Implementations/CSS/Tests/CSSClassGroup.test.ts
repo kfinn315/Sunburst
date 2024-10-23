@@ -4,15 +4,15 @@ describe('CSSClassGroup', () => {
 
   describe('add', () => {
     it('adds the class to the elements', () => {
-      //setup
+      //Arrange
       const elements = [document.createElement('div')]
       const className = 'randomString00000'
       const classGroup = new CSSClassGroup(className)
 
-      //execute
+      //Act
       classGroup.add(elements)
 
-      //test
+      //Assert
       elements.forEach(element => expect(element.classList.contains(className)))
 
     })
@@ -20,16 +20,16 @@ describe('CSSClassGroup', () => {
 
   describe('remove', () => {
     it('removes the class from the element', () => {
-      //setup
+      //Arrange
       const elements = [document.createElement('div')]
       const className = 'randomString00000'
       elements.forEach(e => e.classList.add(className))
       const classGroup = new CSSClassGroup(className)
 
-      //execute
+      //Act
       classGroup.remove(elements)
 
-      //test
+      //Assert
       elements.forEach(element => expect(element.classList.contains(className)).toBe(false))
 
     })

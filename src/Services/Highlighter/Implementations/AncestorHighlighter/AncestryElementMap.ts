@@ -1,5 +1,4 @@
 import { HierarchyNode } from 'd3'
-import { MutableRefElement } from '../../../../Types'
 import { ElementListMap, ElementMap } from '../../Types'
 import { isNotNull } from '../../../../Utils'
 
@@ -12,16 +11,15 @@ import { isNotNull } from '../../../../Utils'
  */
 export class AncestryElementMap<TNodeData, TElement extends Element = Element,> implements ElementListMap<HierarchyNode<TNodeData>, TElement> {
   constructor(
-    private readonly ref: MutableRefElement,
-    private readonly elementProvider: ElementMap<TNodeData, TElement>,
-    private readonly getAncestors: (node: HierarchyNode<TNodeData>) => HierarchyNode<TNodeData>[]) {
+    private readonly elementMap: ElementMap<TNodeData, TElement>,
+    private readonly getAncestors: (node: HierarchyNode<TNodeData>) => TNodeData[]) {
   }
 
   get(item: HierarchyNode<TNodeData>): TElement[] {
-    return this.getAncestors(item).map(node => this.elementProvider.get(this.ref, node.data)).filter(x => isNotNull(x)).map(x => x!)
+    return this.getAncestors(item)?.map(data => this.elementMap.get(data)).filter(x => isNotNull(x)) as TElement[]
   }
 
   values(): TElement[] {
-    return this.elementProvider.values(this.ref) ?? []
+    return this.elementMap.values() ?? []
   }
 }

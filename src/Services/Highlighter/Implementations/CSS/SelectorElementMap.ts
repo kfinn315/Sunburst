@@ -1,4 +1,3 @@
-import { MutableRefObject } from 'react'
 import { SelectorGenerator, ElementMap, QueryService } from '../../Types'
 
 /**
@@ -21,7 +20,7 @@ export default class SelectorElementMap<TIn, TElement extends Element = Element,
      * @param item - The item for which to retrieve the element.
      * @returns The element corresponding to the item, or null if not found.
      */
-  get(ref: MutableRefObject<Element>, item: TIn): TElement | null | undefined {
+  get(item: TIn): TElement | null | undefined {
     if (item == undefined) {
       return null
     }
@@ -30,19 +29,19 @@ export default class SelectorElementMap<TIn, TElement extends Element = Element,
     }
     const selector = this.selectorGenerator.get(item)
 
-    return this.queryService.query<TElement>(ref, selector)
+    return this.queryService.query<TElement>(selector)
   }
 
   /**
    * Retrieves all elements.
    * @returns An array of elements
    */
-  values(ref: MutableRefObject<Element>): TElement[] | undefined {
+  values(): TElement[] | undefined {
     if (this.selectorGenerator == undefined) {
       throw new Error("selectorGenerator is undefined")
     }
     const selector = this.selectorGenerator.getAll()
-    return this.queryService.queryAll<TElement>(ref, selector)
+    return this.queryService.queryAll<TElement>(selector)
   }
 
 }

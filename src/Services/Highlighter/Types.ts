@@ -20,16 +20,16 @@ export interface SelectorGenerator<T> {
  * Query using a selector into a single item or a list of items
  */
 export interface QueryService<TIn> {
-  query<T extends Element = Element>(ref: MutableRefElement, selectors: TIn): T | null | undefined;
-  queryAll<T extends Element = Element>(ref: MutableRefElement, selectors: TIn): Array<T> | undefined;
+  query<T extends Element = Element>(selectors: TIn): T | null | undefined;
+  queryAll<T extends Element = Element>(selectors: TIn): Array<T> | undefined;
 }
 
 /**
  * Maps items to DOM elements
  */
 export interface ElementMap<TIn, TElement extends Element = Element> {
-  get(ref: MutableRefElement, item: TIn): TElement | null | undefined
-  values(ref: MutableRefElement,): TElement[] | undefined
+  get(item: TIn): TElement | null | undefined
+  values(): TElement[] | undefined
 }
 
 /**

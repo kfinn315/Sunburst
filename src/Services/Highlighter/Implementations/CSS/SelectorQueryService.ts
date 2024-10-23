@@ -10,13 +10,17 @@ import { QueryService } from "../../Types";
  * @template TRef
  */
 export default class SelectorQueryService implements QueryService<string> {
+  /**
+   *
+   */
+  constructor(private readonly ref: MutableRefElement) { }
 
-  query<T extends Element>(ref: MutableRefElement, query: string): T | null | undefined {
-    return ref.current?.querySelector<T>(query);
+  query<T extends Element>(query: string): T | null | undefined {
+    return this.ref.current?.querySelector<T>(query);
   }
 
-  queryAll<T extends Element>(ref: MutableRefElement, query: string): T[] | undefined {
-    const currentRef = ref.current;
+  queryAll<T extends Element>(query: string): T[] | undefined {
+    const currentRef = this.ref.current;
     if (currentRef) {
       const nodes = currentRef.querySelectorAll<T>(query);
       return Array.from(nodes);

@@ -1,87 +1,94 @@
-//@ts-nocheck
-import { jest } from "@jest/globals"
-import { ElementMap, QueryService, SelectorGenerator } from "../../../Types";
+import { QueryService, SelectorGenerator } from "../../../Types";
 import SelectorElementMap from "../SelectorElementMap";
+import { mock } from "jest-mock-extended";
 
 describe('SelectorElementMap', () => {
-    const MockElement: Element = document.createElement("a");
+    describe('get', () => {
+        it('should call selectorGenerator.get', () => {
+            // Arrange
+            const mockSelectorGenerator = mock<SelectorGenerator<unknown>>()
+            const mockQueryService = mock<QueryService<string>>()
+            const selectorElementMap = new SelectorElementMap(
+                mockQueryService,
+                mockSelectorGenerator
+            );
+            const input = {};
 
-    // Create a mock ref object
-    let querySelectorSpy: unknown
-    let mockQueryer: QueryService<string>;
-    beforeEach(() => {
-        querySelectorSpy = jest.spyOn<Element>(MockElement, "querySelector")
-        mockQueryer = {
-            query: querySelectorSpy,
-            queryAll: jest.fn()
-        };
+            // Act
+            selectorElementMap.get(input);
+
+            // Assert
+            expect(mockSelectorGenerator.get).toHaveBeenCalled()
+        });
+
+        it('should call queryService.query', () => {
+            // Arrange
+            const mockSelectorGenerator = mock<SelectorGenerator<unknown>>()
+            const mockQueryService = mock<QueryService<string>>()
+            const selectorElementMap = new SelectorElementMap(
+                mockQueryService,
+                mockSelectorGenerator
+            );
+            const input = {};
+
+            // Act
+            selectorElementMap.get(input);
+
+            // Assert
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            expect(mockQueryService.query).toHaveBeenCalled()
+        });
+
+        it('should return null if the input is undefined', () => {
+            // Arrange
+            const mockSelectorGenerator = mock<SelectorGenerator<unknown>>()
+            const mockQueryService = mock<QueryService<string>>()
+            const selectorElementMap = new SelectorElementMap(
+                mockQueryService,
+                mockSelectorGenerator
+            );
+            const input = undefined;
+
+            // Act
+            const element = selectorElementMap.get(input);
+
+            // Assert
+            expect(element).toBeNull();
+        });
     })
 
-    // Create a mock selector provider
-    const mockSelectorProvider: SelectorGenerator<unknown> = {
-        get: jest.fn(),
-        getAll: jest.fn(),
-    };
+    describe('values', () => {
+        it('should call selectorGenerator.getAll', () => {
+            // Arrange
+            const mockSelectorGenerator = mock<SelectorGenerator<unknown>>()
+            const mockQueryService = mock<QueryService<string>>()
+            const selectorElementMap = new SelectorElementMap(
+                mockQueryService,
+                mockSelectorGenerator
+            );
 
-    it('should return an element provider object with the correct structure', () => {
-        // Act
-        const elementProvider: ElementMap<unknown, Element> = new SelectorElementMap(
-            mockQueryer,
-            mockSelectorProvider
-        );
+            // Act
+            selectorElementMap.values();
 
-        // Assert
-        expect(elementProvider).toHaveProperty('get');
-        expect(elementProvider).toHaveProperty('values');
-        expect(typeof elementProvider.get).toBe('function');
-        expect(typeof elementProvider.values).toBe('function');
-    });
+            // Assert
+            expect(mockSelectorGenerator.getAll).toHaveBeenCalled()
+        });
 
-    it('should retrieve the element for the specified item', () => {
-        // Arrange
-        const ref = { current: document.createElement('div') }
-        const mockItem = {};
+        it('should call queryService.queryAll', () => {
+            // Arrange
+            const mockSelectorGenerator = mock<SelectorGenerator<unknown>>()
+            const mockQueryService = mock<QueryService<string>>()
+            const selectorElementMap = new SelectorElementMap(
+                mockQueryService,
+                mockSelectorGenerator
+            );
 
-        const mockSelector = "mockSelectorTest"
-        mockSelectorProvider.get = jest.fn().mockReturnValue(mockSelector)
+            // Act
+            selectorElementMap.values();
 
-        const mockReturnValue = { returnValue: true }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        querySelectorSpy.mockReturnValue(mockReturnValue)
-
-        // Act
-        const elementProvider: ElementMap<unknown, Element> = new SelectorElementMap(
-            mockQueryer,
-            mockSelectorProvider
-        );
-        const element = elementProvider.get(ref, mockItem);
-
-        // Assert
-        expect(mockSelectorProvider.get).toHaveBeenCalledWith(mockItem);
-        expect(querySelectorSpy).toHaveBeenCalledWith(ref, mockSelector)
-        expect(element).toBeDefined();
-        expect(element).toBe(mockReturnValue);
-    });
-
-    it('should return null if the item is undefined', () => {
-        // Arrange
-        const ref = { current: document.createElement('div') }
-        const mockItem = undefined as unknown as Element;
-
-        // Act
-        const elementProvider: ElementMap<Element, Element> = new SelectorElementMap(
-            mockQueryer,
-            mockSelectorProvider
-        );
-        const element = elementProvider.get(ref, mockItem);
-
-        // Assert
-        expect(mockSelectorProvider.get).not.toHaveBeenCalled();
-        expect(element).toBeNull();
-    });
-
-    //   it('should retrieve all elements based on the selector', () => {
-    //     // Arrange
-    //     // Mock the querySelectorAll method
-    //     mockRef.current?.querySelector
+            // Assert
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            expect(mockQueryService.queryAll).toHaveBeenCalled()
+        });
+    })
 })

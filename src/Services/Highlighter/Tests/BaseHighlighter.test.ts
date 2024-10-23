@@ -44,10 +44,10 @@ describe('BaseHighlighter', () => {
     describe('highlight', () => {
         it('should call highlighter.add on elements', () => {
             //Arrange
-            //@ts-ignore
             const highlighter = new BaseHighlighter(elementProvider, highlight)
             const elements = [document.createElement('div'), document.createElement('span')];
             mockGetFn.mockReturnValue(elements)
+            //@ts-ignore
             const hierarchyNode: HierarchyRectangularNode<unknown> = {}
 
             //Act
