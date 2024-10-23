@@ -1,4 +1,4 @@
-import DefaultArcProvider from "../DefaultArcProvider";
+import DefaultArcs from "../DefaultArcs";
 import { getArc } from "../getArc"
 import { getPaddedArc } from "../getPaddedArc"
 
@@ -10,7 +10,7 @@ jest.mock('../zeroArc', () => ({
   zeroArc: undefined
 }));
 
-describe('DefaultArcFactory', () => {
+describe('DefaultArcs', () => {
   let mockGetArc: jest.Mock;
   let mockGetPaddedArc: jest.Mock;
 
@@ -20,7 +20,7 @@ describe('DefaultArcFactory', () => {
     jest.clearAllMocks()
   })
 
-  it('should create an instance of DefaultArcFactory with the correct properties', () => {
+  it('should create an instance of DefaultArcs with the correct properties', () => {
     // Arrange
     const mockRadius = 50
 
@@ -34,12 +34,12 @@ describe('DefaultArcFactory', () => {
     ZeroArcMock.zeroArc = mockZeroArc
 
     // Act
-    const defaultArcFactory = new DefaultArcProvider(mockRadius)
+    const defaultArcs = new DefaultArcs(mockRadius)
 
     // Assert
-    expect(defaultArcFactory.getArc()).toBe(mockGetArcValue)
-    expect(defaultArcFactory.getPaddedArc()).toBe(mockGetPaddedArcValue)
-    expect(defaultArcFactory.getZeroArc()).toEqual(mockZeroArc)
+    expect(defaultArcs.standard).toBe(mockGetArcValue)
+    expect(defaultArcs.padded).toBe(mockGetPaddedArcValue)
+    expect(defaultArcs.zero).toEqual(mockZeroArc)
   })
 
   it('should call the getPaddedArc and getArc functions when creating the instance', () => {
@@ -47,7 +47,7 @@ describe('DefaultArcFactory', () => {
     const mockRadius = 50
 
     // Act
-    new DefaultArcProvider(mockRadius)
+    new DefaultArcs(mockRadius)
 
     // Assert
     expect(mockGetArc).toBeCalledWith(mockRadius)

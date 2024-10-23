@@ -1,8 +1,4 @@
-import {
-  HierarchyNode,
-  HierarchyRectangularNode,
-  partition,
-} from 'd3'
+import { HierarchyNode, HierarchyRectangularNode, partition, } from 'd3'
 
 import { TreeNode } from '../Types'
 

@@ -3,7 +3,7 @@ import { Arc, arc } from 'd3'
 import { ArcCoordinates } from '../Types'
 
 /**
- * Get Arc with radius
+ * Get Arc generator with specified radius
  *
  * Calculates and returns an arc shape with the specified radius.
  * The arc is defined by the startAngle, endAngle, innerRadius, and outerRadius.

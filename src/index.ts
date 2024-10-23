@@ -14,7 +14,7 @@ export {
     SunburstItemSunburstContainer,
     arcSelectorGenerator,
     type HighlighterFactory,
-    type RectangleDimensions as BoxDimensions,
+    type RectangleDimensions,
     type HasChildren,
     type Highlighter,
     type SelectorGenerator,

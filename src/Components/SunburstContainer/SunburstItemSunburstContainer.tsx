@@ -4,7 +4,7 @@ import { RectangleDimensions, SunburstItem, SunburstItemTreeNode } from '../../T
 import { SunburstEvent } from '../Sunburst'
 import { HighlighterFactory } from '../../Services/Highlighter'
 import SunburstContainer from './SunburstContainer'
-import partitionTreeLayout from '../../Utils/partitionTreeLayout'
+import { partitionTreeLayout } from '../../Utils'
 
 export interface SunburstItemSunburstContainerProps {
   dimensions: RectangleDimensions

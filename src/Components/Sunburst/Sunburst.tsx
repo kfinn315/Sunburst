@@ -6,10 +6,10 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { SunburstViewController } from './SunburstViewController'
 import { SunburstEvent } from './Types'
 import { HasID, MutableRefElement } from '../../Types'
-import { DefaultArcProvider } from '../../Services/Arcs'
+import { DefaultArcs } from '../../Services/Arcs'
 import { HighlighterFactory } from '../../Services/Highlighter'
 
-export interface SunburstViewProps<TDatum> {
+export interface SunburstProps<TDatum> {
   centerElement?: JSX.Element
   duration?: number
   getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
@@ -23,7 +23,7 @@ export interface SunburstViewProps<TDatum> {
 }
 
 export default function Sunburst<TDatum extends HasID>(
-  props: SunburstViewProps<TDatum>,
+  props: SunburstProps<TDatum>,
 ): JSX.Element {
   const {
     centerElement,
@@ -71,7 +71,7 @@ export default function Sunburst<TDatum extends HasID>(
     return isNodeClickable(d) ? 'clickable' : null
   }
 
-  const arcs = new DefaultArcProvider(radius)
+  const arcs = new DefaultArcs(radius)
 
   function getNodeID(d: HierarchyRectangularNode<TDatum>): number {
     return d.data.id

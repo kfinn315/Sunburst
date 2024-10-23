@@ -3,7 +3,7 @@ import { Arc, arc } from 'd3'
 import { ArcCoordinates } from '../Types'
 
 /**
- * Get Arc with radius and padding
+ * Get Arc generator with radius and padding
  */
 
 export const getPaddedArc = (radius: number): Arc<unknown, ArcCoordinates> =>

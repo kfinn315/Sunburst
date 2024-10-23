@@ -37,8 +37,8 @@ export interface ElementMap<TIn, TElement extends Element = Element> {
  */
 export interface ElementListMap<TIn, TElement extends Element = Element,
 > {
-  get: (ref: MutableRefElement, item: TIn) => TElement[]
-  values: (ref: MutableRefElement) => TElement[]
+  get: (item: TIn) => TElement[]
+  values: () => TElement[]
 }
 
 /**

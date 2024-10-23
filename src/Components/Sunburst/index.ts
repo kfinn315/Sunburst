@@ -1,4 +1,4 @@
-import Sunburst, { SunburstViewProps as SunburstProps } from './Sunburst'
+import Sunburst, { SunburstProps } from './Sunburst'
 import { SunburstEvent } from './Types'
 
 export {

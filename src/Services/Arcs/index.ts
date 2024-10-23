@@ -1,10 +1,8 @@
 import { ArcCoordinates, Arcs } from './Types'
-import ArcProvider from './ArcProvider';
-import DefaultArcProvider from "./DefaultArcFactory/DefaultArcProvider";
+import DefaultArcs from './DefaultArcs/DefaultArcs';
 
 export {
+    DefaultArcs,
     type Arcs,
     type ArcCoordinates,
-    type ArcProvider,
-    DefaultArcProvider,
 }
