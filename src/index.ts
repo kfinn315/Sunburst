@@ -2,9 +2,10 @@ import { RectangleDimensions, HasChildren, SunburstItem, SunburstItemNode, Sunbu
 import { TreeNode } from './Types';
 import { Sunburst, SunburstEvent, SunburstProps } from './Components/Sunburst';
 import { Highlighter, HighlighterFactory, SelectorGenerator } from './Services/Highlighter';
-import { SunburstContainer, SunburstContainerProps, SunburstItemSunburstContainer, SunburstItemSunburstContainerProps } from './Components/SunburstContainer';
+import { SunburstContainer, SunburstContainerProps } from './Components/SunburstContainer';
 import { AncestorHighlighterFactory } from './Services/Highlighter/Implementations/AncestorHighlighter/AncestorHighlighterFactory';
 import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
+import { SunburstItemSunburstContainerProps, SunburstItemSunburstContainer } from './Components/SunburstItemSunburstContainer/SunburstItemSunburstContainer';
 
 export {
     AncestorHighlighterFactory,

@@ -1,10 +1,11 @@
-import { HierarchyNode, HierarchyRectangularNode, min, ScaleLinear } from 'd3'
+import { HierarchyNode, HierarchyRectangularNode, ScaleLinear } from 'd3'
 
 import { RectangleDimensions, SunburstItem, SunburstItemTreeNode } from '../../Types'
 import { SunburstEvent } from '../Sunburst'
 import { HighlighterFactory } from '../../Services/Highlighter'
-import SunburstContainer from './SunburstContainer'
+import { SunburstContainer } from '../SunburstContainer'
 import { partitionTreeLayout } from '../../Utils'
+import { getSVGDimensions } from './getSVGDimensions'
 
 export interface SunburstItemSunburstContainerProps {
   dimensions: RectangleDimensions
@@ -18,6 +19,10 @@ export interface SunburstItemSunburstContainerProps {
   centerColor: string
 }
 
+/**
+ * 
+ * A SunburstContainer for SunburstItemTreeNodes
+ */
 export function SunburstItemSunburstContainer({
   dimensions,
   rootNode,
@@ -61,8 +66,4 @@ export function SunburstItemSunburstContainer({
       svgDimensions={{ width: svgSide, height: svgSide }}
     />
   )
-}
-
-export function getSVGDimensions(dimensions: RectangleDimensions, minWidth: number) {
-  return min([dimensions.height, dimensions.width]) ?? minWidth
 }
