@@ -1,8 +1,8 @@
 import { HierarchyRectangularNode, select } from 'd3'
 import { MutableRefObject } from 'react'
 
-import { SunburstEvent } from '../Sunburst/Types'
-import { Arcs } from '../../Services/Arcs';
+import { SunburstEvent } from './Types'
+import { Arcs } from '../Arcs';
 import { createArcs } from './createArcs';
 import { createMouseArcs } from './createMouseArcs';
 
@@ -47,16 +47,11 @@ export class D3SunburstView<TNode> {
   }
 }
 
-
 export function d3SunburstView<TNode>(
   ref: MutableRefObject<SVGGElement | null>,
   items: HierarchyRectangularNode<TNode>[],
   props: D3SunburstViewProps<TNode>,
 ) {
-
-  /**
-   * Initializes and updates the sunburst chart based on the provided items data
-   */
 
   if (ref.current) {
     const {

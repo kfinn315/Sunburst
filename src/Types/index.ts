@@ -15,5 +15,5 @@ export {
   type RectangleDimensions,
   type TreeNode,
   type HasID,
-  type MutableRefElement
+  type MutableRefElement,
 }

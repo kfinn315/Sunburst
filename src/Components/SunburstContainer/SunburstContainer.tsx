@@ -30,10 +30,7 @@ export default function SunburstContainer<T extends HasID>({
 }: SunburstContainerProps<T>) {
   const [detail, setDetail] = useState<string | undefined>()
 
-  const mouseEnterHandler: SunburstEvent<T> = (
-    event: MouseEvent,
-    d: HierarchyNode<T>,
-  ) => {
+  const mouseEnterHandler: SunburstEvent<T> = (event: MouseEvent, d: HierarchyNode<T>,) => {
     setDetail(getItemDetail(d))
     onMouseEnter?.(event, d)
   }

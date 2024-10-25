@@ -4,8 +4,7 @@ import { RectangleDimensions, SunburstItem, SunburstItemTreeNode } from '../../T
 import { SunburstEvent } from '../Sunburst'
 import { HighlighterFactory } from '../../Services/Highlighter'
 import { SunburstContainer } from '../SunburstContainer'
-import { partitionTreeLayout } from '../../Utils'
-import { getSVGDimensions } from './getSVGDimensions'
+import { partitionTreeLayout, getMin } from '../../Utils'
 
 export interface SunburstItemSunburstContainerProps {
   dimensions: RectangleDimensions
@@ -24,22 +23,23 @@ export interface SunburstItemSunburstContainerProps {
  * A SunburstContainer for SunburstItemTreeNodes
  */
 export function SunburstItemSunburstContainer({
-  dimensions,
+  dimensions: svgDimensions,
   rootNode,
   highlighterFactory,
   onMouseEnter,
   onMouseLeave,
   colorScale,
   centerColor,
-  minWidth = 20,
+  minWidth = 400,
 }: SunburstItemSunburstContainerProps) {
-  const svgSide = getSVGDimensions(dimensions, minWidth)
-  const radius = svgSide / 2
+  const sideLength = getMin([svgDimensions.width, svgDimensions.height], minWidth)
+  const radius = sideLength / 2
 
-  const sunburstSize: [number, number] = [2 * Math.PI, radius * radius]
+  const sunburstDimensions: [number, number] = [2 * Math.PI, Math.pow(radius, 2)]
+  
   const nodes = partitionTreeLayout<SunburstItem>(
     rootNode,
-    sunburstSize
+    sunburstDimensions
   ).descendants()
 
   const getArcColor = (d: HierarchyRectangularNode<SunburstItemTreeNode>) =>
@@ -63,7 +63,7 @@ export function SunburstItemSunburstContainer({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       radius={radius}
-      svgDimensions={{ width: svgSide, height: svgSide }}
+      svgDimensions={{ width: sideLength, height: sideLength }}
     />
   )
 }

@@ -3,12 +3,10 @@ import './Sunburst.css'
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useCallback, useLayoutEffect, useRef } from 'react'
 
-// import { D3SunburstView } from '../D3SunburstView'
-import { SunburstEvent } from './Types'
 import { HasID, MutableRefElement } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
 import { HighlighterFactory } from '../../Services/Highlighter'
-import { d3SunburstView } from '../D3SunburstView/D3SunburstView'
+import { d3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
 
 export interface SunburstProps<TDatum> {
   centerElement?: JSX.Element
@@ -43,32 +41,21 @@ export default function Sunburst<TDatum extends HasID>(
 
   const highlighter = highlighterFactory?.get(gRef)
 
-  const mouseEnterHandler = useCallback((
-    event: MouseEvent,
-    d: HierarchyNode<TDatum>
-  ): void => {
+  const mouseEnterHandler = useCallback((event: MouseEvent, d: HierarchyNode<TDatum>): void => {
     highlighter?.add(d)
     onMouseEnter?.(event, d)
   }, [highlighter, onMouseEnter])
 
-  const mouseLeaveHandler = useCallback((
-    event: MouseEvent,
-    d: HierarchyNode<TDatum>
-  ): void => {
+  const mouseLeaveHandler = useCallback((event: MouseEvent, d: HierarchyNode<TDatum>): void => {
     highlighter?.clear()
     onMouseLeave?.(event, d)
   }, [highlighter, onMouseLeave])
 
-  const clickHandler = useCallback((
-    event: MouseEvent,
-    d: HierarchyNode<TDatum>
-  ): void => {
+  const clickHandler = useCallback((event: MouseEvent, d: HierarchyNode<TDatum>): void => {
     onClick?.(event, d)
   }, [onClick])
 
-  const getMouseArcPathClass = useCallback((
-    d: HierarchyRectangularNode<TDatum>
-  ): string | null => {
+  const getMouseArcPathClass = useCallback((d: HierarchyRectangularNode<TDatum>): string | null => {
     return isNodeClickable(d) ? 'clickable' : null
   }, [isNodeClickable])
 

@@ -1,5 +1,5 @@
 import Sunburst, { SunburstProps } from './Sunburst'
-import { SunburstEvent } from './Types'
+import { SunburstEvent } from '../../Services/D3SunburstView/Types'
 
 export {
   Sunburst,

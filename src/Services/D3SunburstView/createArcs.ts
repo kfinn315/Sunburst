@@ -1,5 +1,5 @@
 import { HierarchyRectangularNode, Selection } from "d3";
-import { Arcs } from "../../Services/Arcs";
+import { Arcs } from "../Arcs";
 import { getChildSelection } from "./getChildSelection";
 
 interface CreateArcsProps<TNode> {

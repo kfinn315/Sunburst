@@ -1,7 +1,7 @@
 import { HierarchyRectangularNode, Selection } from "d3";
-import { Arcs } from "../../Services/Arcs";
+import { Arcs } from "../Arcs";
 import { getChildSelection } from "./getChildSelection";
-import { SunburstEvent } from "../Sunburst/Types";
+import { SunburstEvent } from "./Types";
 
 interface CreateMouseArcsProps<TNode> {
   arcs: Arcs;
