@@ -1,15 +1,15 @@
 import "./HierarchicalDataSunburst.css"
 
-import { JSONTree } from 'react-json-tree'
 import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
-import { BoxDimensions, SunburstContainer, SunburstItemNode, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
 import { hierarchicalData } from '../../data';
+import { RectangleDimensions, SunburstItemNode, SunburstContainer } from "../../sunburstLibrary";
+import { SunburstHighlighter } from "../../../../src/Services/Highlighter";
 
 function HierarchicalDataSunburst() {
     const svgSideLength = 1400
 
-    const svgDimensions: BoxDimensions = {
+    const svgDimensions: RectangleDimensions = {
         width: svgSideLength,
         height: svgSideLength,
     }
@@ -42,8 +42,6 @@ function HierarchicalDataSunburst() {
             .join('.')
     }
 
-    const highlighterFactory = new SunburstHighlighterFactory<SunburstItemNode, Element>()
-
     return (<>
         <SunburstContainer<SunburstItemNode>
             getArcColor={getArcColor}
@@ -51,11 +49,10 @@ function HierarchicalDataSunburst() {
             nodes={nodes}
             radius={radius}
             svgDimensions={svgDimensions}
-            highlighterFactory={highlighterFactory}
+            highlighterFactory={{ get: (ref) => new SunburstHighlighter(ref, 'highlight') }}
         />
         <div className="data">
             <h2>Data</h2>
-            <JSONTree data={hierarchicalData} />
         </div>
     </>
     )

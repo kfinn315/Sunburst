@@ -1,5 +1,4 @@
-
-import { SunburstItem } from "kfinn315_sunburst";
+import { SunburstItem } from "../../../sunburstLibrary"
 import { getSegmentIterator } from "../getSegmentIterator"
 
 describe('getSegmentIterator', () => {

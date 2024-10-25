@@ -1,5 +1,5 @@
 import { ScaleLinear, scaleLinear, min, max } from "d3";
-import { SunburstItem } from "kfinn315_sunburst";
+import { SunburstItem } from "../sunburstLibrary";
 
 export function getColorScale(data: readonly SunburstItem[], colorGradient: readonly [string, string]): ScaleLinear<string, string> {
     return scaleLinear(

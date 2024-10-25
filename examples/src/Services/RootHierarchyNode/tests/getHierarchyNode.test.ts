@@ -1,8 +1,9 @@
+//@ts-nocheck
 import { HierarchyNode } from 'd3-hierarchy'
 import { mock } from 'jest-mock-extended'
 
-import { SunburstItemTreeNode } from "kfinn315_sunburst";
 import { getHierarchyNode } from '../getHierarchyNode'
+import { SunburstItemTreeNode } from '../../../sunburstLibrary'
 
 describe('getHierarchyNode', () => {
     it('should call getTreeNodeHierarchy, sum, and sort with the correct arguments', () => {

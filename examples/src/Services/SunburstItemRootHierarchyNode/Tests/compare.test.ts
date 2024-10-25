@@ -1,7 +1,7 @@
 import { mock } from "jest-mock-extended"
-import { SunburstItem } from "kfinn315_sunburst";
 import { TreeNode } from "../../Tree"
 import { compare } from "../compare"
+import { SunburstItem } from "../../../sunburstLibrary"
 
 describe('compare', () => {
     it('should return a positive number if the value of nodeB is larger', () => {

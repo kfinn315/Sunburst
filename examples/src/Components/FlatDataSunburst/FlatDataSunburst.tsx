@@ -1,12 +1,12 @@
 import "./FlatDataSunburst.css";
 
-import { JSONTree } from 'react-json-tree'
 import { HierarchyNode } from 'd3'
-import { SunburstItem, TreeNode, SunburstItemSunburstContainer, SunburstHighlighterFactory } from 'kfinn315_sunburst';
 
 import { flatData } from '../../data'
 import { getColorScale } from '../../Utils/getColorScale'
 import { getRootHierarchyNode } from '../../Services/SunburstItemRootHierarchyNode'
+import { SunburstHighlighter, SunburstItem, SunburstItemSunburstContainer } from "../../sunburstLibrary";
+import { TreeNode } from "../../Services/Tree";
 
 function FlatDataSunburst() {
     const centerColor = 'blue'
@@ -18,14 +18,13 @@ function FlatDataSunburst() {
         <>
             <SunburstItemSunburstContainer
                 dimensions={{ width: svgDimension, height: svgDimension }}
-                highlighterFactory={new SunburstHighlighterFactory()}
+                highlighterFactory={{ get: (ref) => new SunburstHighlighter(ref, 'highlight') }}
                 rootNode={rootHierarchyNode}
                 colorScale={colorScale}
                 centerColor={centerColor}
             />
             <div className="data">
                 <h2>Data</h2>
-                <JSONTree data={flatData} />
             </div>
         </>
     )

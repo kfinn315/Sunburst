@@ -1,4 +1,5 @@
-import { SunburstItem, SunburstItemNode } from 'kfinn315_sunburst'
+import { SunburstItem, SunburstItemNode } from "./sunburstLibrary"
+
 
 export const flatData: readonly SunburstItem[] = [
   { id: 0, name: '1', color: 0, size: 200 },

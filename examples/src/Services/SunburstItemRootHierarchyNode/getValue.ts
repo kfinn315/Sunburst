@@ -1,4 +1,4 @@
-import { SunburstItem } from "kfinn315_sunburst";
+import { SunburstItem } from "../../sunburstLibrary";
 import { TreeNode } from "../Tree";
 
 

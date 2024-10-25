@@ -1,7 +1,8 @@
 import { mock } from "jest-mock-extended"
-import { SunburstItem } from "kfinn315_sunburst";
 import { TreeNode } from "../../Tree"
 import { getValue } from '../getValue'
+import { SunburstItem } from "../../../sunburstLibrary"
+
 
 describe('getValue', () => {
   it('should return the size of the data property if it exists', () => {
