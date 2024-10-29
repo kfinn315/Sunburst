@@ -5,15 +5,17 @@ import { Highlighter, HighlighterFactory, SelectorGenerator } from './Services/H
 import { SunburstContainer, SunburstContainerProps } from './Components/SunburstContainer';
 import { AncestorHighlighterFactory } from './Services/Highlighter/Implementations/AncestorHighlighter/AncestorHighlighterFactory';
 import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
-import { SunburstItemSunburstContainerProps, SunburstItemSunburstContainer } from './Components/SunburstItemSunburstContainer/SunburstItemSunburstContainer';
+import { ConcreteSunburstContainerProps, ConcreteSunburstContainer } from './Components/ConcreteSunburstContainer/ConcreteSunburstContainer';
+import getColorScale from './Utils/getColorScale';
 
 export {
     AncestorHighlighterFactory,
     Sunburst,
     SunburstContainer,
     SunburstHighlighter,
-    SunburstItemSunburstContainer,
+    ConcreteSunburstContainer,
     arcSelectorGenerator,
+    getColorScale,
     type HighlighterFactory,
     type RectangleDimensions,
     type HasChildren,
@@ -23,7 +25,7 @@ export {
     type SunburstEvent,
     type SunburstItem,
     type SunburstItemNode,
-    type SunburstItemSunburstContainerProps,
+    type ConcreteSunburstContainerProps,
     type SunburstItemTreeNode,
     type SunburstProps,
     type TreeNode,

@@ -2,9 +2,8 @@ import "./HierarchicalDataSunburst.css"
 
 import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
 
-import { hierarchicalData } from '../../data';
-import { RectangleDimensions, SunburstItemNode, SunburstContainer } from "../../sunburstLibrary";
-import { SunburstHighlighter } from "../../../../src/Services/Highlighter";
+import { hierarchicalData } from './hierarchicalData';
+import { RectangleDimensions, SunburstItemNode, SunburstContainer,SunburstHighlighter } from "../../sunburstLibrary";
 
 function HierarchicalDataSunburst() {
     const svgSideLength = 1400

@@ -1,12 +1,13 @@
-import { SunburstItem, SunburstItemTreeNode, SunburstItemSunburstContainer, SunburstItemNode, RectangleDimensions, SunburstContainer, HighlighterFactory, SunburstHighlighter } from '../../src';
+import { SunburstItem, SunburstItemTreeNode, ConcreteSunburstContainer, SunburstItemNode, RectangleDimensions, SunburstContainer, HighlighterFactory, SunburstHighlighter, getColorScale } from '../../src';
 
 export {
     SunburstContainer,
-    SunburstItemSunburstContainer,
+    ConcreteSunburstContainer,
     SunburstHighlighter,
     type SunburstItem,
     type SunburstItemTreeNode,
     type SunburstItemNode,
     type RectangleDimensions,
-    type HighlighterFactory
+    type HighlighterFactory,
+    type getColorScale
 }

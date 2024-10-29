@@ -6,7 +6,7 @@ import { HighlighterFactory } from '../../Services/Highlighter'
 import { SunburstContainer } from '../SunburstContainer'
 import { partitionTreeLayout, getMin } from '../../Utils'
 
-export interface SunburstItemSunburstContainerProps {
+export interface ConcreteSunburstContainerProps {
   dimensions: RectangleDimensions
   minWidth?: number
   rootNode: HierarchyNode<SunburstItemTreeNode>
@@ -22,7 +22,7 @@ export interface SunburstItemSunburstContainerProps {
  * 
  * A SunburstContainer for SunburstItemTreeNodes
  */
-export function SunburstItemSunburstContainer({
+export function ConcreteSunburstContainer({
   dimensions: svgDimensions,
   rootNode,
   highlighterFactory,
@@ -31,7 +31,7 @@ export function SunburstItemSunburstContainer({
   colorScale,
   centerColor,
   minWidth = 400,
-}: SunburstItemSunburstContainerProps) {
+}: ConcreteSunburstContainerProps) {
   const sideLength = getMin([svgDimensions.width, svgDimensions.height], minWidth)
   const radius = sideLength / 2
 
