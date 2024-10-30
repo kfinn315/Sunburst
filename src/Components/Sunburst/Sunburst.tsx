@@ -1,5 +1,3 @@
-import './Sunburst.css'
-
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useCallback, useLayoutEffect, useRef } from 'react'
 
@@ -10,7 +8,7 @@ import { d3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
 
 export interface SunburstProps<TDatum> {
   centerElement?: JSX.Element
-  duration?: number
+  transitionDuration?: number
   getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
   isNodeClickable: (d: HierarchyRectangularNode<TDatum>) => boolean
   items: HierarchyRectangularNode<TDatum>[]
@@ -26,15 +24,15 @@ export default function Sunburst<TDatum extends HasID>(
 ): JSX.Element {
   const {
     centerElement,
-    duration = 100,
     getArcColor,
+    highlighterFactory,
     isNodeClickable,
     items,
     onClick,
     onMouseEnter,
     onMouseLeave,
-    highlighterFactory,
-    radius
+    radius,
+    transitionDuration = 100,
   } = props
 
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
@@ -63,30 +61,18 @@ export default function Sunburst<TDatum extends HasID>(
     return d.data.id
   }, [])
 
-  // const controller = useMemo(() => new D3SunburstView<TDatum>(gRef, {
-  //   transitionDuration: duration,
-  //   arcs: new DefaultArcs(radius),
-  //   onClick: clickHandler,
-  //   onMouseEnter: mouseEnterHandler,
-  //   onMouseLeave: mouseLeaveHandler,
-  //   getArcColor,
-  //   getMouseArcPathClass,
-  //   getNodeID
-  // }), [duration, radius, clickHandler, mouseEnterHandler, mouseLeaveHandler, getArcColor, getMouseArcPathClass, getNodeID])
-
   useLayoutEffect(() => {
-    // controller.layout(items)
     d3SunburstView(gRef, items, {
-      transitionDuration: duration,
       arcs: new DefaultArcs(radius),
       onClick: clickHandler,
       onMouseEnter: mouseEnterHandler,
       onMouseLeave: mouseLeaveHandler,
       getArcColor,
       getMouseArcPathClass,
-      getNodeID
+      getNodeID,
+      transitionDuration,
     })
-  }, [items, duration, radius, clickHandler, mouseEnterHandler, mouseLeaveHandler, getArcColor, getMouseArcPathClass, getNodeID])
+  }, [items, transitionDuration, radius, clickHandler, mouseEnterHandler, mouseLeaveHandler, getArcColor, getMouseArcPathClass, getNodeID])
 
   return (
     <g ref={gRef}

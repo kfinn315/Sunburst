@@ -2,10 +2,10 @@ import "./FlatDataSunburst.css";
 
 import { HierarchyNode } from 'd3'
 
-import { flatData } from "../../flatData";
 import { getRootHierarchyNode } from '../../Services/SunburstItemRootHierarchyNode'
 import { getColorScale, SunburstHighlighter, SunburstItem, ConcreteSunburstContainer } from "../../sunburstLibrary";
 import { TreeNode } from "../../Services/Tree";
+import { flatData } from "./flatData";
 
 function FlatDataSunburst() {
     const centerColor = 'blue'

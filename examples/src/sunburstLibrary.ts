@@ -1,4 +1,5 @@
 import { SunburstItem, SunburstItemTreeNode, ConcreteSunburstContainer, SunburstItemNode, RectangleDimensions, SunburstContainer, HighlighterFactory, SunburstHighlighter, getColorScale } from '../../src';
+import AsyncSunburst from '../../src/Components/AsyncSunburst/AsyncSunburst';
 
 export {
     SunburstContainer,
@@ -9,5 +10,6 @@ export {
     type SunburstItemNode,
     type RectangleDimensions,
     type HighlighterFactory,
-    type getColorScale
+    getColorScale,
+    AsyncSunburst
 }

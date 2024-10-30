@@ -45,7 +45,7 @@ function HierarchicalDataSunburst() {
         <SunburstContainer<SunburstItemNode>
             getArcColor={getArcColor}
             getItemDetail={getItemDetail}
-            nodes={nodes}
+            items={nodes}
             radius={radius}
             svgDimensions={svgDimensions}
             highlighterFactory={{ get: (ref) => new SunburstHighlighter(ref, 'highlight') }}

@@ -35,11 +35,11 @@ export function ConcreteSunburstContainer({
   const sideLength = getMin([svgDimensions.width, svgDimensions.height], minWidth)
   const radius = sideLength / 2
 
-  const sunburstDimensions: [number, number] = [2 * Math.PI, Math.pow(radius, 2)]
+  const partitionSize: [number, number] = [2 * Math.PI, Math.pow(radius, 2)]
   
   const nodes = partitionTreeLayout<SunburstItem>(
     rootNode,
-    sunburstDimensions
+    partitionSize
   ).descendants()
 
   const getArcColor = (d: HierarchyRectangularNode<SunburstItemTreeNode>) =>
@@ -57,7 +57,7 @@ export function ConcreteSunburstContainer({
   return (
     <SunburstContainer<SunburstItemTreeNode>
       getArcColor={getArcColor}
-      nodes={nodes}
+      items={nodes}
       getItemDetail={getItemDetail}
       highlighterFactory={highlighterFactory}
       onMouseEnter={onMouseEnter}

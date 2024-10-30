@@ -7,6 +7,7 @@ import { AncestorHighlighterFactory } from './Services/Highlighter/Implementatio
 import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
 import { ConcreteSunburstContainerProps, ConcreteSunburstContainer } from './Components/ConcreteSunburstContainer/ConcreteSunburstContainer';
 import getColorScale from './Utils/getColorScale';
+import AsyncSunburst from './Components/AsyncSunburst/AsyncSunburst';
 
 export {
     AncestorHighlighterFactory,
@@ -16,6 +17,7 @@ export {
     ConcreteSunburstContainer,
     arcSelectorGenerator,
     getColorScale,
+    AsyncSunburst,
     type HighlighterFactory,
     type RectangleDimensions,
     type HasChildren,

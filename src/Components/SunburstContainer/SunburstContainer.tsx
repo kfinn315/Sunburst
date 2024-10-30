@@ -6,12 +6,13 @@ import { useState } from 'react'
 import { Sunburst, SunburstEvent } from '../Sunburst'
 import { HasID, RectangleDimensions } from '../../Types'
 import { HighlighterFactory } from '../../Services/Highlighter'
+import UnscaledSVG from '../UnscaledSVG/UnscaledSVG'
 
 export interface SunburstContainerProps<T> {
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
   highlighterFactory?: HighlighterFactory<HierarchyNode<T>>
-  nodes: HierarchyRectangularNode<T>[]
+  items: HierarchyRectangularNode<T>[]
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>
   radius: number
@@ -22,7 +23,7 @@ export default function SunburstContainer<T extends HasID>({
   getArcColor,
   getItemDetail,
   highlighterFactory,
-  nodes,
+  items,
   onMouseEnter,
   onMouseLeave,
   radius,
@@ -43,26 +44,22 @@ export default function SunburstContainer<T extends HasID>({
   return (
     <div className="visualization-wrapper">
       <div className="sunburst-wrapper">
-        <svg
-          width={svgDimensions.width}
-          height={svgDimensions.height}
-          viewBox={`0 0 ${String(svgDimensions.width)} ${String(svgDimensions.height)}`}
-        >
+        <UnscaledSVG width={svgDimensions.width} height={svgDimensions.height}>
           <Sunburst<T>
             getArcColor={getArcColor}
             highlighterFactory={highlighterFactory}
             isNodeClickable={() => false}
-            items={nodes}
+            items={items}
             // onClick={onClick}
             onMouseEnter={mouseEnterHandler}
             onMouseLeave={mouseLeaveHandler}
             radius={radius}
           />
-        </svg>
+        </UnscaledSVG>
       </div>
       <div className="detail">
         <label>{detail}</label>
       </div>
-    </div>
+    </div >
   )
 }

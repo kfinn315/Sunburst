@@ -4,8 +4,8 @@ import { TreeNode } from '../Types'
 
 export default function partitionTreeLayout<TData>(
   rootHierarchyNode: HierarchyNode<TreeNode<TData>>,
-  size: [number, number],
+  layoutSize: [number, number],
 ): HierarchyRectangularNode<TreeNode<TData>> {
-  const partitionLayout = partition<TreeNode<TData>>().size(size)
+  const partitionLayout = partition<TreeNode<TData>>().size(layoutSize)
   return partitionLayout(rootHierarchyNode)
 }
