@@ -17,8 +17,8 @@ function FlatDataSunburst() {
         <>
             <ConcreteSunburstContainer
                 dimensions={{ width: svgDimension, height: svgDimension }}
-                highlighterFactory={{ get: (ref) => new SunburstHighlighter(ref, 'highlight') }}
-                rootNode={rootHierarchyNode}
+                highlighterFactory={(ref) => new SunburstHighlighter(ref, 'highlight')}
+                rootHierarchyNode={rootHierarchyNode}
                 colorScale={colorScale}
                 centerColor={centerColor}
             />

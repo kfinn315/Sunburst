@@ -3,8 +3,8 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 
 import { HasID, MutableRefElement } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
-import { HighlighterFactory } from '../../Services/Highlighter'
 import { d3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
+import { CreateHighlighter } from '../../Services/Highlighter'
 
 export interface SunburstProps<TDatum> {
   centerElement?: JSX.Element
@@ -16,7 +16,7 @@ export interface SunburstProps<TDatum> {
   onMouseEnter?: SunburstEvent<TDatum>
   onMouseLeave?: SunburstEvent<TDatum>
   radius: number
-  highlighterFactory?: HighlighterFactory<HierarchyNode<TDatum>>
+  highlighterFactory?: CreateHighlighter<HierarchyNode<TDatum>>
 }
 
 export default function Sunburst<TDatum extends HasID>(
@@ -37,7 +37,7 @@ export default function Sunburst<TDatum extends HasID>(
 
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
 
-  const highlighter = highlighterFactory?.get(gRef)
+  const highlighter = highlighterFactory?.(gRef)
 
   const mouseEnterHandler = useCallback((event: MouseEvent, d: HierarchyNode<TDatum>): void => {
     highlighter?.add(d)
@@ -75,10 +75,7 @@ export default function Sunburst<TDatum extends HasID>(
   }, [items, transitionDuration, radius, clickHandler, mouseEnterHandler, mouseLeaveHandler, getArcColor, getMouseArcPathClass, getNodeID])
 
   return (
-    <g ref={gRef}
-      preserveAspectRatio="xMinYMin meet"
-      transform={`translate(${String(radius)},${String(radius)})`}
-    >
+    <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(radius)},${String(radius)})`}>
       {centerElement}
     </g>
   )

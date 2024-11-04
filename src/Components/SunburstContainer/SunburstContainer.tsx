@@ -5,13 +5,13 @@ import { useState } from 'react'
 
 import { Sunburst, SunburstEvent } from '../Sunburst'
 import { HasID, RectangleDimensions } from '../../Types'
-import { HighlighterFactory } from '../../Services/Highlighter'
+import { CreateHighlighter } from '../../Services/Highlighter'
 import UnscaledSVG from '../UnscaledSVG/UnscaledSVG'
 
 export interface SunburstContainerProps<T> {
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
-  highlighterFactory?: HighlighterFactory<HierarchyNode<T>>
+  highlighterFactory?: CreateHighlighter<HierarchyNode<T>>
   items: HierarchyRectangularNode<T>[]
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>

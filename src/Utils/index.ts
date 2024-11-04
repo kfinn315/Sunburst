@@ -1,9 +1,9 @@
 import getColorScale from './getColorScale';
-import getHierarchyNodeAncestors from './getHierarchyNodeAncestors';
+import getHierarchyNodeAncestors from './d3/getHierarchyNodeAncestors';
 import getLastArrayItem from './getLastArrayItem';
 import isNotNull from './isNotNull';
-import partitionTreeLayout from './partitionTreeLayout';
 import getMin from './getMin';
-import getHierarchyNodes from './getHierarchyNodes';
+import getHierarchyNodes from './d3/getHierarchyNodes';
+import { getCirclePartitionLayout } from './d3/getCirclePartitionLayout';
 
-export { getColorScale, getHierarchyNodeAncestors, getLastArrayItem, isNotNull, partitionTreeLayout, getMin, getHierarchyNodes }
+export { getColorScale, getHierarchyNodeAncestors, getLastArrayItem, isNotNull, getMin, getHierarchyNodes, getCirclePartitionLayout }

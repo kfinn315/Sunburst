@@ -1,13 +1,30 @@
 import './App.css'
+
+import { useCallback, useState } from 'react'
+
 import FlatDataSunburst from './Components/FlatDataSunburst/FlatDataSunburst'
 import HierarchicalDataSunburst from './Components/HierarchicalDataSunburst/HierarchicalDataSunburst'
-import LiveCemeterySunburst from './Components/LiveCemeterySunburst/LiveCemeterySunburst'
+import { CemeteryDataProvider, LiveCemeterySunburst } from "./Components/LiveCemeterySunburst"
+import { DataProvider, SunburstItemNode } from './sunburstLibrary'
 
 function App() {
+  const [dataProvider, setDataProvider] = useState<DataProvider<SunburstItemNode>>(new CemeteryDataProvider())
+
+  const arcClickHandler = useCallback((e: MouseEvent, d): void => {
+    setDataProvider(new CemeteryDataProvider(d.data.id))
+  }, [])
 
   return (
     <div>
       <h1>Sunburst Demos</h1>
+      <div className="content">
+        <h2>Cemetery Sunburst</h2>
+        <LiveCemeterySunburst
+          dataProvider={dataProvider}
+          onArcClick={arcClickHandler}
+          onMouseEnter={(e, d) => { console.log(d.data.name, d.data.size) }}
+        />
+      </div>
       <div className="content">
         <h2>Flat Data Demo</h2>
         <FlatDataSunburst />
@@ -15,10 +32,6 @@ function App() {
       <div className="content">
         <h2>Hierarchical Data Demo</h2>
         <HierarchicalDataSunburst />
-      </div>
-      <div className="content">
-        <h2>Cemetery Sunburst</h2>
-        <LiveCemeterySunburst />
       </div>
     </div>
   )

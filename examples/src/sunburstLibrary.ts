@@ -1,15 +1,20 @@
-import { SunburstItem, SunburstItemTreeNode, ConcreteSunburstContainer, SunburstItemNode, RectangleDimensions, SunburstContainer, HighlighterFactory, SunburstHighlighter, getColorScale } from '../../src';
-import AsyncSunburst from '../../src/Components/AsyncSunburst/AsyncSunburst';
+import { SunburstItem, SunburstItemTreeNode, ConcreteSunburstContainer, SunburstItemNode, RectangleDimensions, SunburstContainer, SunburstHighlighter, getColorScale, DataProvider, APIResponse, AsyncSunburst, getCirclePartitionLayout, SunburstEvent } from '../../src';
+import { CreateHighlighter } from '../../src/Services/Highlighter/Types';
 
 export {
     SunburstContainer,
     ConcreteSunburstContainer,
     SunburstHighlighter,
-    type SunburstItem,
-    type SunburstItemTreeNode,
-    type SunburstItemNode,
-    type RectangleDimensions,
-    type HighlighterFactory,
+    AsyncSunburst,
+    getCirclePartitionLayout,
     getColorScale,
-    AsyncSunburst
+    type CreateHighlighter,
+    type SunburstItem,
+    type SunburstItemNode,
+    type SunburstItemTreeNode,
+    type RectangleDimensions,
+    type GetHighlighter,
+    type DataProvider,
+    type APIResponse,
+    type SunburstEvent,
 }

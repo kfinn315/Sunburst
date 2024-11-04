@@ -1,19 +1,20 @@
 import { HierarchyNode, HierarchyRectangularNode, ScaleLinear } from 'd3'
 
-import { RectangleDimensions, SunburstItem, SunburstItemTreeNode } from '../../Types'
+import { RectangleDimensions, SunburstItemTreeNode } from '../../Types'
 import { SunburstEvent } from '../Sunburst'
-import { HighlighterFactory } from '../../Services/Highlighter'
+import { CreateHighlighter } from '../../Services/Highlighter'
 import { SunburstContainer } from '../SunburstContainer'
-import { partitionTreeLayout, getMin } from '../../Utils'
+import { getMin } from '../../Utils'
+import { getCirclePartitionLayout } from '../../Utils/d3/getCirclePartitionLayout'
 
 export interface ConcreteSunburstContainerProps {
   dimensions: RectangleDimensions
   minWidth?: number
-  rootNode: HierarchyNode<SunburstItemTreeNode>
+  rootHierarchyNode: HierarchyNode<SunburstItemTreeNode>
   onClick?: SunburstEvent<SunburstItemTreeNode>
   onMouseEnter?: SunburstEvent<SunburstItemTreeNode>
   onMouseLeave?: SunburstEvent<SunburstItemTreeNode>
-  highlighterFactory?: HighlighterFactory<HierarchyNode<SunburstItemTreeNode>>
+  highlighterFactory?: CreateHighlighter<HierarchyNode<SunburstItemTreeNode>>
   colorScale: ScaleLinear<string, string>
   centerColor: string
 }
@@ -24,7 +25,7 @@ export interface ConcreteSunburstContainerProps {
  */
 export function ConcreteSunburstContainer({
   dimensions: svgDimensions,
-  rootNode,
+  rootHierarchyNode,
   highlighterFactory,
   onMouseEnter,
   onMouseLeave,
@@ -35,12 +36,7 @@ export function ConcreteSunburstContainer({
   const sideLength = getMin([svgDimensions.width, svgDimensions.height], minWidth)
   const radius = sideLength / 2
 
-  const partitionSize: [number, number] = [2 * Math.PI, Math.pow(radius, 2)]
-  
-  const nodes = partitionTreeLayout<SunburstItem>(
-    rootNode,
-    partitionSize
-  ).descendants()
+  const descendantNodes = getCirclePartitionLayout<SunburstItemTreeNode>(radius)(rootHierarchyNode).descendants()
 
   const getArcColor = (d: HierarchyRectangularNode<SunburstItemTreeNode>) =>
     d.data.data?.color ? colorScale(d.data.data.color) : centerColor
@@ -57,7 +53,7 @@ export function ConcreteSunburstContainer({
   return (
     <SunburstContainer<SunburstItemTreeNode>
       getArcColor={getArcColor}
-      items={nodes}
+      items={descendantNodes}
       getItemDetail={getItemDetail}
       highlighterFactory={highlighterFactory}
       onMouseEnter={onMouseEnter}

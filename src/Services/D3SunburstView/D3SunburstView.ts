@@ -19,14 +19,13 @@ export interface D3SunburstViewProps<TNode> {
 
 export class D3SunburstView<TNode> {
   constructor(
-    private readonly ref: MutableRefObject<SVGGElement | null>,
-    private readonly props: D3SunburstViewProps<TNode>,
+    private readonly ref: MutableRefObject<SVGGElement | null>
   ) { }
 
   /**
    * Initializes and updates the sunburst chart based on the provided items data
    */
-  layout(items: HierarchyRectangularNode<TNode>[] = []): void {
+  layout(items: HierarchyRectangularNode<TNode>[] = [], props: D3SunburstViewProps<TNode> = {}): void {
     const {
       arcs,
       transitionDuration,
@@ -36,7 +35,7 @@ export class D3SunburstView<TNode> {
       onClick,
       onMouseEnter,
       onMouseLeave,
-    } = this.props
+    } = props
 
     if (this.ref.current) {
       const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(this.ref.current)

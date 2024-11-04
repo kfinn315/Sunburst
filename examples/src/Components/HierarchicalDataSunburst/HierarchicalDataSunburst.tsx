@@ -1,9 +1,9 @@
 import "./HierarchicalDataSunburst.css"
 
-import { hierarchy, HierarchyNode, HierarchyRectangularNode, partition, scaleLinear } from 'd3';
+import { hierarchy, HierarchyNode, HierarchyRectangularNode, scaleLinear } from 'd3';
 
 import { hierarchicalData } from './hierarchicalData';
-import { RectangleDimensions, SunburstItemNode, SunburstContainer,SunburstHighlighter } from "../../sunburstLibrary";
+import { RectangleDimensions, SunburstItemNode, SunburstContainer, SunburstHighlighter, getCirclePartitionLayout } from "../../sunburstLibrary";
 
 function HierarchicalDataSunburst() {
     const svgSideLength = 1400
@@ -14,13 +14,12 @@ function HierarchicalDataSunburst() {
     }
 
     const radius = svgSideLength / 2;
-    const nodes = getHierarchyNodes(radius, hierarchicalData);
+    const hierarchyNodes = getHierarchyNodes(radius, hierarchicalData);
 
-    function getHierarchyNodes(radius: number, hierarchicalData: SunburstItemNode) {
-        const partitionLayout = partition<SunburstItemNode>().size([2 * Math.PI, radius * radius]);
+    function getHierarchyNodes(radius: number, hierarchicalData: SunburstItemNode): HierarchyRectangularNode<SunburstItemNode>[] {
+        const partitionLayout = getCirclePartitionLayout<SunburstItemNode>(radius)
         const rootHierarchyNode = hierarchy(hierarchicalData).sum(d => d.size).sort((a, b) => { return a.data.size - b.data.size; });
-        const nodes = partitionLayout(rootHierarchyNode).descendants();
-        return nodes;
+        return partitionLayout(rootHierarchyNode).descendants();
     }
 
     const centerColor = 'blue'
@@ -45,10 +44,10 @@ function HierarchicalDataSunburst() {
         <SunburstContainer<SunburstItemNode>
             getArcColor={getArcColor}
             getItemDetail={getItemDetail}
-            items={nodes}
+            items={hierarchyNodes}
             radius={radius}
             svgDimensions={svgDimensions}
-            highlighterFactory={{ get: (ref) => new SunburstHighlighter(ref, 'highlight') }}
+            highlighterFactory={(ref) => new SunburstHighlighter(ref, 'highlight')}
         />
         <div className="data">
             <h2>Data</h2>

@@ -1,8 +1,7 @@
-import { Highlighter, ElementListMap, SelectorGenerator, ElementGroup, ElementMap, HighlighterFactory } from './Types';
+import { Highlighter, ElementListMap, SelectorGenerator, ElementGroup, ElementMap, CreateHighlighter } from './Types';
 import BaseHighlighter from './Implementations/BaseHighlighter';
 import AncestorHighlighter from './Implementations/AncestorHighlighter/AncestorHighlighter';
 import { SunburstHighlighter } from './Implementations/SunburstHighlighter/SunburstHighlighter';
-import { AncestorHighlighterFactory } from './Implementations/AncestorHighlighter/AncestorHighlighterFactory';
 
 export {
   type Highlighter,
@@ -10,9 +9,8 @@ export {
   type ElementMap,
   type SelectorGenerator,
   type ElementGroup,
-  type HighlighterFactory,
+  type CreateHighlighter,
   BaseHighlighter,
   AncestorHighlighter,
-  AncestorHighlighterFactory,
-  SunburstHighlighter
+  SunburstHighlighter,
 }

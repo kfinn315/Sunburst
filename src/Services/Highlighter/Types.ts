@@ -50,6 +50,4 @@ export interface ElementGroup<TElement> {
 }
 
 
-export interface HighlighterFactory<TNodeData> {
-  get(ref: MutableRefElement): Highlighter<TNodeData>;
-}
+export type CreateHighlighter<TNodeData> = (ref: MutableRefElement) => Highlighter<TNodeData>
