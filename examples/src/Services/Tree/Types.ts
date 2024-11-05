@@ -7,8 +7,4 @@ export interface TreeNode<TData> {
   children: TreeNode<TData>[]
 }
 
-export interface IDGenerator {
-  next(): number;
-}
-
 export type CreateTree<T> = (items: readonly T[], getSegmentIterator: GetSegmentIterator<T>) => TreeNode<T>;

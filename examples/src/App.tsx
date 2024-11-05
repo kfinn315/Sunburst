@@ -11,7 +11,7 @@ function App() {
   const [dataProvider, setDataProvider] = useState<DataProvider<SunburstItemNode>>(new CemeteryDataProvider())
 
   const arcClickHandler = useCallback((e: MouseEvent, d): void => {
-    setDataProvider(new CemeteryDataProvider(d.data.id))
+    setDataProvider(new CemeteryDataProvider({ id: Math.round(Math.random()*100) }))
   }, [])
 
   return (

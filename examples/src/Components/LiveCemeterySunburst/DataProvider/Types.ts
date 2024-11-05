@@ -1,5 +1,3 @@
-import { SunburstItemNode } from "../../../sunburstLibrary";
-
 export interface Grave {
     id: number;
     cemeteryId: number;

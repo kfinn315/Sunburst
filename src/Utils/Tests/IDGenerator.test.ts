@@ -1,11 +1,11 @@
-import { getIDGenerator } from "../getIDGenerator"
+import { IDGenerator, BasicIDGenerator } from "../IDGenerator"
 
 
 describe('getIDGenerator', () => {
-    let idGenerator: { next(): number }
+    let idGenerator: IDGenerator
 
     beforeEach(() => {
-        idGenerator = getIDGenerator()
+        idGenerator = new BasicIDGenerator()
     })
 
     describe('next', () => {

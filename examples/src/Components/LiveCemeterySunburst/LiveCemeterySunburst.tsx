@@ -6,13 +6,13 @@ import { HierarchyRectangularNode, hierarchy } from 'd3';
 import { AsyncSunburst, DataProvider, SunburstHighlighter, SunburstItemNode, getCirclePartitionLayout, SunburstEvent } from "../../sunburstLibrary";
 
 interface LiveCemeterySunburstProps {
-    dataProvider: DataProvider<HierarchyRectangularNode<SunburstItemNode>[]>
+    dataProvider: DataProvider<HierarchyRectangularNode<SunburstItemNode>>
     onArcClick?: SunburstEvent<SunburstItemNode>
     onMouseEnter?: SunburstEvent<SunburstItemNode>
     onMouseLeave?: SunburstEvent<SunburstItemNode>
 }
 
-function getSunburstItemNodeDescendants(hierarchicalData: SunburstItemNode, radius: number): HierarchyRectangularNode<SunburstItemNode>[] {
+function getRectangularHierarchyNodes(hierarchicalData: SunburstItemNode, radius: number): HierarchyRectangularNode<SunburstItemNode>[] {
     const partitionLayout = getCirclePartitionLayout<SunburstItemNode>(radius);
     const rootHierarchyNode = hierarchy(hierarchicalData).sum(item => item.size).sort((nodeA, nodeB) => nodeA.data.size - nodeB.data.size);
     return partitionLayout(rootHierarchyNode).descendants();
@@ -32,7 +32,7 @@ function LiveCemeterySunburst({ dataProvider, onArcClick, onMouseEnter, onMouseL
             highlighterFactory={createHighlighter}
             dataProvider={dataProvider}
             radius={150}
-            getHierarchyNodeDescendants={getSunburstItemNodeDescendants}
+            getRectangularHierarchyNodes={getRectangularHierarchyNodes}
             // centerElement={center}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

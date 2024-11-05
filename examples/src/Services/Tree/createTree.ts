@@ -1,6 +1,6 @@
 import { addToNodeRecursively } from './addToNodeRecursively'
 import { KNode } from './KNode'
-import { getIDGenerator } from './getIDGenerator'
+import { BasicIDGenerator } from '../../../../src/Utils/IDGenerator'
 import { TreeNode } from './Types'
 import { GetSegmentIterator } from "./GetSegmentIterator";
 
@@ -13,7 +13,7 @@ export default function createTree<TData>(
   items: readonly TData[],
   getSegmentIterator: GetSegmentIterator<TData>
 ): TreeNode<TData> {
-  const idGenerator = getIDGenerator()
+  const idGenerator = new BasicIDGenerator()
 
   const id = idGenerator.next()
   const rootNode = new KNode<TData>(id, 'root')

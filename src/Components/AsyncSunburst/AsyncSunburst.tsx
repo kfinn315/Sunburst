@@ -3,18 +3,17 @@ import './AsyncSunburst.css'
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useEffect, useMemo, useRef } from 'react'
 
-import { HasID, MutableRefElement, SunburstItemNode } from '../../Types'
+import { MutableRefElement, SunburstItemNode } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
 import { CreateHighlighter } from '../../Services/Highlighter'
 import { D3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
 import UnscaledSVG from '../UnscaledSVG'
 import { D3SunburstViewProps } from '../../Services/D3SunburstView/D3SunburstView'
 import { DataProvider, GetHierarachyNodeDescendants } from './Types';
-import { getColorScale } from '../../Utils'
 
 export interface AsyncSunburstProps<TDatum> {
   centerElement?: JSX.Element
-  dataProvider: DataProvider<TDatum[]>
+  dataProvider: DataProvider<TDatum>
   getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
   highlighterFactory?: CreateHighlighter<HierarchyNode<TDatum>>
   isNodeClickable: boolean | ((d: HierarchyRectangularNode<TDatum>) => boolean)
@@ -23,10 +22,14 @@ export interface AsyncSunburstProps<TDatum> {
   onMouseLeave?: SunburstEvent<TDatum>
   radius: number
   transitionDuration?: number
-  getHierarchyNodeDescendants: GetHierarachyNodeDescendants<TDatum>
+  getRectangularHierarchyNodes: GetHierarachyNodeDescendants<TDatum>
 }
 
-export default function AsyncSunburst<TDatum extends HasID & { size: number }>(
+/**
+ * Sunburst Component utilizing a DataProvider to provide data asynchronously
+ *
+ */
+export default function AsyncSunburst<TDatum extends SunburstItemNode = SunburstItemNode>(
   props: AsyncSunburstProps<TDatum>,
 ): JSX.Element {
   const {
@@ -40,20 +43,18 @@ export default function AsyncSunburst<TDatum extends HasID & { size: number }>(
     onMouseEnter,
     onMouseLeave,
     radius = 1000,
-    getHierarchyNodeDescendants
+    getRectangularHierarchyNodes,
 
   } = props
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
   const highlighter = highlighterFactory?.(gRef)
 
-  const svgDimension = 2 * radius
-
   const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
 
-  const colorGradient: [string, string] = useMemo(() => (['orange', 'blue']), [])
+  const svgDimension = 2 * radius
 
   useEffect(() => {
-    const d3Props: D3SunburstViewProps<SunburstItemNode> = {
+    const d3Props: D3SunburstViewProps<TDatum> = {
       transitionDuration,
       arcs: new DefaultArcs(radius),
       onClick: (event: MouseEvent, d: HierarchyNode<TDatum>): void => {
@@ -70,7 +71,7 @@ export default function AsyncSunburst<TDatum extends HasID & { size: number }>(
       getArcColor,
       getMouseArcPathClass: (d: HierarchyRectangularNode<TDatum>): string | null => {
         if (typeof (isNodeClickable) == "boolean") {
-          return false;
+          return isNodeClickable ? 'clickable' : false;
         }
 
         return isNodeClickable(d) ? 'clickable' : null
@@ -80,29 +81,21 @@ export default function AsyncSunburst<TDatum extends HasID & { size: number }>(
       },
     }
 
-    // color arcs based on id value, with a color scale based on ``colorGradient`` removing id === -1. id === -1 gets unknownColor.
-    function addColorProperty(colorGradient: [string, string], unknownColor: string, items: TDatum[]) {
-      const getColor = (item: TDatum) => item.id
-      const colorScale = getColorScale<TDatum>(items.filter(x => x.id !== -1), getColor, colorGradient, unknownColor)
-      console.log(colorScale.domain())
-      return items.map(item => ({ ...item, color: colorScale(item.id == -1 ? NaN : getColor(item)) }))
-    }
-
     dataProvider.get().then(response => {
+      if (!response) {
+        fail("Empty response from dataProvider.get()")
+      }
       if (!response.success) {
         fail(response.error)
       }
-      const data = addColorProperty(colorGradient, 'black', response.data)
-      console.log(data)
-      const rootNode: SunburstItemNode = { id: 0, name: 'root', children: data }
 
-      const hierarchyNodeDescendants = getHierarchyNodeDescendants(rootNode, radius)
-      d3SunburstView.layout(hierarchyNodeDescendants, d3Props)
+      const hierarchyNodes = getRectangularHierarchyNodes(response.data, radius)
+      d3SunburstView.layout(hierarchyNodes, d3Props)
 
     }).catch((reason) => {
       console.error(reason)
     })
-  }, [colorGradient, d3SunburstView, dataProvider, getArcColor, getHierarchyNodeDescendants, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
+  }, [d3SunburstView, dataProvider, getArcColor, getRectangularHierarchyNodes, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
 
   return (
     <UnscaledSVG width={svgDimension} height={svgDimension}>

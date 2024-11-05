@@ -3,7 +3,6 @@ import { TreeNode } from './Types';
 import { Sunburst, SunburstEvent, SunburstProps } from './Components/Sunburst';
 import { Highlighter, SelectorGenerator } from './Services/Highlighter';
 import { SunburstContainer, SunburstContainerProps } from './Components/SunburstContainer';
-// import { AncestorHighlighterFactory } from './Services/Highlighter/Implementations/AncestorHighlighter/AncestorHighlighterFactory';
 import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
 import { ConcreteSunburstContainerProps, ConcreteSunburstContainer } from './Components/ConcreteSunburstContainer/ConcreteSunburstContainer';
 import getColorScale from './Utils/getColorScale';
@@ -11,9 +10,10 @@ import AsyncSunburst from './Components/AsyncSunburst/AsyncSunburst';
 import { DataProvider, APIResponse } from './Components/AsyncSunburst';
 import { getCirclePartitionLayout } from './Utils/d3/getCirclePartitionLayout';
 import { GetHighlighter } from '../coverage/dist/Services/Highlighter/Types';
+import { IDGenerator, BasicIDGenerator } from './Utils/IDGenerator';
+import { CreateHighlighter } from './Services/Highlighter/Types';
 
 export {
-    // AncestorHighlighterFactory,
     Sunburst,
     SunburstContainer,
     SunburstHighlighter,
@@ -22,6 +22,8 @@ export {
     getColorScale,
     AsyncSunburst,
     getCirclePartitionLayout,
+    BasicIDGenerator,
+    type IDGenerator,
     type GetHighlighter,
     type RectangleDimensions,
     type HasChildren,
@@ -37,4 +39,5 @@ export {
     type TreeNode,
     type DataProvider,
     type APIResponse,
+    type CreateHighlighter,
 }
