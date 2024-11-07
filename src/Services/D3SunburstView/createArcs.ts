@@ -1,40 +1,78 @@
-import { HierarchyRectangularNode, Selection } from "d3";
-import { Arcs } from "../Arcs";
+import { Arc, HierarchyRectangularNode, Selection } from "d3";
 import { getChildSelection } from "./getChildSelection";
+import { SunburstEvent } from "./Types";
 
 interface CreateArcsProps<TNode> {
-  arcs: Arcs;
+  arc: Arc<unknown, ArcCoordinates>;
   baseSelection: Selection<SVGGElement, HierarchyRectangularNode<TNode>, null, undefined>;
   getArcColor: (d: HierarchyRectangularNode<TNode>) => string;
   getNodeID: (d: HierarchyRectangularNode<TNode>) => number;
+  onClick?: SunburstEvent<TNode>;
+  onMouseEnter?: SunburstEvent<TNode>;
+  onMouseLeave?: SunburstEvent<TNode>;
   items: HierarchyRectangularNode<TNode>[];
   transitionDuration: number;
+  getText?: (d: HierarchyRectangularNode<TNode>) => string | undefined
 }
 
-export function createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration }: CreateArcsProps<TNode>) {
-  const arcGroupSelection = getChildSelection<TNode>(baseSelection, 'arc');
+export function createArcs<TNode>({ arc, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText }: CreateArcsProps<TNode>) {
 
-  const arcSelection = arcGroupSelection
-    .selectAll<SVGPathElement, HierarchyRectangularNode<TNode>>('path')
+  function getAngle(d) {
+    // Offset the angle by 90 deg since the '0' degree axis for arc is Y axis, while
+    // for text it is the X axis.
+    const thetaDeg = (180 / Math.PI * (arc.startAngle()(d) + arc.endAngle()(d)) / 2 - 90);
+    // If we are rotating the text by more than 90 deg, then "flip" it.
+    // This is why "text-anchor", "middle" is important, otherwise, this "flip" would
+    // a little harder.
+    return (thetaDeg > 90) ? thetaDeg - 180 : thetaDeg;
+  }
+
+  const selection = getChildSelection<TNode>(baseSelection, 'arc');
+
+  //g
+  const g = selection
+    .selectAll<SVGPathElement, HierarchyRectangularNode<TNode>>('g')
     .data(items, getNodeID);
+  const gEnter = g.enter().append('g');
+  const gExit = g.exit().remove()
 
-  const arcsEnter = arcSelection.enter().append('path');
-
-  arcsEnter
-    .merge(arcSelection)
+  //path
+  const path = g.select('path')
+  const pathEnter = gEnter.append('path')
+  pathEnter
+    .on('mouseenter', (ev: MouseEvent, d) => { onMouseEnter?.(ev, d); })
+    .on('mouseout', (ev: MouseEvent, d) => { onMouseLeave?.(ev, d); })
+    .on('click', (ev: MouseEvent, d) => { onClick?.(ev, d); })
+    .attr('data-id', getNodeID)
+    .merge(path)
     .transition()
     .duration(transitionDuration)
     .attr('fill', getArcColor)
-    .attr('d', arcs.padded)
-    .attr('data-id', getNodeID);
+    .attr('d', arc)
 
-  //animate arc removal
-  arcSelection
-    .exit<HierarchyRectangularNode<TNode>>()
+  gExit.select('path').exit().remove()//.transition().duration(transitionDuration).attr('d', arcs.zero).remove()
+
+  //text
+  const text = g.select('text')
+  const textEnter = gEnter.append('text')
+  textEnter.merge(text)
+    .text(getText)
+    .attr("text-anchor", "middle")
+    .attr("dx", "6") // margin
+    .attr("dy", ".35em") // vertical-align
+    .attr("pointer-events", "none")
     .transition()
     .duration(transitionDuration)
-    .attr('d', arcs.zero)
-    .remove();
+    .attr("display", function (d) { return d.depth ? null : "none"; }) // hide inner ring
+    .attr("transform", function (d) {
+      if (d.depth > 0) {
+        return "translate(" + arc.centroid(d) + ")" +
+          "rotate(" + getAngle(d) + ")";
+      } else {
+        return null;
+      }
+    })
+    .attr("x", function (d) { return d.x; })
 
-  return arcSelection;
+  return selection;
 }

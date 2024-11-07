@@ -32,6 +32,7 @@ function LiveCemeterySunburst({ dataProvider, onArcClick, onMouseEnter, onMouseL
             highlighterFactory={createHighlighter}
             dataProvider={dataProvider}
             radius={150}
+            svgDimension={{height: 700, width: 700}}
             getRectangularHierarchyNodes={getRectangularHierarchyNodes}
             // centerElement={center}
             onMouseEnter={onMouseEnter}

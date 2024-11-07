@@ -1,9 +1,9 @@
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react'
 
 import { HasID, MutableRefElement } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
-import { d3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
+import { D3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
 import { CreateHighlighter } from '../../Services/Highlighter'
 
 export interface SunburstProps<TDatum> {
@@ -37,6 +37,8 @@ export default function Sunburst<TDatum extends HasID>(
 
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
 
+  const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
+
   const highlighter = highlighterFactory?.(gRef)
 
   const mouseEnterHandler = useCallback((event: MouseEvent, d: HierarchyNode<TDatum>): void => {
@@ -62,7 +64,7 @@ export default function Sunburst<TDatum extends HasID>(
   }, [])
 
   useLayoutEffect(() => {
-    d3SunburstView(gRef, items, {
+    d3SunburstView.layout(items, {
       arcs: new DefaultArcs(radius),
       onClick: clickHandler,
       onMouseEnter: mouseEnterHandler,
@@ -72,7 +74,7 @@ export default function Sunburst<TDatum extends HasID>(
       getNodeID,
       transitionDuration,
     })
-  }, [items, transitionDuration, radius, clickHandler, mouseEnterHandler, mouseLeaveHandler, getArcColor, getMouseArcPathClass, getNodeID])
+  }, [clickHandler, d3SunburstView, getArcColor, getMouseArcPathClass, getNodeID, items, mouseEnterHandler, mouseLeaveHandler, radius, transitionDuration])
 
   return (
     <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(radius)},${String(radius)})`}>

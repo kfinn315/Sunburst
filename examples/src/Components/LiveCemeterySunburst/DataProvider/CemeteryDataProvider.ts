@@ -8,20 +8,27 @@ interface GetProps {
 export class CemeteryDataProvider implements DataProvider<SunburstItemNode> {
     private url: string = "http://localhost:5164/api/v1/Cemetery/summary?id="
 
-    constructor(private readonly props: GetProps = {}) { }
+    constructor(private readonly props: GetProps = { id: 2 }) { }
 
     get() {
-        const { id = 3 } = this.props;
+        const { id } = this.props;
         return fetch(this.url + id, { method: "GET" })
             .then(response => response.json())
-            .then((response: APIResponse<SunburstItemNode[]>): APIResponse<SunburstItemNode> => {
-                if (response.success) {
-                    const rootNode = { id: 0, name: 'Root', size: 0, children: modifyResponseData(response.data), } //create a root node to contain the response data array
-                    return { ...response, data: rootNode };
+            .then((response: APIResponse<SunburstItemNode>): APIResponse<SunburstItemNode> => {
+                if (!response.success) {
+                    throw Error(response.message)
                 }
-                fail(response.error)
+
+                const rootNode = { id: 0, name: response.data?.name + " " + response.data?.size, size: 0, children: modifyResponseData(response.data?.children), } //create a root node to contain the response data array
+
+                return { ...response, data: rootNode };
+            }).catch(reason => {
+                if (reason instanceof Error) {
+                    throw reason
+                } else {
+                    throw Error(reason)
+                }
             })
-            .catch((error) => console.error(error));
     }
 }
 
@@ -32,9 +39,8 @@ function modifyResponseData(items: SunburstItemNode[] | undefined): SunburstItem
 
     const withColor = addColorProperty({ colorRange: colorGradient, unknownColor, items })
 
-    //add unique ids
-    // const idGenerator = new BasicIDGenerator(1)
-    return withColor.map(x => ({ ...x, children: x.children?.map(y => ({ ...y, id: x.id + "." + y.id })) }))
+    //modify child ids to be unique
+    return withColor.map(x => ({ ...x, name: x.name + " " + x.size, size: x.children ? 0 : x.size, children: x.children?.map(y => ({ ...y, id: x.id + "." + y.id })) }))
 }
 
 // Add color to items based on id value, with a linear scale using ``colorRange`` as the range. 

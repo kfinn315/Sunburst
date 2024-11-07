@@ -4,7 +4,6 @@ import { MutableRefObject } from 'react'
 import { SunburstEvent } from './Types'
 import { Arcs } from '../Arcs';
 import { createArcs } from './createArcs';
-import { createMouseArcs } from './createMouseArcs';
 
 export interface D3SunburstViewProps<TNode> {
   arcs: Arcs
@@ -15,6 +14,7 @@ export interface D3SunburstViewProps<TNode> {
   onClick: SunburstEvent<TNode>
   onMouseEnter: SunburstEvent<TNode>
   onMouseLeave: SunburstEvent<TNode>
+  getText?: (d: HierarchyRectangularNode<TNode>) => string
 }
 
 export class D3SunburstView<TNode> {
@@ -30,43 +30,18 @@ export class D3SunburstView<TNode> {
       arcs,
       transitionDuration,
       getArcColor,
-      getMouseArcPathClass,
+      // getMouseArcPathClass,
       getNodeID,
       onClick,
       onMouseEnter,
       onMouseLeave,
+      getText,
     } = props
 
     if (this.ref.current) {
       const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(this.ref.current)
 
-      createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration, })
-      createMouseArcs<TNode>({ arcs, baseSelection, getPathClass: getMouseArcPathClass, getNodeID, items, onClick, onMouseEnter, onMouseLeave, transitionDuration, })
+      createArcs<TNode>({ arc: arcs.padded, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText })
     }
-  }
-}
-
-export function d3SunburstView<TNode>(
-  ref: MutableRefObject<SVGGElement | null>,
-  items: HierarchyRectangularNode<TNode>[],
-  props: D3SunburstViewProps<TNode>,
-) {
-
-  if (ref.current) {
-    const {
-      arcs,
-      transitionDuration,
-      getArcColor,
-      getMouseArcPathClass,
-      getNodeID,
-      onClick,
-      onMouseEnter,
-      onMouseLeave,
-    } = props
-
-    const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(ref.current)
-
-    createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration, })
-    createMouseArcs<TNode>({ arcs, baseSelection, getPathClass: getMouseArcPathClass, getNodeID, items, onClick, onMouseEnter, onMouseLeave, transitionDuration, })
   }
 }

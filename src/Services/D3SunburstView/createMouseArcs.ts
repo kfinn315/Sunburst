@@ -1,10 +1,10 @@
-import { HierarchyRectangularNode, Selection } from "d3";
-import { Arcs } from "../Arcs";
+import { Arc, HierarchyRectangularNode, Selection } from "d3";
+import { ArcCoordinates } from "../Arcs";
 import { getChildSelection } from "./getChildSelection";
 import { SunburstEvent } from "./Types";
 
 interface CreateMouseArcsProps<TNode> {
-  arcs: Arcs;
+  arc: Arc<unknown, ArcCoordinates>;
   baseSelection: Selection<SVGGElement, HierarchyRectangularNode<TNode>, null, undefined>;
   getPathClass: (d: HierarchyRectangularNode<TNode>) => string | null;
   getNodeID: (d: HierarchyRectangularNode<TNode>) => number;
@@ -18,7 +18,7 @@ interface CreateMouseArcsProps<TNode> {
 /**
  * Create a hidden g element to handle mouse pointer interactions
  */
-export function createMouseArcs<TNode>({ arcs, baseSelection, getPathClass, getNodeID, items, onMouseEnter, onMouseLeave, onClick, transitionDuration }: CreateMouseArcsProps<TNode>) {
+export function createMouseArcs<TNode>({ arc, baseSelection, getPathClass, getNodeID, items, onMouseEnter, onMouseLeave, onClick, transitionDuration }: CreateMouseArcsProps<TNode>) {
 
   const mouseGroupSelection = getChildSelection<TNode>(baseSelection, 'mousearc');
 
@@ -41,14 +41,14 @@ export function createMouseArcs<TNode>({ arcs, baseSelection, getPathClass, getN
     .merge(mouseArcSelection)
     .transition()
     .duration(transitionDuration)
-    .attr('d', arcs.standard);
+    .attr('d', arc);
 
   //animate removal - arc radius becomes zero
   mouseArcSelection
     .exit<HierarchyRectangularNode<TNode>>()
     .transition()
     .duration(transitionDuration)
-    .attr('d', arcs.zero)
+    .attr('d', d => arc.centroid(d))
     .remove();
 
   return mouseGroupSelection;

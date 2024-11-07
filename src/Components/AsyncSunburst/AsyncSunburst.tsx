@@ -1,7 +1,7 @@
 import './AsyncSunburst.css'
 
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
-import { useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { MutableRefElement, SunburstItemNode } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
@@ -10,6 +10,8 @@ import { D3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
 import UnscaledSVG from '../UnscaledSVG'
 import { D3SunburstViewProps } from '../../Services/D3SunburstView/D3SunburstView'
 import { DataProvider, GetHierarachyNodeDescendants } from './Types';
+import ErrorBanner from './ErrorBanner'
+import { RectangleDimensions } from '../../../dist/Types/RectangleDimensions';
 
 export interface AsyncSunburstProps<TDatum> {
   centerElement?: JSX.Element
@@ -23,6 +25,7 @@ export interface AsyncSunburstProps<TDatum> {
   radius: number
   transitionDuration?: number
   getRectangularHierarchyNodes: GetHierarachyNodeDescendants<TDatum>
+  svgDimension: RectangleDimensions
 }
 
 /**
@@ -44,6 +47,7 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
     onMouseLeave,
     radius = 1000,
     getRectangularHierarchyNodes,
+    svgDimension
 
   } = props
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
@@ -51,9 +55,27 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
 
   const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
 
-  const svgDimension = 2 * radius
+  const svgDimensionEdited = svgDimension || 2 * radius
+
+  const [error, setError] = useState<string | undefined>(undefined)
+
+  const getData = useCallback(function (d3Props: D3SunburstViewProps<TDatum>) {
+    dataProvider.get().then(response => {
+      if (!response) {
+        throw "Empty response from dataProvider.get()"
+      }
+
+      const hierarchyNodes = getRectangularHierarchyNodes(response.data, radius)
+      d3SunburstView.layout(hierarchyNodes, d3Props)
+
+    }).catch((reason: Error) => {
+      console.error(reason)
+      setError(reason.message)
+    })
+  }, [d3SunburstView, dataProvider, getRectangularHierarchyNodes, radius])
 
   useEffect(() => {
+
     const d3Props: D3SunburstViewProps<TDatum> = {
       transitionDuration,
       arcs: new DefaultArcs(radius),
@@ -79,29 +101,18 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
       getNodeID: function (d: HierarchyRectangularNode<TDatum>): number {
         return d.data.id
       },
+      getText: (d) => { return d.data.name }
     }
 
-    dataProvider.get().then(response => {
-      if (!response) {
-        fail("Empty response from dataProvider.get()")
-      }
-      if (!response.success) {
-        fail(response.error)
-      }
-
-      const hierarchyNodes = getRectangularHierarchyNodes(response.data, radius)
-      d3SunburstView.layout(hierarchyNodes, d3Props)
-
-    }).catch((reason) => {
-      console.error(reason)
-    })
-  }, [d3SunburstView, dataProvider, getArcColor, getRectangularHierarchyNodes, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
+    getData(d3Props)
+  }, [getArcColor, getData, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
 
   return (
-    <UnscaledSVG width={svgDimension} height={svgDimension}>
-      <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(radius)},${String(radius)})`}>
-        {centerElement}
-      </g>
-    </UnscaledSVG>
+    <>{
+      error && <ErrorBanner message={error} /> ||
+      <UnscaledSVG width={svgDimensionEdited.width} height={svgDimension.height}>
+        <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(svgDimension.width / 2)},${String(svgDimension.height / 2)})`}>{centerElement}</g>
+      </UnscaledSVG>
+    }</>
   )
 }

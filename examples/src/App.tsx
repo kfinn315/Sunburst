@@ -1,6 +1,6 @@
 import './App.css'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import FlatDataSunburst from './Components/FlatDataSunburst/FlatDataSunburst'
 import HierarchicalDataSunburst from './Components/HierarchicalDataSunburst/HierarchicalDataSunburst'
@@ -10,8 +10,9 @@ import { DataProvider, SunburstItemNode } from './sunburstLibrary'
 function App() {
   const [dataProvider, setDataProvider] = useState<DataProvider<SunburstItemNode>>(new CemeteryDataProvider())
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const arcClickHandler = useCallback((e: MouseEvent, d): void => {
-    setDataProvider(new CemeteryDataProvider({ id: Math.round(Math.random()*100) }))
+    setDataProvider(new CemeteryDataProvider({ id: Math.round(Math.random() * 100) }))
   }, [])
 
   return (
@@ -22,7 +23,7 @@ function App() {
         <LiveCemeterySunburst
           dataProvider={dataProvider}
           onArcClick={arcClickHandler}
-          onMouseEnter={(e, d) => { console.log(d.data.name, d.data.size) }}
+          onMouseEnter={(e, d) => { console.log(d.data) }}
         />
       </div>
       <div className="content">
