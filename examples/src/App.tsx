@@ -1,6 +1,6 @@
 import './App.css'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import FlatDataSunburst from './Components/FlatDataSunburst/FlatDataSunburst'
 import HierarchicalDataSunburst from './Components/HierarchicalDataSunburst/HierarchicalDataSunburst'

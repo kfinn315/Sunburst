@@ -1,5 +1,5 @@
 import { HierarchyNode } from "d3";
-import { APIResponse, DataProvider, SunburstItemNode, SunburstItemTreeNode } from "../../../sunburstLibrary";
+import { APIResponse, DataProvider, SunburstItemNode, SunburstItemTreeNode } from "../../sunburstLibrary";
 import { data0, data1 } from "./Data/data";
 
 export const testDataProvider0: DataProvider<SunburstItemNode> = {

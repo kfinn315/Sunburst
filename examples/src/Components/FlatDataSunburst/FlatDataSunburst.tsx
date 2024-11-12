@@ -2,17 +2,17 @@ import "./FlatDataSunburst.css";
 
 import { HierarchyNode } from 'd3'
 
-import { getRootHierarchyNode } from '../../Services/SunburstItemRootHierarchyNode'
 import { getColorScale, SunburstHighlighter, SunburstItem, ConcreteSunburstContainer } from "../../sunburstLibrary";
 import { TreeNode } from "../../Services/Tree";
 import { flatData } from "./flatData";
+import { FlatDataHierarchy as FlatDataHierarchy } from "../../Services/Hierarchy/Implementations/FlatDataHierarchy";
 
 function FlatDataSunburst() {
     const centerColor = 'blue'
     const colorGradient: [string, string] = ['blue', 'red']
     const colorScale = getColorScale(flatData, (item) => item.color, colorGradient)
     const svgDimension = 1400
-    const rootHierarchyNode: HierarchyNode<TreeNode<SunburstItem>> = getRootHierarchyNode(flatData)
+    const rootHierarchyNode: HierarchyNode<TreeNode<SunburstItem>> = new FlatDataHierarchy().createNode(flatData)
     return (
         <>
             <ConcreteSunburstContainer

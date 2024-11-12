@@ -3,7 +3,7 @@ import CSSClassGroup from "../CSSClassGroup"
 describe('CSSClassGroup', () => {
 
   describe('add', () => {
-    it('adds the class to the elements', () => {
+    it('adds the class to all of the elements', () => {
       //Arrange
       const elements = [document.createElement('div')]
       const className = 'randomString00000'
@@ -19,7 +19,7 @@ describe('CSSClassGroup', () => {
   })
 
   describe('remove', () => {
-    it('removes the class from the element', () => {
+    it('removes the class from all of the element', () => {
       //Arrange
       const elements = [document.createElement('div')]
       const className = 'randomString00000'

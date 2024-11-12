@@ -29,10 +29,10 @@
   padding: 20px !important;
 }
 
-g.arc path {
+g.arcs path {
   opacity: 0.5
 }
 
-g.arc path.highlight {
+g.arcs path.highlight {
   opacity: 1
 }

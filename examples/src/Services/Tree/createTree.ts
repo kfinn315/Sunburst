@@ -1,30 +1,29 @@
 import { addToNodeRecursively } from './addToNodeRecursively'
-import { KNode } from './KNode'
+import { ConcreteNode } from './ConcreteNode'
 import { BasicIDGenerator } from '../../../../src/Utils/IDGenerator'
-import { TreeNode } from './Types'
-import { GetSegmentIterator } from "./GetSegmentIterator";
+import { TreeNode, GetSegmentIterator } from './Types'
+
+interface Props<TData> {
+  items: readonly TData[];
+  getSegmentIterator: GetSegmentIterator<TData>;
+}
 
 /**
  * Create a tree data structure by adding TData items to a root node
  * @param items Items with segment information to build the tree with
  * @returns Root node of the tree
  */
-export default function createTree<TData>(
-  items: readonly TData[],
-  getSegmentIterator: GetSegmentIterator<TData>
-): TreeNode<TData> {
+export default function createTree<TData>({ items, getSegmentIterator }: Props<TData>): TreeNode<TData> {
   const idGenerator = new BasicIDGenerator()
 
   const id = idGenerator.next()
-  const rootNode = new KNode<TData>(id, 'root')
+  const rootNode = new ConcreteNode<TData>(id, 'root')
 
   items.forEach((item) => {
     addToTree(item, getSegmentIterator)
   })
 
-  return rootNode
-
-  function addToTree(item: TData, getSegmentIterator: (item: TData) => IterableIterator<string>) {
+  function addToTree(item: TData, getSegmentIterator: GetSegmentIterator<TData>) {
     const nameIterator = getSegmentIterator(item)
     addToNodeRecursively({
       idGenerator,
@@ -33,4 +32,7 @@ export default function createTree<TData>(
       node: rootNode,
     })
   }
+
+  return rootNode
+
 }

@@ -3,7 +3,7 @@ import "./LiveCemeterySunburst.css";
 import { useCallback } from "react";
 import { HierarchyRectangularNode, hierarchy } from 'd3';
 
-import { AsyncSunburst, DataProvider, SunburstHighlighter, SunburstItemNode, getCirclePartitionLayout, SunburstEvent } from "../../sunburstLibrary";
+import { AsyncSunburst, DataProvider, SunburstItemNode, getCirclePartitionLayout, SunburstEvent, AncestorHighlighter } from "../../sunburstLibrary";
 
 interface LiveCemeterySunburstProps {
     dataProvider: DataProvider<HierarchyRectangularNode<SunburstItemNode>>
@@ -21,7 +21,14 @@ function getRectangularHierarchyNodes(hierarchicalData: SunburstItemNode, radius
 function LiveCemeterySunburst({ dataProvider, onArcClick, onMouseEnter, onMouseLeave }: LiveCemeterySunburstProps) {
     const getArcColor = useCallback((d: HierarchyRectangularNode<SunburstItemNode>) => { return d.data?.color ?? 'transparent' }, [])
 
-    const createHighlighter = useCallback((ref) => new SunburstHighlighter(ref, 'highlight'), [])
+    const createHighlighter = useCallback((ref) => new AncestorHighlighter<SunburstItemNode>(ref,
+        {
+            get(item) { return `.arcs path[data-id="${String(item.id)}"]`; },
+            getAll() { return '.arcs path'; }
+        },
+        'highlight'), [])
+
+    // document.querySelector('.sunburst-center')?.setHTMLUnsafe('<p>hi</p>')
 
     return (
         <AsyncSunburst<SunburstItemNode>
@@ -32,8 +39,8 @@ function LiveCemeterySunburst({ dataProvider, onArcClick, onMouseEnter, onMouseL
             highlighterFactory={createHighlighter}
             dataProvider={dataProvider}
             radius={150}
-            svgDimension={{height: 700, width: 700}}
-            getRectangularHierarchyNodes={getRectangularHierarchyNodes}
+            svgDimension={{ height: 700, width: 700 }}
+            createRectangularHierarchyNodes={getRectangularHierarchyNodes}
             // centerElement={center}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

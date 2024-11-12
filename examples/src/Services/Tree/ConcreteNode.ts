@@ -1,18 +1,18 @@
 import { TreeNode } from './Types'
 
-export class KNode<TData> implements TreeNode<TData> {
+export class ConcreteNode<TData> implements TreeNode<TData> {
   constructor(
     public readonly id: number,
     public readonly name: string,
-    public readonly children: KNode<TData>[] = [],
+    public readonly children: ConcreteNode<TData>[] = [],
     public data?: TData,
   ) { }
 
-  findChild(name: string): KNode<TData> | undefined {
+  findChild(name: string): ConcreteNode<TData> | undefined {
     return this.children.find((child) => child.name === name)
   }
 
-  addChild(childNode: KNode<TData>) {
+  addChild(childNode: ConcreteNode<TData>) {
     this.children.push(childNode)
   }
 }

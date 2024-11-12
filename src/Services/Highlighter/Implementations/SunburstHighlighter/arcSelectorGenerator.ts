@@ -7,9 +7,9 @@ import { SelectorGenerator } from "../..";
 
 export const arcSelectorGenerator: SelectorGenerator<HasID> = {
     get(item: HasID) {
-        return `.arc path[data-id="${String(item.id)}"]`;
+        return `.arcs path[data-id="${String(item.id)}"]`;
     },
     getAll() {
-        return '.arc path';
+        return '.arcs path';
     }, //select all paths
 };

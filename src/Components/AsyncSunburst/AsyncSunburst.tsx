@@ -3,15 +3,13 @@ import './AsyncSunburst.css'
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { MutableRefElement, SunburstItemNode } from '../../Types'
+import { MutableRefElement, RectangleDimensions, SunburstItemNode } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
 import { CreateHighlighter } from '../../Services/Highlighter'
-import { D3SunburstView, SunburstEvent } from '../../Services/D3SunburstView'
+import { D3SunburstView, D3SunburstViewProps, SunburstEvent } from '../../Services/D3SunburstView'
 import UnscaledSVG from '../UnscaledSVG'
-import { D3SunburstViewProps } from '../../Services/D3SunburstView/D3SunburstView'
 import { DataProvider, GetHierarachyNodeDescendants } from './Types';
 import ErrorBanner from './ErrorBanner'
-import { RectangleDimensions } from '../../../dist/Types/RectangleDimensions';
 
 export interface AsyncSunburstProps<TDatum> {
   centerElement?: JSX.Element
@@ -24,8 +22,8 @@ export interface AsyncSunburstProps<TDatum> {
   onMouseLeave?: SunburstEvent<TDatum>
   radius: number
   transitionDuration?: number
-  getRectangularHierarchyNodes: GetHierarachyNodeDescendants<TDatum>
-  svgDimension: RectangleDimensions
+  createRectangularHierarchyNodes: GetHierarachyNodeDescendants<TDatum>
+  svgDimension?: RectangleDimensions
 }
 
 /**
@@ -46,7 +44,7 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
     onMouseEnter,
     onMouseLeave,
     radius = 1000,
-    getRectangularHierarchyNodes,
+    createRectangularHierarchyNodes,
     svgDimension
 
   } = props
@@ -55,28 +53,28 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
 
   const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
 
-  const svgDimensionEdited = svgDimension || 2 * radius
+  const svgDimensionEdited: RectangleDimensions = svgDimension ?? { width: 2 * radius, height: 2 * radius }
 
   const [error, setError] = useState<string | undefined>(undefined)
 
-  const getData = useCallback(function (d3Props: D3SunburstViewProps<TDatum>) {
+  const requestData = useCallback(function (props: D3SunburstViewProps<TDatum>) {
     dataProvider.get().then(response => {
       if (!response) {
         throw "Empty response from dataProvider.get()"
       }
 
-      const hierarchyNodes = getRectangularHierarchyNodes(response.data, radius)
-      d3SunburstView.layout(hierarchyNodes, d3Props)
+      const hierarchyNodes = createRectangularHierarchyNodes(response.data, radius)
+      d3SunburstView.layout(hierarchyNodes, props)
 
     }).catch((reason: Error) => {
       console.error(reason)
       setError(reason.message)
     })
-  }, [d3SunburstView, dataProvider, getRectangularHierarchyNodes, radius])
+  }, [d3SunburstView, dataProvider, createRectangularHierarchyNodes, radius])
 
   useEffect(() => {
 
-    const d3Props: D3SunburstViewProps<TDatum> = {
+    const props: D3SunburstViewProps<TDatum> = {
       transitionDuration,
       arcs: new DefaultArcs(radius),
       onClick: (event: MouseEvent, d: HierarchyNode<TDatum>): void => {
@@ -93,7 +91,7 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
       getArcColor,
       getMouseArcPathClass: (d: HierarchyRectangularNode<TDatum>): string | null => {
         if (typeof (isNodeClickable) == "boolean") {
-          return isNodeClickable ? 'clickable' : false;
+          return isNodeClickable ? 'clickable' : null;
         }
 
         return isNodeClickable(d) ? 'clickable' : null
@@ -104,8 +102,8 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
       getText: (d) => { return d.data.name }
     }
 
-    getData(d3Props)
-  }, [getArcColor, getData, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
+    requestData(props)
+  }, [getArcColor, requestData, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
 
   return (
     <>{

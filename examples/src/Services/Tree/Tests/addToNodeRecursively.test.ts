@@ -1,13 +1,13 @@
 import { addToNodeRecursively } from "../addToNodeRecursively"
-import { KNode } from "../KNode"
+import { ConcreteNode } from "../ConcreteNode"
 
 describe('addToNodeRecursively', () => {
     let idGenerator: { next(): number }
-    let rootNode: KNode<unknown>
+    let rootNode: ConcreteNode<unknown>
 
     beforeEach(() => {
         idGenerator = { next: jest.fn(() => 1) }
-        rootNode = new KNode<unknown>(0, 'root')
+        rootNode = new ConcreteNode<unknown>(0, 'root')
     })
 
     it('should set the data property of the node if there are no more segments', () => {

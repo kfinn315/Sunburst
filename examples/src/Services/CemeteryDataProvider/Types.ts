@@ -11,4 +11,3 @@ export interface Cemetery {
     name: string;
     graves?: Grave[]
 }
-

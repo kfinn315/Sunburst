@@ -1,4 +1,4 @@
-import { SunburstItemNode } from "../../../../sunburstLibrary";
+import { SunburstItemNode } from "../../../sunburstLibrary";
 
 export const data0: SunburstItemNode = {
   id: 0,

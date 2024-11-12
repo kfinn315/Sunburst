@@ -1,4 +1,4 @@
-import { KNode } from '../KNode'
+import { ConcreteNode } from '../ConcreteNode'
 import { addToNodeRecursively } from '../addToNodeRecursively'
 
 jest.mock("../addToNodeRecursively")
@@ -7,19 +7,19 @@ import createTree from '../createTree'
 type T = { name: string, segments: string[] }
 
 describe('createTree', () => {
-    let rootNode: KNode<unknown>
+    let rootNode: ConcreteNode<unknown>
     let items: T[]
     let getSegmentIterator = jest.fn()
 
     beforeEach(() => {
-        rootNode = new KNode<T>(0, 'root')
+        rootNode = new ConcreteNode<T>(0, 'root')
         items = [
             { name: 'item1', segments: ['segment1', 'segment2'] },
             { name: 'item2', segments: ['segment1', 'segment3'] },
         ]
         getSegmentIterator = jest.fn((item: T) => item.segments[Symbol.iterator]())
 
-        createTree(items, getSegmentIterator)
+        createTree({ items, getSegmentIterator })
     })
 
     it('should create a root node', () => {

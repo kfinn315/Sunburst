@@ -1,19 +1,14 @@
-import { KNode } from './KNode'
+import { ConcreteNode } from './ConcreteNode'
 import { IDGenerator } from './Types'
 
 interface Props<TData> {
   idGenerator: IDGenerator
   nameIterator: IterableIterator<string>
-  node: KNode<TData>
+  node: ConcreteNode<TData>
   data: TData
 }
 
-export function addToNodeRecursively<TData>({
-  idGenerator,
-  nameIterator,
-  node,
-  data,
-}: Props<TData>) {
+export function addToNodeRecursively<TData>({ idGenerator, nameIterator, node, data, }: Props<TData>) {
   if (node === null) {
     throw Error('node is null')
   }
@@ -31,7 +26,7 @@ export function addToNodeRecursively<TData>({
     if (childNode === undefined) {
       const id = idGenerator.next()
 
-      childNode = new KNode<TData>(id, name)
+      childNode = new ConcreteNode<TData>(id, name)
       node.addChild(childNode)
     }
 

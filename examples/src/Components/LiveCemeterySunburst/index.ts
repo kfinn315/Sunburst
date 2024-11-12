@@ -1,5 +1,4 @@
-import { CemeteryDataProvider } from './DataProvider/CemeteryDataProvider';
+import { CemeteryDataProvider } from '../../Services/CemeteryDataProvider/CemeteryDataProvider';
 import LiveCemeterySunburst from './LiveCemeterySunburst';
-import { testDataProvider0, testDataProvider1 } from './DataProvider/testDataProvider';
 
-export { CemeteryDataProvider, LiveCemeterySunburst, testDataProvider0, testDataProvider1 }
+export { CemeteryDataProvider, LiveCemeterySunburst,  }

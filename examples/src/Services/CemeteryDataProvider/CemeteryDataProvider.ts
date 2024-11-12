@@ -1,4 +1,4 @@
-import { DataProvider, SunburstItemNode, APIResponse, getColorScale } from "../../../sunburstLibrary";
+import { DataProvider, SunburstItemNode, APIResponse, getColorScale } from "../../sunburstLibrary";
 
 interface GetProps {
     id?: number;

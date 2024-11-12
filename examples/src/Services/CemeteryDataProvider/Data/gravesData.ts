@@ -48,14 +48,14 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Alston, Fannie J.",
         "birthYear": 1920,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 452,
         "cemeteryId": 209,
         "name": "Alston, Lessie J.",
         "birthYear": 1922,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 453,
@@ -160,7 +160,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Brooks, Troy Fletcher",
         "birthYear": 1912,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 4972,
@@ -194,8 +194,8 @@ export const graves: Grave[] = [
         "id": 6320,
         "cemeteryId": 209,
         "name": "Coker, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 7262,
@@ -216,7 +216,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Crutchfield, Ossie",
         "birthYear": 1911,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 7360,
@@ -320,7 +320,7 @@ export const graves: Grave[] = [
         "id": 10092,
         "cemeteryId": 209,
         "name": "Farrar, Baby",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1952
     },
     {
@@ -362,7 +362,7 @@ export const graves: Grave[] = [
         "id": 10151,
         "cemeteryId": 209,
         "name": "Farrar, Samuel Earl",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1943
     },
     {
@@ -376,7 +376,7 @@ export const graves: Grave[] = [
         "id": 10155,
         "cemeteryId": 209,
         "name": "Farrar, Wayne Lee",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1950
     },
     {
@@ -398,7 +398,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Farrish, Lucille",
         "birthYear": 1928,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 10371,
@@ -510,7 +510,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Goldston, Betty E.",
         "birthYear": 1910,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 12185,
@@ -579,14 +579,14 @@ export const graves: Grave[] = [
         "id": 12831,
         "cemeteryId": 209,
         "name": "Griffin, Ruth B., Mrs.",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1999
     },
     {
         "id": 13129,
         "cemeteryId": 209,
         "name": "H., Lela L.",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1987
     },
     {
@@ -783,7 +783,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Johnson, Carson R.",
         "birthYear": 1926,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 17036,
@@ -811,7 +811,7 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Johnson, Margaret B.",
         "birthYear": 1940,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 17381,
@@ -873,8 +873,8 @@ export const graves: Grave[] = [
         "id": 20853,
         "cemeteryId": 209,
         "name": "Marsh, Ocie H.",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 20858,
@@ -923,13 +923,13 @@ export const graves: Grave[] = [
         "cemeteryId": 209,
         "name": "Marsh, W. M., Rev.",
         "birthYear": 1850,
-        "deathYear": null
+        "deathYear": undefined
     },
     {
         "id": 20899,
         "cemeteryId": 209,
         "name": "Marsh, Walter",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1993
     },
     {
@@ -1006,8 +1006,8 @@ export const graves: Grave[] = [
         "id": 23259,
         "cemeteryId": 209,
         "name": "Newby, Arnold",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 23309,
@@ -1034,15 +1034,15 @@ export const graves: Grave[] = [
         "id": 24495,
         "cemeteryId": 209,
         "name": "Payne, Charlie V.",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1969
     },
     {
         "id": 24503,
         "cemeteryId": 209,
         "name": "Payne, Kritha Brooks",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 25026,
@@ -1146,8 +1146,8 @@ export const graves: Grave[] = [
         "id": 32059,
         "cemeteryId": 209,
         "name": "Unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32107,
@@ -1160,336 +1160,336 @@ export const graves: Grave[] = [
         "id": 32573,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32574,
         "cemeteryId": 209,
         "name": "Unknown, Unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32575,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32576,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32577,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32578,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32579,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32580,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32581,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32582,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32583,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32584,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32585,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32586,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32587,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32588,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32589,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32590,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32591,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32592,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32593,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32594,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32595,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32596,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32597,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32598,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32599,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32600,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32601,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32602,
         "cemeteryId": 209,
         "name": "Unknown, Unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32603,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32604,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32605,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32606,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32607,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32608,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32609,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32610,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32611,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32612,
         "cemeteryId": 209,
         "name": "Unknown, Unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32613,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32614,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32615,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32616,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32617,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32618,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32619,
         "cemeteryId": 209,
         "name": "Unknown, unknown",
-        "birthYear": null,
-        "deathYear": null
+        "birthYear": undefined,
+        "deathYear": undefined
     },
     {
         "id": 32943,
         "cemeteryId": 209,
         "name": "Unknown, Wilbert A.",
-        "birthYear": null,
+        "birthYear": undefined,
         "deathYear": 1984
     },
     {
