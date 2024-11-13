@@ -5,26 +5,32 @@ import { Highlighter, SelectorGenerator } from './Services/Highlighter';
 import { SunburstContainer, SunburstContainerProps } from './Components/SunburstContainer';
 import { SunburstHighlighter, arcSelectorGenerator } from './Services/Highlighter/Implementations/SunburstHighlighter';
 import { AncestorHighlighter } from './Services/Highlighter/Implementations/AncestorHighlighter';
-import { ConcreteSunburstContainerProps, ConcreteSunburstContainer } from './Components/ConcreteSunburstContainer/ConcreteSunburstContainer';
+import { ConcreteSunburstContainerProps, ConcreteSunburstContainer } from './Components/ConcreteSunburstContainer';
 import getColorScale from './Utils/getColorScale';
-import AsyncSunburst from './Components/AsyncSunburst/AsyncSunburst';
-import { DataProvider, APIResponse } from './Components/AsyncSunburst';
+import SunburstSVG from './Components/SunburstSVG/SunburstSVG';
 import { getCirclePartitionLayout } from './Utils/d3/getCirclePartitionLayout';
 import { GetHighlighter } from '../coverage/dist/Services/Highlighter/Types';
 import { IDGenerator, BasicIDGenerator } from './Utils/IDGenerator';
 import { CreateHighlighter } from './Services/Highlighter/Types';
+import { DataProvider, APIRequest, APIResponse } from './Services/DataProvider';
+import ErrorBanner from './Components/ErrorBanner/ErrorBanner';
+import { zeroArc } from './Services/Arcs/DefaultArcs/zeroArc';
 
 export {
     AncestorHighlighter,
     arcSelectorGenerator,
-    AsyncSunburst,
+    SunburstSVG as AsyncSunburst,
     BasicIDGenerator,
     ConcreteSunburstContainer,
+    ErrorBanner,
     getCirclePartitionLayout,
     getColorScale,
     Sunburst,
     SunburstContainer,
     SunburstHighlighter,
+    SunburstSVG,
+    zeroArc,
+    type APIRequest,
     type APIResponse,
     type ConcreteSunburstContainerProps,
     type CreateHighlighter,
