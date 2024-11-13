@@ -41,7 +41,7 @@ export class D3SunburstView<TNode> {
     if (this.ref.current) {
       const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(this.ref.current)
 
-      createArcs<TNode>({ arc: arcs.padded, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText })
+      createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText })
     }
   }
 }
