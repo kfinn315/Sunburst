@@ -1,19 +1,16 @@
-import './AsyncSunburst.css'
+import './SunburstSVG.css'
 
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { MutableRefElement, RectangleDimensions, SunburstItemNode } from '../../Types'
 import { DefaultArcs } from '../../Services/Arcs'
 import { CreateHighlighter } from '../../Services/Highlighter'
 import { D3SunburstView, D3SunburstViewProps, SunburstEvent } from '../../Services/D3SunburstView'
 import UnscaledSVG from '../UnscaledSVG'
-import { DataProvider, GetHierarachyNodeDescendants } from './Types';
-import ErrorBanner from './ErrorBanner'
+import { GetHierarachyNodeDescendants } from './Types';
 
-export interface AsyncSunburstProps<TDatum> {
-  centerElement?: JSX.Element
-  dataProvider: DataProvider<TDatum>
+export interface Props<TDatum> {
   getArcColor: (d: HierarchyRectangularNode<TDatum>) => string
   highlighterFactory?: CreateHighlighter<HierarchyNode<TDatum>>
   isNodeClickable: boolean | ((d: HierarchyRectangularNode<TDatum>) => boolean)
@@ -24,53 +21,35 @@ export interface AsyncSunburstProps<TDatum> {
   transitionDuration?: number
   createRectangularHierarchyNodes: GetHierarachyNodeDescendants<TDatum>
   svgDimension?: RectangleDimensions
+  items: TDatum[] | undefined
 }
 
 /**
- * Sunburst Component utilizing a DataProvider to provide data asynchronously
+ * Sunburst wrapped in an `UnscaledSVG` component
  *
  */
-export default function AsyncSunburst<TDatum extends SunburstItemNode = SunburstItemNode>(
-  props: AsyncSunburstProps<TDatum>,
+export default function SunburstSVG<TDatum extends SunburstItemNode = SunburstItemNode>(
+  props: Props<TDatum>,
 ): JSX.Element {
   const {
-    centerElement,
-    dataProvider,
-    transitionDuration = 100,
+    createRectangularHierarchyNodes,
     getArcColor,
     highlighterFactory,
     isNodeClickable,
+    items,
     onClick,
     onMouseEnter,
     onMouseLeave,
     radius = 1000,
-    createRectangularHierarchyNodes,
-    svgDimension
-
+    svgDimension,
+    transitionDuration = 100,
   } = props
+
   const gRef: MutableRefElement<SVGGElement> = useRef<SVGGElement | null>(null)
   const highlighter = highlighterFactory?.(gRef)
-
-  const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
-
   const svgDimensionEdited: RectangleDimensions = svgDimension ?? { width: 2 * radius, height: 2 * radius }
 
-  const [error, setError] = useState<string | undefined>(undefined)
-
-  const requestData = useCallback(function (props: D3SunburstViewProps<TDatum>) {
-    dataProvider.get().then(response => {
-      if (!response) {
-        throw "Empty response from dataProvider.get()"
-      }
-
-      const hierarchyNodes = createRectangularHierarchyNodes(response.data, radius)
-      d3SunburstView.layout(hierarchyNodes, props)
-
-    }).catch((reason: Error) => {
-      console.error(reason)
-      setError(reason.message)
-    })
-  }, [d3SunburstView, dataProvider, createRectangularHierarchyNodes, radius])
+  const d3SunburstView = useMemo(() => new D3SunburstView<TDatum>(gRef), [])
 
   useEffect(() => {
 
@@ -102,15 +81,16 @@ export default function AsyncSunburst<TDatum extends SunburstItemNode = Sunburst
       getText: (d) => { return d.data.name }
     }
 
-    requestData(props)
-  }, [getArcColor, requestData, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration])
+    if (items !== undefined) {
+      const hierarchyNodes = createRectangularHierarchyNodes(items, radius)
+      d3SunburstView.layout(hierarchyNodes, props)
+    }
+
+  }, [getArcColor, highlighter, isNodeClickable, onClick, onMouseEnter, onMouseLeave, radius, transitionDuration, createRectangularHierarchyNodes, items, d3SunburstView])
 
   return (
-    <>{
-      error && <ErrorBanner message={error} /> ||
-      <UnscaledSVG width={svgDimensionEdited.width} height={svgDimension.height}>
-        <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(svgDimension.width / 2)},${String(svgDimension.height / 2)})`}>{centerElement}</g>
-      </UnscaledSVG>
-    }</>
+    <UnscaledSVG width={svgDimensionEdited.width} height={svgDimension.height}>
+      <g ref={gRef} preserveAspectRatio="xMinYMin meet" transform={`translate(${String(svgDimension.width / 2)},${String(svgDimension.height / 2)})`}></g>
+    </UnscaledSVG>
   )
 }
