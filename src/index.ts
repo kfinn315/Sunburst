@@ -14,7 +14,6 @@ import { IDGenerator, BasicIDGenerator } from './Utils/IDGenerator';
 import { CreateHighlighter } from './Services/Highlighter/Types';
 import { DataProvider, APIRequest, APIResponse } from './Services/DataProvider';
 import ErrorBanner from './Components/ErrorBanner/ErrorBanner';
-import { zeroArc } from './Services/Arcs/DefaultArcs/zeroArc';
 
 export {
     AncestorHighlighter,
@@ -29,7 +28,6 @@ export {
     SunburstContainer,
     SunburstHighlighter,
     SunburstSVG,
-    zeroArc,
     type APIRequest,
     type APIResponse,
     type ConcreteSunburstContainerProps,
