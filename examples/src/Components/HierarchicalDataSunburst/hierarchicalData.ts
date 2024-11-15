@@ -1,7 +1,7 @@
-import { SunburstItemNode } from "../../sunburstLibrary"
+import { SunburstItemWithChildren } from "../../sunburstLibrary"
 
 
-export const hierarchicalData: SunburstItemNode = {
+export const hierarchicalData: SunburstItemWithChildren = {
   id: 0,
   name: '1',
   color: 0,

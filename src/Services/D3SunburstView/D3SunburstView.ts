@@ -1,20 +1,20 @@
 import { HierarchyRectangularNode, select } from 'd3'
 import { MutableRefObject } from 'react'
 
-import { SunburstEvent } from './Types'
 import { Arcs } from '../Arcs';
 import { createArcs } from './createArcs';
+import { getChildSelection } from './getChildSelection';
+import { SunburstEvent } from '../../Types';
 
 export interface D3SunburstViewProps<TNode> {
   arcs: Arcs
-  transitionDuration: number
-  getArcColor: (d: HierarchyRectangularNode<TNode>) => string
-  getMouseArcPathClass: (d: HierarchyRectangularNode<TNode>) => string | null
-  getNodeID: (d: HierarchyRectangularNode<TNode>) => number
+  getColor: (d: HierarchyRectangularNode<TNode>) => string
+  getID: (d: HierarchyRectangularNode<TNode>) => number
+  getLabel?: (d: HierarchyRectangularNode<TNode>) => string
   onClick: SunburstEvent<TNode>
   onMouseEnter: SunburstEvent<TNode>
   onMouseLeave: SunburstEvent<TNode>
-  getText?: (d: HierarchyRectangularNode<TNode>) => string
+  transitionDuration: number
 }
 
 export class D3SunburstView<TNode> {
@@ -29,19 +29,29 @@ export class D3SunburstView<TNode> {
     const {
       arcs,
       transitionDuration,
-      getArcColor,
-      // getMouseArcPathClass,
-      getNodeID,
+      getColor,
+      getID,
       onClick,
       onMouseEnter,
       onMouseLeave,
-      getText,
+      getLabel,
     } = props
 
     if (this.ref.current) {
       const baseSelection = select<SVGGElement, HierarchyRectangularNode<TNode>>(this.ref.current)
-
-      createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText })
+      const selection = getChildSelection<SVGGElement>(baseSelection, 'arcs');
+      createArcs<TNode>({
+        arcs,
+        getColor,
+        getID,
+        getLabel,
+        items,
+        onClick,
+        onMouseEnter,
+        onMouseLeave,
+        selection,
+        transitionDuration
+      })
     }
   }
 }

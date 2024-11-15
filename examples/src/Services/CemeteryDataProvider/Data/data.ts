@@ -1,6 +1,6 @@
-import { SunburstItemNode } from "../../../sunburstLibrary";
+import { SunburstItemWithChildren } from "../../../sunburstLibrary";
 
-export const data0: SunburstItemNode = {
+export const data0: SunburstItemWithChildren = {
   id: 0,
   name: '1',
   color: 0,
@@ -36,7 +36,7 @@ export const data0: SunburstItemNode = {
   ],
 }
 
-export const data1: SunburstItemNode = {
+export const data1: SunburstItemWithChildren = {
   id: 0,
   name: '1',
   color: 0,

@@ -1,6 +1,5 @@
-import { ConcreteSunburstContainer, ConcreteSunburstContainerProps } from './ConcreteSunburstContainer'
+import { ConcreteSunburstContainer } from './ConcreteSunburstContainer'
 
 export {
-    type ConcreteSunburstContainerProps,
     ConcreteSunburstContainer,
 }

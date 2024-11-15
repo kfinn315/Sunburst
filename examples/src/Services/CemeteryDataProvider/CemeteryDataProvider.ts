@@ -1,4 +1,4 @@
-import { DataProvider, SunburstItemNode, getColorScale } from "../../sunburstLibrary";
+import { DataProvider, SunburstItemWithChildren, getColorScale } from "../../sunburstLibrary";
 import { CemeteryAPI } from "./CemeteryAPI";
 import { Cemetery } from "./Types";
 
@@ -6,22 +6,22 @@ interface RequestData {
     id?: number
     depth?: number
 }
-export class CemeteryDataProvider implements DataProvider<SunburstItemNode, RequestData> {
+export class CemeteryDataProvider implements DataProvider<SunburstItemWithChildren, RequestData> {
     private readonly api = new CemeteryAPI()
     constructor() { }
 
     get(request: RequestData = {}) {
         const { id, depth } = request
-        if (depth === undefined || depth === 0) {
+        if (depth === undefined || id === undefined || id === 'root') {
             return this.fetchAllCemeteries()
+        } else if (depth === 0) {
+            return this.fetchSummary(id)
         }
-
-        return this.fetchSummary(id)
     }
 
     private fetchAllCemeteries() {
         return this.api.getAllCemeteries().then((data: Cemetery[]) => {
-            const rootNode: SunburstItemNode = {
+            const rootNode: SunburstItemWithChildren = {
                 id: 'root', name: 'root', children: data.filter((v, ix) => ix < 10).map(c => ({ id: c.id, name: c.name, color: 'red', size: Math.floor(Math.random() * 10) }))
             }
             return rootNode
@@ -34,22 +34,22 @@ export class CemeteryDataProvider implements DataProvider<SunburstItemNode, Requ
         });
     }
 
-    private fetchSummary(id: number): Promise<SunburstItemNode> {
+    private fetchSummary(id: number): Promise<SunburstItemWithChildren> {
 
-        function modifyResponseData(items: SunburstItemNode[] | undefined): SunburstItemNode[] | undefined {
+        function modifyResponseData(items: SunburstItemWithChildren[] | undefined): SunburstItemWithChildren[] | undefined {
 
             // Add color to items based on id value, with a linear scale using ``colorRange`` as the range. 
             // Items where id < 0, which will be given ```unknownColor```.
-            function addColorProperty({ colorRange, unknownColor, items }: { colorRange: [string, string]; unknownColor: string; items: SunburstItemNode[] }): SunburstItemNode[] {
-                const getColorDomainValue = (item: SunburstItemNode) => {
+            function addColorProperty({ colorRange, unknownColor, items }: { colorRange: [string, string]; unknownColor: string; items: SunburstItemWithChildren[] }): SunburstItemWithChildren[] {
+                const getColorDomainValue = (item: SunburstItemWithChildren) => {
                     return item.id < 0 ? NaN : item.id
                 }
 
-                const colorScale = getColorScale<SunburstItemNode>(items, getColorDomainValue, colorRange).unknown(unknownColor)
+                const colorScale = getColorScale<SunburstItemWithChildren>(items, getColorDomainValue, colorRange).unknown(unknownColor)
 
-                const getColorValue = (item: SunburstItemNode) => colorScale(getColorDomainValue(item))
+                const getColorValue = (item: SunburstItemWithChildren) => colorScale(getColorDomainValue(item))
 
-                function getChildren(children: SunburstItemNode[] | undefined) {
+                function getChildren(children: SunburstItemWithChildren[] | undefined) {
                     return addColorProperty({ colorRange, unknownColor, items: children })
                 }
 

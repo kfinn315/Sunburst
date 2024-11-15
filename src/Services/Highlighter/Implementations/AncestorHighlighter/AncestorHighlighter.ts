@@ -10,7 +10,7 @@ import { MutableRefElement } from "../../../../Types";
 *
 */
 export default class AncestorHighlighter<TNodeData, TElement extends Element> extends BaseHighlighter<HierarchyNode<TNodeData>, TElement> {
-    constructor(ref: MutableRefElement, selectorGenerator: SelectorGenerator<TNodeData>, highlightClassName: string) {
+    constructor(ref: MutableRefElement<TElement>, selectorGenerator: SelectorGenerator<TNodeData>, highlightClassName: string) {
         const elementTranslator: ElementListMap<HierarchyNode<TNodeData>, TElement> = new AncestryCSSElementMap<TNodeData, TElement>(ref, selectorGenerator);
         const highlightGroup: ElementGroup<TElement> = new CSSClassGroup<TElement>(highlightClassName);
         super(elementTranslator, highlightGroup);

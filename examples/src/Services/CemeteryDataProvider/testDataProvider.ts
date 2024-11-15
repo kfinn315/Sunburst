@@ -1,14 +1,14 @@
 import { HierarchyNode } from "d3";
-import { APIResponse, DataProvider, SunburstItemNode, SunburstItemTreeNode } from "../../sunburstLibrary";
+import { APIResponse, DataProvider, SunburstItemWithChildren, SunburstItemTreeNode } from "../../sunburstLibrary";
 import { data0, data1 } from "./Data/data";
 
-export const testDataProvider0: DataProvider<SunburstItemNode> = {
+export const testDataProvider0: DataProvider<SunburstItemWithChildren> = {
     get() {
         const executor = (resolve) => {
             console.info('dataProvider fetching');
             //wait 
             setTimeout(() => {
-                const response: APIResponse<SunburstItemNode> = {
+                const response: APIResponse<SunburstItemWithChildren> = {
                     success: true,
                     data: data0
                 };
@@ -18,11 +18,11 @@ export const testDataProvider0: DataProvider<SunburstItemNode> = {
             }, 1000);
         };
 
-        return new Promise<APIResponse<SunburstItemNode>>(executor);
+        return new Promise<APIResponse<SunburstItemWithChildren>>(executor);
     },
 };
 
-export const testDataProvider1: DataProvider<HierarchyNode<SunburstItemNode>> = {
+export const testDataProvider1: DataProvider<HierarchyNode<SunburstItemWithChildren>> = {
     get() {
         const executor = (resolve) => {
             console.info('dataProvider fetching');
@@ -39,6 +39,6 @@ export const testDataProvider1: DataProvider<HierarchyNode<SunburstItemNode>> = 
             // console.info('dataProvider resolving');
         };
 
-        return new Promise<APIResponse<SunburstItemNode>>(executor);
+        return new Promise<APIResponse<SunburstItemWithChildren>>(executor);
     },
 };

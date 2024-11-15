@@ -3,40 +3,38 @@ import "./DataProviderSunburst.css";
 import { useCallback, useEffect, useState } from "react";
 import { HierarchyNode, HierarchyRectangularNode, hierarchy } from 'd3';
 
-import { DataProvider, SunburstItemNode, getCirclePartitionLayout, SunburstEvent, AncestorHighlighter, ErrorBanner, SunburstSVG } from "../../sunburstLibrary";
+import { DataProvider, SunburstItemWithChildren, getCirclePartitionLayout, SunburstEvent, ErrorBanner, SunburstSVG } from "../../sunburstLibrary";
+import { createArcHighlighter } from "../../Utils/createArcHighlighter";
 
 interface Props {
-    dataProvider: DataProvider<HierarchyRectangularNode<SunburstItemNode>, number>
-    onArcClick?: SunburstEvent<SunburstItemNode>
-    onMouseEnter?: SunburstEvent<SunburstItemNode>
-    onMouseLeave?: SunburstEvent<SunburstItemNode>
+    dataProvider: DataProvider<HierarchyRectangularNode<SunburstItemWithChildren>, number>
+    onArcClick?: SunburstEvent<SunburstItemWithChildren>
+    onMouseEnter?: SunburstEvent<SunburstItemWithChildren>
+    onMouseLeave?: SunburstEvent<SunburstItemWithChildren>
+    initialID?: number
 }
 
-function getRectangularHierarchyNodes(hierarchicalData: SunburstItemNode, radius: number): HierarchyRectangularNode<SunburstItemNode>[] {
-    const partitionLayout = getCirclePartitionLayout<SunburstItemNode>(radius);
+function getHierarchyRectangularNodes(hierarchicalData: SunburstItemWithChildren, radius: number): HierarchyRectangularNode<SunburstItemWithChildren>[] {
+    const partitionLayout = getCirclePartitionLayout<SunburstItemWithChildren>(radius);
     const rootHierarchyNode = hierarchy(hierarchicalData).sum(item => item.size).sort((nodeA, nodeB) => nodeA.data.size - nodeB.data.size);
     return partitionLayout(rootHierarchyNode).descendants();
 }
 
-function DataProviderSunburst({ dataProvider, onArcClick, onMouseEnter, onMouseLeave }: Props) {
-    const [items, setItems] = useState<SunburstItemNode | undefined>(undefined)
+/**
+ * Wrapped `SunburstSVG<SunburstItemNode>` component that uses a DataProvider to load data.
+ */
+function DataProviderSunburst({ dataProvider, onArcClick, onMouseEnter, onMouseLeave, initialID }: Props) {
+    const [items, setItems] = useState<HierarchyRectangularNode<SunburstItemWithChildren>[] | undefined>(undefined)
     const [error, setError] = useState<string | undefined>(undefined)
 
-    const getArcColor = useCallback((d: HierarchyRectangularNode<SunburstItemNode>) => { return d.data?.color ?? 'transparent' }, [])
-
-    const createHighlighter = useCallback((ref) => new AncestorHighlighter<SunburstItemNode>(ref,
-        {
-            get(item) { return `.arcs path[data-id="${String(item.id)}"]`; },
-            getAll() { return '.arcs path'; }
-        },
-        'highlight'), [])
-
-    const getData = useCallback(function (request?: { id: number, level: number }) {
+    const createHighlighter = useCallback(createArcHighlighter, [])
+    const radius = 150
+    const getData = useCallback(function (request?: { id: number, depth: number }) {
         dataProvider.get(request).then(response => {
             if (!response) {
                 throw "Empty response from dataProvider.get()";
             }
-            setItems(response);
+            setItems(getHierarchyRectangularNodes(response, radius));
         }).catch((reason: Error | string) => {
             console.error(reason);
             if (typeof (reason) === "string") {
@@ -47,7 +45,7 @@ function DataProviderSunburst({ dataProvider, onArcClick, onMouseEnter, onMouseL
         });
     }, [dataProvider])
 
-    const clickHandler = (event: MouseEvent, d: HierarchyNode<SunburstItemNode>): void => {
+    const clickHandler = useCallback((event: MouseEvent, d: HierarchyNode<SunburstItemWithChildren>): void => {
         try {
             getData({ id: d.data.id, depth: d.depth });
         } catch (reason) {
@@ -55,28 +53,26 @@ function DataProviderSunburst({ dataProvider, onArcClick, onMouseEnter, onMouseL
         }
 
         onArcClick?.(event, d)
-    };
+    }, [getData, onArcClick]);
 
     useEffect(() => {
         try {
-            getData();
+            getData({ id: initialID, depth: 0 });
         } catch (reason) {
             console.error(reason)
             setError(reason.message)
         }
-    }, [dataProvider, getData])
+    }, [initialID, dataProvider, getData])
 
     return (
         (error && <ErrorBanner message={error} />) ||
-        <SunburstSVG<SunburstItemNode>
+        <SunburstSVG<SunburstItemWithChildren>
             items={items}
             transitionDuration={1000}
             isNodeClickable={true}
-            getArcColor={getArcColor}
-            highlighterFactory={createHighlighter}
-            radius={150}
+            createHighlighter={createHighlighter}
+            radius={radius}
             svgDimension={{ height: 700, width: 700 }}
-            createRectangularHierarchyNodes={getRectangularHierarchyNodes}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={clickHandler}

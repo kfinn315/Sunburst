@@ -1,31 +1,30 @@
 import { Arc, HierarchyRectangularNode, Selection } from "d3";
-import { getChildSelection } from "./getChildSelection";
 import { SunburstEvent } from "./Types";
 import { ArcCoordinates, Arcs } from "../Arcs";
 import { getArc } from "../Arcs/DefaultArcs/getArc";
 
 interface Props<TNode> {
-  arcs: Arcs,
-  baseSelection: Selection<SVGGElement, HierarchyRectangularNode<TNode>, null, undefined>;
-  getArcColor: (d: HierarchyRectangularNode<TNode>) => string;
-  getNodeID: (d: HierarchyRectangularNode<TNode>) => number;
-  onClick?: SunburstEvent<TNode>;
-  onMouseEnter?: SunburstEvent<TNode>;
-  onMouseLeave?: SunburstEvent<TNode>;
-  items: HierarchyRectangularNode<TNode>[];
-  transitionDuration: number;
-  getText?: (d: HierarchyRectangularNode<TNode>) => string | undefined
+  arcs: Arcs
+  getColor: (d: HierarchyRectangularNode<TNode>) => string
+  getID: (d: HierarchyRectangularNode<TNode>) => number
+  getLabel?: (d: HierarchyRectangularNode<TNode>) => string | undefined
+  onClick?: SunburstEvent<TNode>
+  onMouseEnter?: SunburstEvent<TNode>
+  onMouseLeave?: SunburstEvent<TNode>
+  items: HierarchyRectangularNode<TNode>[]
+  selection: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>
+  transitionDuration: number
+  styleCenterG?: (centerG: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>) => void
 }
 
-export function createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getText }: Props<TNode>) {
-
-  const selection = getChildSelection<TNode>(baseSelection, 'arcs');
+export function createArcs<TNode>(props: Props<TNode>) {
+  const { arcs, selection, getColor, getID, items, transitionDuration, onClick, onMouseEnter, onMouseLeave, getLabel, styleCenterG } = props;
 
   //g
   const g = selection
     .selectAll<SVGGElement, HierarchyRectangularNode<TNode>>('g')
-    .data(items, getNodeID)
-    .classed('sunburst-center', (d, ix) => ix === 0);
+    .data(items, getID)
+  // .classed('sunburst-center', (d, ix) => ix === 0);
 
   const gEnter = g.enter().append('g');
   const gExit = g.exit()
@@ -33,11 +32,10 @@ export function createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID,
   //path
   const path = g.select('path')
   const pathEnter = gEnter.append('path')
-  const arcBig = getArc(0.1)
 
   pathEnter
     .attr('d', arcs.zero)
-    .attr('data-id', getNodeID)
+    .attr('data-id', getID)
     .on('mouseenter', (ev: MouseEvent, d) => { onMouseEnter?.(ev, d); })
     .on('mouseout', (ev: MouseEvent, d) => { onMouseLeave?.(ev, d); })
     .on('click', (ev: MouseEvent, d) => { onClick?.(ev, d); })
@@ -45,30 +43,30 @@ export function createArcs<TNode>({ arcs, baseSelection, getArcColor, getNodeID,
     .transition()
     .duration(transitionDuration)
     .attr('d', arcs.padded)
-    .attr('fill', getArcColor)
+    .attr('fill', getColor)
 
   gExit
     .select('path')
     .transition()
     .duration(transitionDuration)
-    .attr('d', arcBig)
+    .attr('d', arcs.zero)
 
-  setText(g, gEnter, gExit, transitionDuration, getText, arcs.padded)
+  if (getLabel) {
+    setText({ g, gEnter, gExit, transitionDuration, getText: getLabel, arc: arcs.padded })
+  }
 
   gExit
     .transition().duration(transitionDuration)
     .remove()
 
+  const centerG = selection.select<SVGGElement>(':first-child').classed('sunburst-center', true)
+  styleCenterG?.(centerG)
+
   return selection;
 }
 
 function setText<TNode>(
-  g: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>,
-  gEnter: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>,
-  gExit: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>,
-  transitionDuration: number | undefined,
-  getText: ((d: HierarchyRectangularNode<TNode>) => string | undefined) | undefined,
-  arc: Arc<unknown, ArcCoordinates>) {
+  { g, gEnter, gExit, transitionDuration, getText, arc }: { g: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>; gEnter: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>; gExit: Selection<SVGGElement, HierarchyRectangularNode<TNode>, unknown, unknown>; transitionDuration: number | undefined; getText: ((d: HierarchyRectangularNode<TNode>) => string | undefined) | undefined; arc: Arc<unknown, ArcCoordinates>; }) {
 
   function getAngle(d: HierarchyRectangularNode<TNode>) {
     // Offset the angle by 90 deg since the '0' degree axis for arc is Y axis, while

@@ -3,15 +3,14 @@ import './SunburstContainer.css'
 import { HierarchyNode, HierarchyRectangularNode } from 'd3'
 import { useState } from 'react'
 
-import { Sunburst, SunburstEvent } from '../Sunburst'
-import { HasID, RectangleDimensions } from '../../Types'
+import { HasID, RectangleDimensions, SunburstEvent } from '../../Types'
 import { CreateHighlighter } from '../../Services/Highlighter'
-import UnscaledSVG from '../UnscaledSVG/UnscaledSVG'
+import { SunburstSVG } from '../SunburstSVG'
 
-export interface SunburstContainerProps<T> {
+interface Props<T> {
   getArcColor: (d: HierarchyRectangularNode<T>) => string
   getItemDetail: (item: HierarchyNode<T>) => string
-  highlighterFactory?: CreateHighlighter<HierarchyNode<T>>
+  createHighlighter?: CreateHighlighter<HierarchyNode<T>>
   items: HierarchyRectangularNode<T>[]
   onMouseEnter?: SunburstEvent<T>
   onMouseLeave?: SunburstEvent<T>
@@ -22,13 +21,13 @@ export interface SunburstContainerProps<T> {
 export default function SunburstContainer<T extends HasID>({
   getArcColor,
   getItemDetail,
-  highlighterFactory,
+  createHighlighter,
   items,
   onMouseEnter,
   onMouseLeave,
   radius,
   svgDimensions
-}: SunburstContainerProps<T>) {
+}: Props<T>) {
   const [detail, setDetail] = useState<string | undefined>()
 
   const mouseEnterHandler: SunburstEvent<T> = (event: MouseEvent, d: HierarchyNode<T>,) => {
@@ -44,18 +43,18 @@ export default function SunburstContainer<T extends HasID>({
   return (
     <div className="visualization-wrapper">
       <div className="sunburst-wrapper">
-        <UnscaledSVG width={svgDimensions.width} height={svgDimensions.height}>
-          <Sunburst<T>
-            getArcColor={getArcColor}
-            highlighterFactory={highlighterFactory}
-            isNodeClickable={() => false}
-            items={items}
-            // onClick={onClick}
-            onMouseEnter={mouseEnterHandler}
-            onMouseLeave={mouseLeaveHandler}
-            radius={radius}
-          />
-        </UnscaledSVG>
+        <SunburstSVG
+          getColor={getArcColor}
+          createHighlighter={createHighlighter}
+          isNodeClickable={() => false}
+          items={items}
+          // onClick={onClick}
+          onMouseEnter={mouseEnterHandler}
+          onMouseLeave={mouseLeaveHandler}
+          radius={radius}
+          svgDimension={svgDimensions}
+          getLabel={getItemDetail}
+        />
       </div>
       <div className="detail">
         <label>{detail}</label>

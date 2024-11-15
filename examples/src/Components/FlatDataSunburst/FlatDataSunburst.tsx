@@ -2,10 +2,11 @@ import "./FlatDataSunburst.css";
 
 import { HierarchyNode } from 'd3'
 
-import { getColorScale, SunburstHighlighter, SunburstItem, ConcreteSunburstContainer } from "../../sunburstLibrary";
+import { getColorScale, SunburstItem, ConcreteSunburstContainer } from "../../sunburstLibrary";
 import { TreeNode } from "../../Services/Tree";
 import { flatData } from "./flatData";
-import { FlatDataHierarchy as FlatDataHierarchy } from "../../Services/Hierarchy/Implementations/FlatDataHierarchy";
+import { FlatDataHierarchy } from "../../Services/Hierarchy/Implementations/FlatDataHierarchy";
+import { createArcHighlighter } from "../../Utils/createArcHighlighter";
 
 function FlatDataSunburst() {
     const centerColor = 'blue'
@@ -17,7 +18,7 @@ function FlatDataSunburst() {
         <>
             <ConcreteSunburstContainer
                 dimensions={{ width: svgDimension, height: svgDimension }}
-                highlighterFactory={(ref) => new SunburstHighlighter(ref, 'highlight')}
+                createHighlighter={createArcHighlighter}
                 rootHierarchyNode={rootHierarchyNode}
                 colorScale={colorScale}
                 centerColor={centerColor}

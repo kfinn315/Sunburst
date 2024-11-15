@@ -1,4 +1,4 @@
-import { APIResponse, SunburstItemNode } from "../../sunburstLibrary";
+import { APIResponse, SunburstItemWithChildren } from "../../sunburstLibrary";
 import { Cemetery } from "./Types";
 
 export class CemeteryAPI {
@@ -6,7 +6,7 @@ export class CemeteryAPI {
     private cemeteryURL: string = "http://localhost:5164/api/v1/Cemetery";
 
     getAllCemeteries(): Promise<Cemetery[]> {
-        return fetch(this.cemeteryURL, { method: 'GET' }).then(response => response.json()).then((response: APIResponse<Cemetery[]>): APIResponse<SunburstItemNode> => {
+        return fetch(this.cemeteryURL, { method: 'GET' }).then(response => response.json()).then((response: APIResponse<Cemetery[]>): APIResponse<SunburstItemWithChildren> => {
             if (!response.success) {
                 throw Error(response.message);
             }
@@ -22,10 +22,10 @@ export class CemeteryAPI {
             }
         });
     }
-    getCemetery(id: number): Promise<SunburstItemNode> {
+    getCemetery(id: number): Promise<SunburstItemWithChildren> {
         return fetch(this.summaryURL + id, { method: "GET" })
             .then(response => response.json())
-            .then((response: APIResponse<SunburstItemNode>): APIResponse<SunburstItemNode> => {
+            .then((response: APIResponse<SunburstItemWithChildren>): APIResponse<SunburstItemWithChildren> => {
                 if (!response.success) {
                     throw Error(response.message);
                 }

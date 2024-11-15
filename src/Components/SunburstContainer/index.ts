@@ -1,6 +1,5 @@
-import SunburstContainer, { SunburstContainerProps } from './SunburstContainer';
+import SunburstContainer from './SunburstContainer';
 
 export {
-    type SunburstContainerProps,
     SunburstContainer,
 }
